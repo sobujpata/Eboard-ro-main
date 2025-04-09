@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Exports;
+
+use App\Models\pbperslist;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+
+class StanByExcel implements FromCollection, WithHeadings
+{
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function collection()
+    {
+
+        return pbperslist::select(
+            's_no',
+            'bdno',
+            "rank",
+            "name",
+            "trade",
+            "entry_no",
+            "avg_par",
+            "career_marks",
+            "ttl_score",
+            "es",
+            "cs",
+            "conduct_sheet",
+            "weight",
+            "base_unit",
+            "other_rmks",
+            "rmks",
+            "rmks_1",
+            "decision",
+        )->where("decision", "=", "false")
+        ->get();
+    }
+    public function headings(): array
+    {
+        return [
+            "Ser No",
+            "BD No",
+            "Rank",
+            "Name",
+            "Trade",
+            "Entry No",
+            "Avg Par",
+            "Career Marks",
+            "Ttl Score",
+            "ES",
+            "CS",
+            "Conduct Sheet",
+            "Weight",
+            "Base Uunit",
+            "Other Rmks",
+            "Rmks",
+            "Rmks_1",
+            "Decision",
+        ];
+    }
+}
