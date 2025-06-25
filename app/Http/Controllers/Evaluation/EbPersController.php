@@ -369,6 +369,14 @@ class EbPersController extends Controller
         }
     }
 
+    public function Bdno(Request $request){
+        $bdnos = EbPerson::pluck('bdno')->all();
+        $user_id = $request->header('id');
+        $user = User::find($user_id);
+        $userName = $user->userName;
+        return view('eb.all-bdno', compact('bdnos', 'userName'));
+    }
+
 
 
 }

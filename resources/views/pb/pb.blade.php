@@ -1,5 +1,4 @@
 @extends('layout.app-pb')
-
 @section('content')
     <div class="container-fluid p-0">
         @if (session('status'))
@@ -39,6 +38,10 @@
                                     echo $year;
                                 @endphp</u></b></td>
                                 <td align="center"><b><u>Score</u></b></td>
+                                <td align="center" rowspan="2"
+                                    style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                                    <b><u>Action</u></b>
+                                </td>
                             </tr>
                             @foreach ($previousPb as $prePb)
                                 <tr>
@@ -58,6 +61,14 @@
                                     <td align="center"><b>{{ $prePb->ttl }}</b></td>
                                     <td align="center"><b>{{ $prePb->promotion }}</b></td>
                                     <td align="center"><b>{{ $prePb->score_min }}</b></td>
+                                    <td align="center"
+                                        style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#previous_pb{{ $prePb->id }}">
+                                            Edit
+                                        </button>
+                                        @include('pb.previouse_pb')
+                                    </td>
                                 </tr>
                             @endforeach
                         </table>
@@ -74,9 +85,14 @@
                                 <td align="center"><b>Pers</b></td>
                                 <td align="center"><b>Retd</b></td>
                                 <td align="center" style="vertical-align: top; background-color:#007bff!important;">
-                                    <b>VAC</b></td>
+                                    <b>VAC</b>
+                                </td>
                                 <td align="center"><b>Entry</b></td>
                                 <td align="center"><b>Recom</b></td>
+                                <td align="center"
+                                    style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                                    <b>Action</b>
+                                </td>
                             </tr>
 
                             <td align="center" style="vertical-align: top;">
@@ -99,7 +115,7 @@
                                     {{-- @dd($rank) --}}
                                     @foreach ($totalEntry as $singleEntry)
                                         @if ($sheetNo == 1)
-                                            @if($trade == 'Cy Asst')
+                                            @if ($trade == 'Cy Asst')
                                                 {{ $singleEntry->entry_no + 2020 }}<br>
                                             @elseif($trade == 'Edn Instr')
                                                 {{ $singleEntry->entry_no + 2015 }}<br>
@@ -107,7 +123,7 @@
                                                 {{ $singleEntry->entry_no + 2003 }}<br>
                                             @endif
                                         @elseif($sheetNo == 2)
-                                            @if($trade == 'Cy Asst')
+                                            @if ($trade == 'Cy Asst')
                                                 {{ $singleEntry->entry_no + 2024 }}<br>
                                             @elseif($trade == 'Edn Instr')
                                                 {{ $singleEntry->entry_no + 2014 }}<br>
@@ -122,10 +138,9 @@
                             </td>
                             <td align="center" style="vertical-align: top !important; background-color:#007bff!important;">
                                 <b>
-                                    @foreach ($vacNextYear as $vacYear)
-                                        {{ 'PB-' . substr(date('Y') + 1, -2) . ': ' . $vacYear->next_yr }}<br>
-                                        {{ 'PB-' . substr(date('Y') + 2, -2) . ': ' . $vacYear->next_2yrs }}
-                                    @endforeach
+                                    {{-- @dd($vacNextYear) --}}
+                                    {{ 'PB-' . substr(date('Y') + 1, -2) . ': ' . ($vacNextYear->next_yr ?? 'N/A') }}<br>
+                                    {{ 'PB-' . substr(date('Y') + 2, -2) . ': ' . ($vacNextYear->next_2yrs ?? 'N/A') }}
                                 </b>
                             </td>
                             <td align="center" style="vertical-align: top;">
@@ -141,6 +156,13 @@
                                         {{ $recom->pers_recom }}<br>
                                     @endforeach
                             </td>
+                            <td align="center"
+                                style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#next_2yrs{{ $vacNextYear->id }}">
+                                    Edit
+                                </button>
+                                @include('pb.next_2yrs')
                             </td>
                         </table>
                     </div>
@@ -190,7 +212,7 @@
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-primary ">
-                    <!-- previouse promotion board -->
+                    <!-- current promotion board -->
                     <div class="container-md" style="padding:.5rem">
 
                         <table class="table-bordered text-white border-white" style="width:100%">
@@ -199,21 +221,32 @@
                                     $year = date('Y');
                                     echo $year;
                                 @endphp</u></b></td>
-                                <td align="center" colspan="3"><b><u>VAC-@php
-                                    $year = date('Y');
-                                    echo $year;
-                                @endphp</u></b></td>
+                                <td align="center"
+                                    colspan="@if ($currentPb->rank == 'MWO') {{ '3' }} @else {{ '4' }} @endif">
+                                    <b><u>VAC-@php
+                                        $year = date('Y');
+                                        echo $year;
+                                    @endphp</u></b>
+                                </td>
                                 <td align="center"colspan="2"><b><u>Decision</u></b></td>
+                                <td align="center" rowspan="2"
+                                    style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                                    <b>Action</b>
+                                </td>
                             </tr>
                             <tr>
                                 <td align="center"><b>Estb</b></td>
                                 <td align="center"><b>Str</b></td>
                                 <td align="center"><b>Exist</b></td>
                                 <td align="center"><b>Retd</b></td>
-                                <td align="center" style="display:@foreach($rank as $rk) @if( $rk->rank =='SWO' ) {{'none'}} @endif  @endforeach"><b></b> CD</td>
+                                <td align="center"
+                                    style="display:@foreach ($rank as $rk) @if ($rk->rank == 'SWO') {{ 'none' }} @endif @endforeach">
+                                    <b></b> CD
+                                </td>
                                 <td align="center"><b>Vac</b></td>
                                 <td align="center"><b>Recom</b></td>
                                 <td align="center"><b>Left</b></td>
+
                             </tr>
 
                             @if ($currentPb)
@@ -222,55 +255,66 @@
                                     <td align="center"><b>{{ $currentPb->str }}</b></td>
                                     <td align="center"><b>{{ $currentPb->exist }}</b></td>
                                     <td align="center"><b>
-                                        @foreach($rank as $rk)
-                                            @if($rk->rank=='SWO')
-                                                {{ $currentPb->retd }}
-                                            @elseif($rk->rank=='WO')
-                                                {{ $currentPb->retd - $lastEntrySwo }}
-                                            @elseif($rk->rank=='Sgt')
-                                                {{ $currentPb->retd - $lastEntryWo }}
-                                            @endif
-                                        @endforeach
+                                            @foreach ($rank as $rk)
+                                                @if ($rk->rank == 'SWO')
+                                                    {{ $currentPb->retd }}
+                                                @elseif($rk->rank == 'WO')
+                                                    {{ $currentPb->retd - $lastEntrySwo }}
+                                                @elseif($rk->rank == 'Sgt')
+                                                    {{ $currentPb->retd - $lastEntryWo }}
+                                                @endif
+                                            @endforeach
                                         </b></td>
-                                    <td align="center" style="display: @foreach($rank as $rk) @if( $rk->rank =='SWO' ) {{'none'}} @endif  @endforeach"><b>
-                                        @foreach($rank as $rk)
-                                            @if($rk->rank=='WO')
-                                                {{ $recomMwo }}
-                                            @elseif($rk->rank=='Sgt')
-                                                {{ $recomSwo }}
-                                            @endif
-                                        @endforeach
-                                    </b></td>
+                                    <td align="center"
+                                        style="display: @foreach ($rank as $rk) @if ($rk->rank == 'SWO') {{ 'none' }} @endif @endforeach">
+                                        <b>
+                                            @foreach ($rank as $rk)
+                                                @if ($rk->rank == 'WO')
+                                                    {{ $recomMwo }}
+                                                @elseif($rk->rank == 'Sgt')
+                                                    {{ $recomSwo }}
+                                                @endif
+                                            @endforeach
+                                        </b>
+                                    </td>
                                     <td align="center"><b>
-                                        @foreach($rank as $rk)
-                                            @php
-                                                if($rk->rank=='SWO'){
-                                                    $vac=$currentPb->ttl;
-                                                    echo $vac;
-                                                }elseif($rk->rank=='WO'){
-                                                    $exist = $currentPb->exist;
-                                                    $retd=$currentPb->retd - $lastEntrySwo;
-                                                    $vac =  $currentPb->exist + $retd + $recomMwo;
-                                                    echo $vac;
-                                                }elseif($rk->rank=='Sgt'){
-                                                    $exist = $currentPb->exist;
-                                                    $retd = $currentPb->retd - $lastEntryWo;
-                                                    $vac = $exist+$retd+$recomSwo;
-                                                    echo $vac;
-                                                }
-                                            @endphp
-                                        {{-- @dd($vac) --}}
-                                        @endforeach
-                                    </b></td>
+                                            @foreach ($rank as $rk)
+                                                @php
+                                                    if ($rk->rank == 'SWO') {
+                                                        $vac = $currentPb->ttl;
+                                                        echo $vac;
+                                                    } elseif ($rk->rank == 'WO') {
+                                                        $exist = $currentPb->exist;
+                                                        $retd = $currentPb->retd - $lastEntrySwo;
+                                                        $vac = $currentPb->exist + $retd + $recomMwo;
+                                                        echo $vac;
+                                                    } elseif ($rk->rank == 'Sgt') {
+                                                        $exist = $currentPb->exist;
+                                                        $retd = $currentPb->retd - $lastEntryWo;
+                                                        $vac = $exist + $retd + $recomSwo;
+                                                        echo $vac;
+                                                    }
+                                                @endphp
+                                                {{-- @dd($vac) --}}
+                                            @endforeach
+                                        </b></td>
                                     <td align="center" id="total-recom">
                                         <h5><span><b class="blinking" id="checkId1">{{ $recompers }}</b></h5></span>
                                     </td>
                                     <td align="center">
                                         <h5><span class="blinking">
-                                            <b id="minCheck1">
-                                                {{ $vac - $recompers }}
-                                            </b>
+                                                <b id="minCheck1">
+                                                    {{ $vac - $recompers }}
+                                                </b>
                                         </h5></span>
+                                    </td>
+                                    <td align="center"
+                                        style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#currentPb{{ $currentPb->id }}">
+                                            Edit
+                                        </button>
+                                        @include('pb.current_pb')
                                     </td>
                                 </tr>
                             @else
@@ -284,7 +328,8 @@
                 </div>
             </div>
         </div>
-        <div id="recom-display" class="sticky-top" style="width:450px; background-color:blue; color:white; border-radius: 50%; text-align:center; overflow:visible; float:right; top:60px; display:none;">
+        <div id="recom-display" class="sticky-top"
+            style="width:450px; background-color:blue; color:white; border-radius: 50%; text-align:center; overflow:visible; float:right; top:60px; display:none;">
             <div class="card bg-primary ">
                 <!-- previouse promotion board -->
                 <div class="container-md" style="padding:.5rem">
@@ -306,7 +351,10 @@
                             <td align="center"><b>Str</b></td>
                             <td align="center"><b>Exist</b></td>
                             <td align="center"><b>Retd</b></td>
-                            <td align="center" style="display:@foreach($rank as $rk) @if( $rk->rank =='SWO' ) {{'none'}} @endif  @endforeach"><b></b> CD</td>
+                            <td align="center"
+                                style="display:@foreach ($rank as $rk) @if ($rk->rank == 'SWO') {{ 'none' }} @endif @endforeach">
+                                <b></b> CD
+                            </td>
                             <td align="center"><b>Vac</b></td>
                             <td align="center"><b>Recom</b></td>
                             <td align="center"><b>Left</b></td>
@@ -318,54 +366,60 @@
                                 <td align="center"><b>{{ $currentPb->str }}</b></td>
                                 <td align="center"><b>{{ $currentPb->exist }}</b></td>
                                 <td align="center"><b>
-                                    @foreach($rank as $rk)
-                                        @if($rk->rank=='SWO')
-                                            {{ $currentPb->retd }}
-                                        @elseif($rk->rank=='WO')
-                                            {{ $currentPb->retd - $lastEntrySwo }}
-                                        @elseif($rk->rank=='Sgt')
-                                            {{ $currentPb->retd - $lastEntryWo }}
-                                        @endif
-                                    @endforeach
+                                        @foreach ($rank as $rk)
+                                            @if ($rk->rank == 'SWO')
+                                                {{ $currentPb->retd }}
+                                            @elseif($rk->rank == 'WO')
+                                                {{ $currentPb->retd - $lastEntrySwo }}
+                                            @elseif($rk->rank == 'Sgt')
+                                                {{ $currentPb->retd - $lastEntryWo }}
+                                            @endif
+                                        @endforeach
                                     </b></td>
-                                <td align="center" style="display: @foreach($rank as $rk) @if( $rk->rank =='SWO' ) {{'none'}} @endif  @endforeach"><b>
-                                    @foreach($rank as $rk)
-                                        @if($rk->rank=='WO')
-                                            {{ $recomMwo }}
-                                        @elseif($rk->rank=='Sgt')
-                                            {{ $recomSwo }}
-                                        @endif
-                                    @endforeach
-                                </b></td>
+                                <td align="center"
+                                    style="display: @foreach ($rank as $rk) @if ($rk->rank == 'SWO') {{ 'none' }} @endif @endforeach">
+                                    <b>
+                                        @foreach ($rank as $rk)
+                                            @if ($rk->rank == 'WO')
+                                                {{ $recomMwo }}
+                                            @elseif($rk->rank == 'Sgt')
+                                                {{ $recomSwo }}
+                                            @endif
+                                        @endforeach
+                                    </b>
+                                </td>
                                 <td align="center"><b>
-                                    @foreach($rank as $rk)
-                                        @php
-                                            if($rk->rank=='SWO'){
-                                                $vac=$currentPb->ttl;
-                                                echo $vac;
-                                            }elseif($rk->rank=='WO'){
-                                                $exist = $currentPb->exist;
-                                                $retd=$currentPb->retd - $lastEntrySwo;
-                                                $vac =  $currentPb->exist + $retd + $recomMwo;
-                                                echo $vac;
-                                            }elseif($rk->rank=='Sgt'){
-                                                $exist = $currentPb->exist;
-                                                $retd = $currentPb->retd - $lastEntryWo;
-                                                $vac = $exist+$retd+$recomSwo;
-                                                echo $vac;
-                                            }
-                                        @endphp
-                                    {{-- @dd($vac) --}}
-                                    @endforeach
-                                </b></td>
+                                        @foreach ($rank as $rk)
+                                            @php
+                                                $vac = 0;
+
+                                                if ($rk->rank == 'SWO') {
+                                                    $vac = $currentPb->ttl ?? 0;
+                                                } elseif ($rk->rank == 'WO') {
+                                                    $exist = $currentPb->exist ?? 0;
+                                                    $retd = ($currentPb->retd ?? 0) - ($lastEntrySwo ?? 0);
+                                                    $vac = $exist + $retd + ($recomMwo ?? 0);
+                                                } elseif ($rk->rank == 'Sgt') {
+                                                    $exist = $currentPb->exist ?? 0;
+                                                    $retd = ($currentPb->retd ?? 0) - ($lastEntryWo ?? 0);
+                                                    $vac = $exist + $retd + ($recomSwo ?? 0);
+                                                }
+                                            @endphp
+
+                                            {{-- Now output $vac here --}}
+                                            <p>{{ $vac }}</p>
+                                        @endforeach
+
+                                    </b></td>
                                 <td align="center" id="total-recom">
                                     <h5><span><b class="blinking" id="checkId">{{ $recompers }}</b></h5></span>
+
                                 </td>
                                 <td align="center">
                                     <h5><span class="blinking">
-                                        <b id="minCheck">
-                                            {{ $vac - $recompers }}
-                                        </b>
+                                            <b id="minCheck">
+                                                {{ $vac - $recompers }}
+                                            </b>
                                     </h5></span>
                                 </td>
                             </tr>
@@ -382,7 +436,9 @@
         <div class="page-header mt-2 mb-2">
             <div class='row'>
                 <div class='col-md-4 text-right'></div>
-                <div class='col-md-2 text-right'><b><h4 id="rcorners1">Please Select Entry No ></h4></b></div>
+                <div class='col-md-2 text-right'><b>
+                        <h4 id="rcorners1">Please Select Entry No ></h4>
+                    </b></div>
                 <div class='col-md-2'>
                     <select id="positionFilter" class="form-control" name="entry_no">
                         <option value="" selected='selected' id="allShow">All Entry</option>
@@ -392,8 +448,9 @@
             </div>
         </div>
         {{-- {{ $userName->userName }} --}}
-        <div class="container-fluid">
-            <table id="tableData" class="table table-striped table-bordered table-responsive-lg table-hover" style="width:100%">
+        @if ($dataCount > 0)
+            <table id="tableData" class="table table-striped table-bordered table-responsive-lg table-hover"
+                style="width:100%">
                 <thead>
                     <tr align="center" style="background:#33a8ff;">
                         <th style="vertical-align: middle; width: 2% !important;">SL No</th>
@@ -401,7 +458,7 @@
                         <th style="vertical-align: middle; width: 4% !important;">BD No</th>
                         <th style="vertical-align: middle; width: 15% !important;">Rank & Name</th>
 
-                        <th style="vertical-align: middle; width: 3% !important;" >Entry No</th>
+                        <th style="vertical-align: middle; width: 3% !important;">Entry No</th>
 
                         <th style="vertical-align: middle; width: 5% !important;">PAR (Avg)</th>
                         <th style="vertical-align: middle; width: 5% !important;">Marks(TTB, TTA, ST) (Avg)</th>
@@ -415,7 +472,9 @@
                         <th style="vertical-align: middle; width: 15% !important;">Remarks</th>
                         <th style="vertical-align: middle; width: 10% !important;">Remarks By PB</th>
                         {{-- <th style="vertical-align: middle; width: 2% !important; ">Decision</th> --}}
-                        <th style="vertical-align: middle; width: 2% !important; display:@php if($userName->userName == 'pbuser'){ echo 'none;'; } @endphp">Decision</th>
+                        <th
+                            style="vertical-align: middle; width: 2% !important; display:@php if($user->userName == 'pbuser'){ echo 'none;'; } @endphp">
+                            Decision</th>
                         {{-- <th style="vertical-align: middle; width: 2% !important;">Edit</th> --}}
                     </tr>
                 </thead>
@@ -431,15 +490,61 @@
                             <td align='center' style="vertical-align: middle"><a
                                     href='{{ asset('promotionBoard/bioData') }}/{{ $item->bdno }}.pdf' target='_blank'
                                     style="text-decoration: none"><b>{{ $item->bdno }}</b></a></td>
-                            <td align='left' style="vertical-align: middle">{{ $item->rank }} {{ $item->name }}
+                            <td align='left' style="vertical-align: middle">{{ $item->rank }}
+                                {{ $item->name }}
                             </td>
                             <td class="text-center" style="vertical-align: middle">{{ $item->entry_no }}</td>
                             <td class="text-center" style="vertical-align: middle"><b>{{ $item->avg_par }}</b></td>
-                            <td class="text-center" style="vertical-align: middle"><b>{{ $item->career_marks }}</b></td>
+                            <td class="text-center" style="vertical-align: middle"><b>{{ $item->career_marks }}</b>
+                            </td>
                             <td class="text-center" style="vertical-align: middle"><b>{{ $item->ttl_score }}</b></td>
                             <td class="text-center" style="vertical-align: middle"><b>{{ $item->es }}</b></td>
                             <td class="text-center" style="vertical-align: middle"><b>{{ $item->cs }}</b></td>
-                            <td class="text-center" style="vertical-align: middle"><b>{{ $item->conduct_sheet }}</b></td>
+
+                            <td class="text-center">
+                                <a style="height: 35px;" class="text-danger mt-2 text-decoration-none"
+                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ $item->id }}">
+                                    {{ $item->conduct_sheet }}
+                                </a>
+
+                                <!-- Salient points -->
+                                <div class="modal fad" id="staticBackdrop{{ $item->id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" style="max-width: 1400px !important;">
+                                        <div class="modal-content" style="background-color: #06c5f0;">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title" id="myModalLabel" style="width:100%;">Conduct
+                                                    Sheet</h3>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-3 bg-dark text-white pt-4 p-3">
+                                                            <h4>BD/{{ $item->bdno }}</h4>
+                                                            <h4>{{ $item->rank }} {{ $item->name }}</h4>
+                                                            <h4>{{ $item->trade }}</h4>
+                                                            <img src='{{ asset('promotionBoard/image') }}/{{ $item->bdno }}.gif'
+                                                                style='border:3px solid #B2B8B7; border-radius: 3px;'
+                                                                alt='Photo N/A' class="w-100">
+
+                                                        </div>
+                                                        <div class="col-9 bg-white pt-4">
+                                                            <div class="container-fluid">
+                                                                <img src="{{ asset('promotionBoard/conduct_sheet/' . $item->bdno . '.png') }}"
+                                                                    style="width:100% ; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+
                             <td class="text-center">{{ $item->weight }}</td>
                             <td class="text-center">{{ $item->base_unit }}</td>
                             <td class="text-center" style="vertical-align: middle">
@@ -450,33 +555,36 @@
                                 @endif
                             </td>
                             <td class="text-center" style="vertical-align: middle; text-align:left;">
-                                <b>{!!  $item->other_rmks !!}</b></td>
+                                <b>{!! $item->other_rmks !!}</b>
+                            </td>
                             <td align='left' style="vertical-align: middle; text-align:left;">
-                                <b>{!! $item->rmks !!}<br>{{ $item->rmks_1 }}</b></td>
-                            <td class="text-center" style="vertical-align: middle; display:@php if($userName->userName == 'pbuser'){ echo 'none;'; } @endphp" >
-                            {{-- <td class="text-center" style="vertical-align: middle; " > --}}
+                                <b>{!! $item->rmks !!}<br>{{ $item->rmks_1 }}</b>
+                            </td>
+                            <td class="text-center"
+                                style="vertical-align: middle; display:@php if($user->userName == 'pbuser'){ echo 'none;'; } @endphp">
+                                {{-- <td class="text-center" style="vertical-align: middle; " > --}}
                                 @if ($item->decision == 'true')
                                     <img src="{{ asset('icon/ok.png') }}" style="border-radius: 7px;">
                                 @elseif ($item->decision == 'false')
                                     <img src="{{ asset('icon/not.png') }}" style="border-radius: 7px;">
                                 @else
                                     <label class='container1'>
-                                        <input type="checkbox"
-                                            data-column_name="decision"
-                                            {{-- <!-- Data attribute for column name --> --}}
-                                            data-id="{{ $item->id }}"
-                                            {{-- <!-- Data attribute for item ID --> --}}
-                                            {{ $item->decision ? 'checked' : '' }}> <!-- Blade syntax to conditionally add 'checked' attribute -->
-                                        <span class="checkmark"></span> <!-- This is likely the styling for the checkbox -->
+                                        <input type="checkbox" data-column_name="decision" {{-- <!-- Data attribute for column name --> --}}
+                                            data-id="{{ $item->id }}" {{-- <!-- Data attribute for item ID --> --}}
+                                            {{ $item->decision ? 'checked' : '' }}>
+                                        <!-- Blade syntax to conditionally add 'checked' attribute -->
+                                        <span class="checkmark"></span>
+                                        <!-- This is likely the styling for the checkbox -->
                                     </label>
                                 @endif
-                                    <br>
-                                <button style="height: 35px;" type="button" class="btn btn-success mt-2" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal{{ $item->id }}">
+                                <br>
+                                <button style="height: 35px;" type="button" class="btn btn-success mt-2"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal{{ $item->id }}">
                                     <img style="width: 14px;" src='{{ asset('icon/edit.png') }}'>
                                 </button>
-                                {{-- <button style="height: 35px; " type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" --}}
-                                <button style="height: 35px; display:@php if($userName->userName !== 'pbedit'){ echo 'none;'; } @endphp" type="button" class="btn btn-primary mt-2" data-bs-toggle="modal"
+                                <button
+                                    style="height: 35px; display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp"
+                                    type="button" class="btn btn-primary mt-2" data-bs-toggle="modal"
                                     data-bs-target="#persEdit{{ $item->id }}">
                                     <img style="width: 14px;" src='{{ asset('icon/edit.png') }}'>
                                 </button>
@@ -645,7 +753,8 @@
                                     <div class="modal-dialog modal-xl">
                                         <div class="modal-content" style="background-color: #06c5f0;">
                                             <div class="modal-header">
-                                                <h3 class="modal-title" id="myModalLabel" style="width:100%;">Update Person</h3>
+                                                <h3 class="modal-title" id="myModalLabel" style="width:100%;">Update
+                                                    Person</h3>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
@@ -655,31 +764,40 @@
 
                                                         $id = $item->id;
                                                     @endphp
-                                                    <form method="POST" action="{{ route('pb.edit', $item->id) }}" style="text-align: left;">
+                                                    <form method="POST" action="{{ route('pb.edit', $item->id) }}"
+                                                        style="text-align: left;">
                                                         @csrf
                                                         <div class="row">
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="s_no">S/L</label>
-                                                                    <input type="text" name="s_no" id="" class="form-control" value="{{$item->s_no}}">
+                                                                    <input type="text" name="s_no" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->s_no }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="bdno">BD No</label>
-                                                                    <input type="text" name="bdno" id="" class="form-control" value="{{$item->bdno}}">
+                                                                    <input type="text" name="bdno" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->bdno }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="rank">Rank</label>
-                                                                    <input type="text" name="rank" id="" class="form-control" value="{{$item->rank}}">
+                                                                    <input type="text" name="rank" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->rank }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="name">Name</label>
-                                                                    <input type="text" name="name" id="" class="form-control" value="{{$item->name}}">
+                                                                    <input type="text" name="name" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->name }}">
                                                                 </div>
                                                             </div>
 
@@ -688,25 +806,33 @@
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="trade">Trade</label>
-                                                                    <input type="text" name="trade" id="" class="form-control" value="{{$item->trade}}">
+                                                                    <input type="text" name="trade" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->trade }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="entry_no">Entry No</label>
-                                                                    <input type="text" name="entry_no" id="" class="form-control" value="{{$item->entry_no}}">
+                                                                    <input type="text" name="entry_no" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->entry_no }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="avg_par">PAR (AVG)</label>
-                                                                    <input type="text" name="avg_par" id="" class="form-control" value="{{$item->avg_par}}">
+                                                                    <input type="text" name="avg_par" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->avg_par }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="career_marks">Career Marks</label>
-                                                                    <input type="text" name="career_marks" id="" class="form-control" value="{{$item->career_marks}}">
+                                                                    <input type="text" name="career_marks"
+                                                                        id="" class="form-control"
+                                                                        value="{{ $item->career_marks }}">
                                                                 </div>
                                                             </div>
 
@@ -715,25 +841,33 @@
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="ttl_score">Total Score</label>
-                                                                    <input type="text" name="ttl_score" id="" class="form-control" value="{{$item->ttl_score}}">
+                                                                    <input type="text" name="ttl_score" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->ttl_score }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="es">Entry Sr</label>
-                                                                    <input type="text" name="es" id="" class="form-control" value="{{$item->es}}">
+                                                                    <input type="text" name="es" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->es }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="cs">Command Sr</label>
-                                                                    <input type="text" name="cs" id="" class="form-control" value="{{$item->cs}}">
+                                                                    <input type="text" name="cs" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->cs }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="conduct_sheet">Conduct Sheet</label>
-                                                                    <input type="text" name="conduct_sheet" id="" class="form-control" value="{{$item->conduct_sheet}}">
+                                                                    <input type="text" name="conduct_sheet"
+                                                                        id="" class="form-control"
+                                                                        value="{{ $item->conduct_sheet }}">
                                                                 </div>
                                                             </div>
 
@@ -742,34 +876,44 @@
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="weight">Weight (Lbp)</label>
-                                                                    <input type="text" name="weight" id="" class="form-control" value="{{$item->weight}}">
+                                                                    <input type="text" name="weight" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->weight }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="base_unit">Base Unit</label>
-                                                                    <input type="text" name="base_unit" id="" class="form-control" value="{{$item->base_unit}}">
+                                                                    <input type="text" name="base_unit" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->base_unit }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="sheetNo">Sheet No</label>
-                                                                    <input type="text" name="sheetNo" id="" class="form-control" value="{{$item->sheetNo}}">
+                                                                    <input type="text" name="sheetNo" id=""
+                                                                        class="form-control"
+                                                                        value="{{ $item->sheetNo }}">
                                                                 </div>
                                                             </div>
 
 
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-9">
                                                                 <div class="form-group">
-                                                                    <label for="other_rmks">Remarks</label>
-                                                                    <textarea name="other_rmks" id="" cols="" rows="3" class="form-control">{{$item->other_rmks}}</textarea>
+                                                                    <label for="other_rmks">Remarks summernote</label>
+                                                                    {{-- <textarea id="summernote" name="other_rmks" class="form-control"> {{ $item->other_rmks }}</textarea> --}}
+
+                                                                    <textarea name="other_rmks" id="" cols="" rows="3" class="form-control">{{ $item->other_rmks }}</textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
-                                                                <img src="{{ asset('promotionBoard/image') }}/{{ $item->bdno }}.gif" class="" alt="" style="width: 70px">
-                                                                <input type="file" name="image" id="" value="">
+                                                                <img src="{{ asset('promotionBoard/image') }}/{{ $item->bdno }}.gif"
+                                                                    class="" alt="" style="width: 70px">
+                                                                <input type="file" name="image" id=""
+                                                                    value="">
                                                             </div>
                                                         </div>
 
@@ -796,7 +940,6 @@
                     <button type="submit" class="btn btn-primary btn-lg" style="width:200px">Confirm</button>
                 </a>
             </p>
-        </div>
     </div>
 @endsection
 
@@ -813,26 +956,26 @@
                 // Determine the new value of the decision based on checkbox state
                 var decision = $(this).is(':checked');
                 // console.log(decision);
-                if(decision==true){
-                    $("#tr"+id).addClass('tr-row-bg-select');
+                if (decision == true) {
+                    $("#tr" + id).addClass('tr-row-bg-select');
                 }
-                if(decision==false){
-                    $("#tr"+id).addClass('tr-row-bg-stanby');
+                if (decision == false) {
+                    $("#tr" + id).addClass('tr-row-bg-stanby');
                 }
                 // Send AJAX request to update decision status
                 $.ajax({
-                type: 'get',
-                url: '/items/' + id + '/update-decision',
-                data: {
-                    'decision': decision // Example decision value
-                },
-                success: function(response) {
-                    // alert(response.success);
-                },
-                error: function(response) {
+                    type: 'get',
+                    url: '/items/' + id + '/update-decision',
+                    data: {
+                        'decision': decision // Example decision value
+                    },
+                    success: function(response) {
+                        // alert(response.success);
+                    },
+                    error: function(response) {
 
-                }
-            });
+                    }
+                });
             });
         });
 
@@ -849,136 +992,139 @@
             //document.getElementById("demo").innerHTML=result
         });
         $(document).ready(function() {
-		// Initialize the sum variable with your starting number
-		let sum = {{ $recompers }} // Example initial value
-        // console.log(sum)
-		let min = {{ $vac - $recompers }} // Example initial value
+            // Initialize the sum variable with your starting number
+            let sum = {{ $recompers }} // Example initial value
+            // console.log(sum)
+            let min = {{ $vac - $recompers }} // Example initial value
 
-		$('input').on('change', function() {
-			// Get the checked state
-			if (localStorage.input === 'true') {
-				let isChecked = $(this).is(':checked') ? 1 : 0;
+            $('input').on('change', function() {
+                // Get the checked state
+                if (localStorage.input === 'true') {
+                    let isChecked = $(this).is(':checked') ? 1 : 0;
 
-				// Store the checked state in localStorage
-				localStorage.setItem('input', isChecked);
+                    // Store the checked state in localStorage
+                    localStorage.setItem('input', isChecked);
 
-				// Log the checked state to the console
-				// console.log(isChecked);
+                    // Log the checked state to the console
+                    // console.log(isChecked);
 
-				// Add the isChecked value to the sum
-				sum += isChecked;
-				min -= isChecked;
+                    // Add the isChecked value to the sum
+                    sum += isChecked;
+                    min -= isChecked;
 
-                if(min < 0){
-                    document.getElementById("minCheck1").style.color='red';
-                    document.getElementById("minCheck").style.color='red';
-                }else{
-                    document.getElementById("minCheck1").style.color='white';
-                    document.getElementById("minCheck").style.color='white';
+                    if (min < 0) {
+                        document.getElementById("minCheck1").style.color = 'red';
+                        document.getElementById("minCheck").style.color = 'red';
+                    } else {
+                        document.getElementById("minCheck1").style.color = 'white';
+                        document.getElementById("minCheck").style.color = 'white';
+                    }
+
+                    // Log the updated sum to the console
+                    // console.log('Updated sum:', sum);
+                    // console.log('Updated min:', min);
+
+                    document.getElementById("checkId1").innerHTML = sum;
+                    document.getElementById("minCheck1").innerHTML = min;
+                    document.getElementById("checkId").innerHTML = sum;
+                    document.getElementById("minCheck").innerHTML = min;
+                    // document.getElementById("rowColor").innerHTML= isChecked.style.backgroundColor='red';
+
+
+                    // Optionally update the DOM element with the sum
+                    // document.getElementById("sumId").innerHTML = sum;
+                } else {
+                    let isUnChecked = $(this).is(':checked') ? 0 : 1;
+                    // Store the checked state in localStorage
+                    localStorage.setItem('input', isUnChecked);
+
+                    // Log the checked state to the console
+                    // console.log(isUnChecked);
+
+                    // Add the isUnChecked value to the sum
+                    sum -= isUnChecked;
+                    min += isUnChecked;
+
+
+                    // Log the updated sum to the console
+                    // console.log('Updated sum:', sum);
+                    // console.log('Updated min:', min);
+                    document.getElementById("checkId").innerHTML = sum;
+                    document.getElementById("minCheck").innerHTML = min;
                 }
-
-				// Log the updated sum to the console
-				// console.log('Updated sum:', sum);
-				// console.log('Updated min:', min);
-
-				document.getElementById("checkId1").innerHTML = sum;
-				document.getElementById("minCheck1").innerHTML = min;
-				document.getElementById("checkId").innerHTML = sum;
-				document.getElementById("minCheck").innerHTML = min;
-				// document.getElementById("rowColor").innerHTML= isChecked.style.backgroundColor='red';
-
-
-				// Optionally update the DOM element with the sum
-				// document.getElementById("sumId").innerHTML = sum;
-			} else {
-				let isUnChecked = $(this).is(':checked') ? 0 : 1;
-				// Store the checked state in localStorage
-				localStorage.setItem('input', isUnChecked);
-
-				// Log the checked state to the console
-				// console.log(isUnChecked);
-
-				// Add the isUnChecked value to the sum
-				sum -= isUnChecked;
-				min += isUnChecked;
-
-
-				// Log the updated sum to the console
-				// console.log('Updated sum:', sum);
-				// console.log('Updated min:', min);
-				document.getElementById("checkId").innerHTML = sum;
-				document.getElementById("minCheck").innerHTML = min;
-			}
-		});
-    });
+            });
+        });
 
         $(document).ready(function() {
-        // Initialize DataTable
-        let table = new DataTable('#tableData', {
-            info: true,
-            ordering: true,
-            paging: false,
-            layout: {
-                // topStart: 'pageLength',
-                // topEnd: 'search',
-                topStart: 'info',
-                // bottomEnd: 'paging'
-            }
-        });
-
-        // Function to populate dropdown with unique options from a column
-        function populateDropdown() {
-            // Get unique values from the Position column (index 2)
-            var uniquePositions = [];
-            table.column(4).data().each(function(value, index) {
-                if (uniquePositions.indexOf(value) === -1) {
-                    uniquePositions.push(value);  // Add unique values
-
+            // Initialize DataTable
+            let table = new DataTable('#tableData', {
+                info: true,
+                ordering: true,
+                paging: false,
+                layout: {
+                    // topStart: 'pageLength',
+                    // topEnd: 'search',
+                    topStart: 'info',
+                    // bottomEnd: 'paging'
                 }
             });
 
-            // Populate the dropdown with unique values
-            var dropdown = $('#positionFilter');
-            uniquePositions.forEach(function(position) {
-                dropdown.append('<option value="' + position + '">' + position + '</option>');
-            });
-        }
+            // Function to populate dropdown with unique options from a column
+            function populateDropdown() {
+                // Get unique values from the Position column (index 2)
+                var uniquePositions = [];
+                table.column(4).data().each(function(value, index) {
+                    if (uniquePositions.indexOf(value) === -1) {
+                        uniquePositions.push(value); // Add unique values
 
-        // Call the populateDropdown function after DataTable initialization
-        populateDropdown();
+                    }
+                });
 
-         // Apply dropdown filter on Position column (index 4)
-        $('#positionFilter').on('change', function() {
-            var selectedValue = $(this).val();
-            if (selectedValue === "") {
-                table.column(4).search('').draw();  // Reset filter for "All Entry"
-                table.order([0, 'asc']).draw();     // Sort column index 1 in ascending order
-            } else {
-                table.column(4).search(selectedValue).draw();  // Filter by selected value
-                table.order([8, 'asc']).draw();     // Sort column index 8 in ascending order
+                // Populate the dropdown with unique values
+                var dropdown = $('#positionFilter');
+                uniquePositions.forEach(function(position) {
+                    dropdown.append('<option value="' + position + '">' + position + '</option>');
+                });
             }
+
+            // Call the populateDropdown function after DataTable initialization
+            populateDropdown();
+
+            // Apply dropdown filter on Position column (index 4)
+            $('#positionFilter').on('change', function() {
+                var selectedValue = $(this).val();
+                if (selectedValue === "") {
+                    table.column(4).search('').draw(); // Reset filter for "All Entry"
+                    table.order([0, 'asc']).draw(); // Sort column index 1 in ascending order
+                } else {
+                    table.column(4).search(selectedValue).draw(); // Filter by selected value
+                    table.order([8, 'asc']).draw(); // Sort column index 8 in ascending order
+                }
+            });
+
         });
 
-    });
-
-        $(document).ready(function(){
+        $(document).ready(function() {
             window.addEventListener('scroll', function() {
-            if (window.pageYOffset >= 250) {
-                document.getElementById('recom-display').style.display = 'block';
-            } else {
-                document.getElementById('recom-display').style.display = 'none';
-            }
+                if (window.pageYOffset >= 250) {
+                    document.getElementById('recom-display').style.display = 'block';
+                } else {
+                    document.getElementById('recom-display').style.display = 'none';
+                }
             });
 
             let leftValue = document.getElementById('minCheck1').innerHTML;
             // console.log(leftValue);
-            if(leftValue < 0){
-                    document.getElementById("minCheck1").style.color='red';
-                    document.getElementById("minCheck").style.color='red';
-                }else{
-                    document.getElementById("minCheck1").style.color='white';
-                    document.getElementById("minCheck").style.color='white';
-                }
+            if (leftValue < 0) {
+                document.getElementById("minCheck1").style.color = 'red';
+                document.getElementById("minCheck").style.color = 'red';
+            } else {
+                document.getElementById("minCheck1").style.color = 'white';
+                document.getElementById("minCheck").style.color = 'white';
+            }
         })
     </script>
 @endpush
+@else
+No Data found
+@endif

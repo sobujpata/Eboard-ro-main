@@ -11,4 +11,9 @@ class Trade extends Model
         'id',
         'trade',
     ];
+    public function navbars()
+    {
+        return $this->hasMany(Navbar::class, 'trade_id', 'id');
+    }
+
 }

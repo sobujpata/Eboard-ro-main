@@ -80,14 +80,14 @@
                 <table id="customers" class="table table-bordered table-striped" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th style="width: 5%">S/No</th>
-                            <th style="width: 10%">First name</th>
-                            <th style="width: 10%">Last name</th>
-                            <th style="width: 10%">user Name</th>
-                            <th style="width: 15%">Email Address</th>
-                            <th style="width: 30%">password</th>
-                            <th style="width: 5%">User Type</th>
-                            <th style="width: 20%">Action</th>
+                            <th>S/No</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>user Name</th>
+                            <th>Email Address</th>
+                            <th>password</th>
+                            <th>User Type</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,14 +97,14 @@
                         @endphp
                         @foreach ($users as $user )
                             <tr>
-                                <td>{{ $count++ }}</td>
-                                <td>{{ $user->firstName }}</td>
-                                <td>{{ $user->lastName }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->password }}</td>                                
-                                <td>{{ $user->type }}</td>                                
-                                <td style="text-align: center;">
+                                <td class="text-center">{{ $count++ }}</td>
+                                <td class="text-center">{{ $user->firstName }}</td>
+                                <td class="text-center">{{ $user->lastName }}</td>
+                                <td class="text-center">{{ $user->name }}</td>
+                                <td class="text-center">{{ $user->email }}</td>
+                                <td class="text-center">{{ $user->password }}</td>
+                                <td class="text-center">{{ $user->type }}</td>
+                                <td class="text-center" style="text-align: center;">
                                     {{-- <a href="{{asset('users')}}/{{ $user->profile }}" target="_blank" class="btn btn-success"><i class="fa-solid fa-eye"></i></a> --}}
 
                                      <!-- Button trigger modal -->

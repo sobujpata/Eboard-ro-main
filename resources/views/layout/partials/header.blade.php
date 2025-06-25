@@ -572,6 +572,25 @@
                         <li><a class="dropdown-item nav-link" href="{{url('/stanby')}}">Stanby List</a></li>
                     </ul>
                 </li>
+                <li class="nav-item dropdown" style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>Admin</a>
+                    <ul class="dropdown-menu bg-info">
+                        <li><a class="dropdown-item nav-link" href="{{url('/pb-add-new-person')}}">Add New Person</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{url('/pb-person-upload-ecxel')}}">Add New Person By Upload Excel</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{url('/pb-image')}}">Profile Image Upload</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{url('/pb-Profile')}}">Profile Upload</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{url('/pb-conduct-sheet')}}">Contduct Sheet Upload</a></li>
+                        {{-- <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{url('/pb-application')}}">Application and Wornig Ltr</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{url('/pb-salient')}}">Salient Pts of Appl & Wornig Ltr</a></li> --}}
+                    </ul>
+                </li>
                 <li class="nav-item active">
                     <a id="" class="nav-link " href="{{url("/logout")}}">Logout</a>
                 </li>

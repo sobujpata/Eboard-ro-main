@@ -92,8 +92,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <table id="customers" class="table table-bordered table-striped table-dark" width="100%" cellspacing="0">
-                    <thead>
+                <table id="customers" class="table table-bordered table-striped" width="100%" cellspacing="0">
+                    <thead class="table-dark">
                         <tr>
                             <th style="">S/No</th>
                             <th>Trade</th>

@@ -1,7 +1,7 @@
 @extends('layout.sidenav-layout')
 
 @section('content')
-<div class="container-flued">
+<div class="container-fluid">
     <div class="row">
         <div class="row">
             <div class="col-sm-4">
@@ -21,7 +21,7 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="container-fluid">                                                
+                                <div class="container-fluid">
                                     <form method="POST" action="" style="text-align: left;">
                                         @csrf
                                         <div class="row">
@@ -159,49 +159,30 @@
             <div class="col-sm-4"></div>
         </div>
 
-        <table class="table-bordered table-striped" style="width:100%">
+        <table class="table table-striped table-responsive-lg p-0">
             <thead>
-                <tr align="center" style="background:#33a8ff;">
-                    <th style="vertical-align: middle; width: 2% !important;">SL No</th>
-                    <th style="vertical-align: middle; width: 5% !important;">Image</th>
-                    <th style="vertical-align: middle; width: 4% !important;">BD No</th>
-                    <th style="vertical-align: middle; width: 15% !important;">Rank & Name</th>
-                    <th style="vertical-align: middle; width: 3% !important;">Entry No</th>
-                    <th style="vertical-align: middle; width: 5% !important;">PAR (Avg)</th>
-                    <th style="vertical-align: middle; width: 5% !important;">Marks(TTB, TTA, ST) (Avg)</th>
-                    <th style="vertical-align: middle; width: 5% !important;">Total Score</th>
-                    <th style="vertical-align: middle; width: 3% !important;">Entry Sr</th>
-                    <th style="vertical-align: middle; width: 3% !important;">Comd Sr</th>
-                    <th style="vertical-align: middle; width: 5% !important;">Conduct Sheet</th>
-                    <th style="vertical-align: middle; width: 3% !important;">Weight (lbs)</th>
-                    <th style="vertical-align: middle; width: 3% !important;">Base/ Unit</th>
-                    <th style="vertical-align: middle; width: 5% !important;">Recom</th>
-                    <th style="vertical-align: middle; width: 7% !important;">Remarks</th>
-                    <th style="vertical-align: middle; width: 2% !important;">Action</th>
+                <tr class="text-center table-dark p-0">
+                    <th style="vertical-align: middle; width: 2% !important;" class="px-1">SL No</th>
+                    <th style="vertical-align: middle; width: 5% !important;" class="px-1">Image</th>
+                    <th style="vertical-align: middle; width: 4% !important;" class="px-1">BD No</th>
+                    <th style="vertical-align: middle; width: 15% !important;" class="px-1">Rank & Name</th>
+                    <th style="vertical-align: middle; width: 3% !important;" class="px-1">Entry No</th>
+                    <th style="vertical-align: middle; width: 5% !important;" class="px-1">PAR (Avg)</th>
+                    <th style="vertical-align: middle; width: 5% !important;" class="px-1">Marks(TTB, TTA, ST) (Avg)</th>
+                    <th style="vertical-align: middle; width: 5% !important;" class="px-1">Total Score</th>
+                    <th style="vertical-align: middle; width: 3% !important;" class="px-1">Entry Sr</th>
+                    <th style="vertical-align: middle; width: 3% !important;" class="px-1">Comd Sr</th>
+                    <th style="vertical-align: middle; width: 5% !important;" class="px-1">Conduct Sheet</th>
+                    <th style="vertical-align: middle; width: 3% !important;" class="px-1">Weight (lbs)</th>
+                    <th style="vertical-align: middle; width: 3% !important;" class="px-1">Base/ Unit</th>
+                    <th style="vertical-align: middle; width: 5% !important;" class="px-1">Recom</th>
+                    <th style="vertical-align: middle; width: 7% !important;" class="px-1">Remarks</th>
+                    <th style="vertical-align: middle; width: 2% !important;" class="px-1">Action</th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr align="center" bgcolor="#1cc88a">
-                    <th style="vertical-align: middle">SL No</th>
-                    <th style="vertical-align: middle">Image</th>
-                    <th style="vertical-align: middle">BD No</th>
-                    <th style="vertical-align: middle">Rank & Name</th>
-                    <th style="vertical-align: middle">Entry No</th>
-                    <th style="vertical-align: middle">PAR (Avg)</th>
-                    <th style="vertical-align: middle; width: 5%;">Marks(TTB, TTA, ST) (Avg)</th>
-                    <th style="vertical-align: middle">Total Score</th>
-                    <th style="vertical-align: middle">Entry Sr</th>
-                    <th style="vertical-align: middle">Comd Sr</th>
-                    <th style="vertical-align: middle">Conduct Sheet</th>
-                    <th style="vertical-align: middle">Weight (lbs)</th>
-                    <th style="vertical-align: middle">Base/Unit</th>
-                    <th style="vertical-align: middle">Recom</th>
-                    <th style="vertical-align: middle">Remarks</th>
-                    <th style="vertical-align: middle">Action</th>
-                </tr>
-            </tfoot>
+
             <tbody>
-               
+
                 @foreach ($data as $item)
                     <tr class= "{{ $item->decision == '1' ? 'tr-row-bg-select' : ($item->decision == '0' ? 'tr-row-bg-stanby' : 'inherit') }}">
                         <td align='center'>{{ $i++ }}</td>
@@ -231,14 +212,16 @@
                             <b>{!! $item->other_rmks !!}</b>
                         </td>
 
-                        
+
                         <td align='center' style="vertical-align: middle; ">
                             <button type="button" class="btn btn-success mt-2" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal{{ $item->id }}">
-                                <img style="width: 14px;" src='{{ asset('icon/edit.png') }}'>
+                                {{-- <img style="width: 14px;" src='{{ asset('icon/edit.png') }}'> --}}
+                                Edit
                             </button>
                             <button type="button" class="btn btn-danger mt-2">
-                                <i class="fa-solid fa-trash fa-xl"></i>
+                                {{-- <img style="width: 14px;" src='{{ asset('icon/not.png') }}'> --}}
+                                Delete
                             </button>
                             <!-- Person Edit Modal -->
                             <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
@@ -393,7 +376,7 @@
             </tbody>
         </table>
         {{-- pagination --}}
-        {{ $data->links() }}       
+        {{ $data->links() }}
     </div>
 </div>
 @endsection
@@ -412,6 +395,6 @@
 
 
         });
-       
+
     </script>
 @endpush

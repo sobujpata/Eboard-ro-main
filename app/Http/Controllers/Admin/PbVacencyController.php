@@ -18,8 +18,8 @@ class PbVacencyController extends Controller
     //    dd('policies');
         $pbCurrentVacs = DB::table('pb_current_estb_str_vac')
                 ->get();
-        
-        
+
+
                 $trades = trade::get();
                 $ranks = rank::get();
                 // dd($trades);
@@ -42,8 +42,8 @@ class PbVacencyController extends Controller
         $ttl = $request->ttl;
         $sheetNo = $request->sheetNo;
         // dd($str);
-        
-        $policyData = DB::insert('insert into pb_current_estb_str_vac (trade, rank, estb, str, exist, retd, promoted_pre_pb, ttl, sheetNo) 
+
+        $policyData = DB::insert('insert into pb_current_estb_str_vac (trade, rank, estb, str, exist, retd, promoted_pre_pb, ttl, sheetNo)
                     values(?,?,?,?,?,?,?,?,?)', [$trade, $rank, $estb, $str, $exist, $retd,$promoted_pre_pb,$ttl, $sheetNo]);
 
         return redirect()->back()->with("success","Data inserted successfully.");
@@ -69,12 +69,11 @@ class PbVacencyController extends Controller
         $str = $request->str;
         $exist = $request->exist;
         $retd = $request->retd;
-        $promoted_pre_pb = $request->promoted_pre_pb;
         $ttl = $request->ttl;
         $sheetNo = $request->sheetNo;
 
-       
-        $policyData = DB::table('pb_current_estb_str_vac')->where('id', $id)->update(['trade'=>$trade, 'rank'=>$rank, 'estb'=>$estb, 'str'=>$str, 'exist'=>$exist, 'retd'=>$retd, 'promoted_pre_pb'=>$promoted_pre_pb, 'ttl'=>$ttl, 'sheetNo'=>$sheetNo] );
+
+        $policyData = DB::table('pb_current_estb_str_vac')->where('id', $id)->update(['trade'=>$trade, 'rank'=>$rank, 'estb'=>$estb, 'str'=>$str, 'exist'=>$exist, 'retd'=>$retd, 'ttl'=>$ttl, 'sheetNo'=>$sheetNo] );
         return redirect()->back()->with("success","Data update successfully.");
     }
 

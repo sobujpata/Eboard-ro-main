@@ -8,12 +8,14 @@
     <link rel="icon" type="image/x-icon" href="{{asset('/favicon.ico')}}" />
     <link href="{{asset('css/bootstrap.css')}}" rel="stylesheet" />
     <link href="{{asset('css/animate.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('css/fontawesome.css')}}" rel="stylesheet" />
+    {{-- <link href="{{asset('css/fontawesome.css')}}" rel="stylesheet" /> --}}
     <link href="{{asset('css/style.css')}}" rel="stylesheet" />
     <link href="{{asset('css/toastify.min.css')}}" rel="stylesheet" />
 
 
-    <link href="{{asset('css/bootstrap-icons.css')}}" rel="stylesheet" />
+    {{-- <link href="{{asset('css/bootstrap-icons.css')}}" rel="stylesheet" /> --}}
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> --}}
+    <link rel="stylesheet" href="{{asset('./css/bootstrap-icons.min.css')}}">
 
     <link href="{{asset('css/jquery.dataTables.min.css')}}" rel="stylesheet" />
     <script src="{{asset('js/jquery-3.7.0.min.js')}}"></script>
@@ -24,9 +26,6 @@
     <script src="{{asset('js/axios.min.js')}}"></script>
     <script src="{{asset('js/config.js')}}"></script>
     <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
-
-
-
 
 </head>
 
@@ -94,17 +93,21 @@
 
     <a href="{{url('/admin/pb/vac')}}" class="side-bar-item">
         <i class="bi bi-currency-dollar"></i>
-        <span class="side-bar-item-caption">PB VAC-24</span>
+        <span class="side-bar-item-caption">PB VAC-{{substr(date('Y'), -2)}}</span>
     </a>
 
     <a href="{{url('/admin/pb/PreviouseVac')}}" class="side-bar-item">
         <i class="bi bi-receipt"></i>
-        <span class="side-bar-item-caption">PB VAC-23</span>
+        <span class="side-bar-item-caption">PB VAC-{{substr(date('Y') - 1, -2)}}</span>
     </a>
 
     <a href="{{url('/admin/pb/PbNextVac')}}" class="side-bar-item">
         <i class="bi bi-file-earmark-bar-graph"></i>
-        <span class="side-bar-item-caption">PB VAC-25</span>
+        <span class="side-bar-item-caption">PB VAC-{{substr(date('Y') + 1, -2)}} & {{substr(date('Y') + 2, -2)}}</span>
+    </a>
+    <a href="{{url('/admin/pb/nav-settings')}}" class="side-bar-item">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span class="side-bar-item-caption">Navbar Settings</span>
     </a>
     <a href="{{url('/reportPage')}}" class="side-bar-item">
         <i class="bi bi-file-earmark-bar-graph"></i>

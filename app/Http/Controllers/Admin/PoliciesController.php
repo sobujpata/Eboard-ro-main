@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Policy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -58,21 +59,47 @@ class PoliciesController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Request $request, $id)
-    {
-        $name = $request->name;
-        $subject = $request->subject;
-        $published_on = $request->published_on;
-        $policy_for = $request->policy_for;
-        $fileName = $request->policyFile;
-        // dd($fileName);
-        // $file = $request->file('policyName');
-        // $file->move('policies/');
+{
 
-        // $policyData = DB::update('UPDATE policies (name, subject, published_on, policy_for, filename) values(?,?,?,?,?) where id=?', [$name, $subject, $published_on, $policy_for, $fileName, $id]) ;
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'subject' => 'required|string|max:255',
+        'published_on' => 'required|string|max:255',
+        'policy_for' => 'required|string|max:255',
+        'policyFile' => 'nullable|file|mimes:pdf,doc,docx,pptx|max:2048',
+    ]);
 
-        $policyData = DB::table('policies')->where('id', $id)->update(['name'=>$name, 'subject'=>$subject, 'published_on'=>$published_on, 'policy_for'=>$policy_for, 'filename'=>$fileName] );
-        return redirect()->back()->with("success","Data update successfully.");
+    $policy = Policy::find($id);
+
+
+    if (!$policy) {
+        return redirect()->back()->with("error", "Data update Failed.");
     }
+
+    $file_url = $policy->file; // default to existing
+
+    if ($request->hasFile('policyFile')) {
+        $policyFile = $request->file('policyFile');
+        $t = time();
+        $originalName = preg_replace('/\s+/', '-', $policyFile->getClientOriginalName());
+        $file_name = "{$t}-{$originalName}";
+        $policyFile->move(public_path('policies'), $file_name);
+        $file_url = "policies/{$file_name}";
+    }
+
+    // dd($file_url); // Remove this in production
+
+    $policy->update([
+        'name' => $request->name,
+        'subject' => $request->subject,
+        'published_on' => $request->published_on,
+        'policy_for' => $request->policy_for,
+        'file' => $file_url,
+    ]);
+
+    return redirect()->back()->with("success", "Data updated successfully.");
+}
+
 
     /**
      * Remove the specified resource from storage.

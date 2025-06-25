@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('renk', 20)->nullable();
             $table->string('next_yr', 20)->nullable();
             $table->string('next_2yrs', 20)->nullable();
-            $table->string('score_min', 20)->nullable();
             $table->string('remarks', 20)->nullable();
             $table->string('sheetNo', 20)->nullable();
             $table->timestamps(); // Adds created_at and updated_at columns

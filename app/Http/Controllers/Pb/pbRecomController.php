@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\pb;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\pbperslist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\pbperslist;
+use App\Http\Controllers\Controller;
 
 class pbRecomController extends Controller
 {
@@ -153,8 +154,10 @@ class pbRecomController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $user_id = $request->header("id");
+        $user = User::find($user_id);
 
         $datas = pbperslist::where('trade', 'AC Fitt')->where('rank', 'SWO')->where('decision', 'true')->get();
         $datas2 = pbperslist::where('trade', 'AC Fitt')->where('rank', 'WO')->where('decision', 'true')->get();
@@ -286,6 +289,7 @@ class pbRecomController extends Controller
         $recomList = $this->data();
         return view('pb.recomList', compact(
             'recomList',
+            'user',
             'datas','datas2','datas3','datas4',
             'datas5','datas6','datas7','datas8',
             'datas9','datas10','datas11','datas12',
@@ -324,18 +328,24 @@ class pbRecomController extends Controller
     /**
      * Show the form for ChartSummary a new resource.
      */
-    public function ChartSummary()
+    public function ChartSummary(Request $request)
     {
+        $user_id = $request->header("id");
+        $user = User::find($user_id);
+
         $recomList = $this->data();
-        return view('pb.chartForSummary', compact('recomList'));
+        return view('pb.chartForSummary', compact('recomList', 'user'));
     }
     /**
      * Show the form for ChartRankSummary a new resource.
      */
-    public function ChartRankSummary()
+    public function ChartRankSummary(Request $request)
     {
+        $user_id = $request->header("id");
+        $user = User::find($user_id);
+
         $recomList = $this->data();
-        return view('pb.chartForRnkWiseSummary', compact('recomList'));
+        return view('pb.chartForRnkWiseSummary', compact('recomList', 'user'));
     }
     /**
      * Show the form for creating a new resource.

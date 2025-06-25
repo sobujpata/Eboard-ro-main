@@ -69,28 +69,28 @@
 
             </div>
             <div class="card-body">
-                <table id="customers" class="example1 table table-bordered table-dark table-striped" width="100%" cellspacing="0">
-                    <thead>
+                <table id="customers" class="example1 table table-bordered table-striped" width="100%" cellspacing="0">
+                    <thead class="table-dark">
                         <tr>
-                            <th>S/No</th>
-                            <th>Policy Name</th>
-                            <th>Subject</th>
-                            <th>Date</th>
-                            <th>Action</th>
+                            <th class="text-center">S/No</th>
+                            <th class="text-center">Policy Name</th>
+                            <th class="text-center">Subject</th>
+                            <th class="text-center">Date</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{-- @dd($policies) --}}
                         @foreach ($policies as $policy)
                             <tr>
-                                <td>{{$count++}}</td>
-                                <td>{{ $policy->name }}</td>
-                                <td>{{ $policy->subject }}</td>
-                                <td>{{ $policy->published_on }}</td>
-                                <td style="text-align: center">
+                                <td class="text-center">{{$count++}}</td>
+                                <td class="text-center">{{ $policy->name }}</td>
+                                <td class="text-left">{{ $policy->subject }}</td>
+                                <td class="text-center">{{ $policy->published_on }}</td>
+                                <td  class="text-center"style="text-align: center">
                                     <a href="{{asset('policies')}}/{{ $policy->file}}" target="_blank" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>
 
-                                        <!-- Button trigger modal -->
+                                    <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModel{{$policy->id}}">
                                         <i class="fa-solid fa-edit"></i>
                                     </button>
@@ -164,15 +164,7 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>S/No</th>
-                            <th>Policy & File Name</th>
-                            <th>Subject</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
+
                 </table>
             </div>
         </div>

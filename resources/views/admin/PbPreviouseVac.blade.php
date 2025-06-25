@@ -4,7 +4,7 @@
 <div class="container-fluid">
 
     <div class="row">
-        
+
         <div class="card" >
             <div class="card-header ">
                 <div class="row">
@@ -94,8 +94,8 @@
 
             </div>
             <div class="card-body">
-                <table id="customers" class="table table-bordered table-striped table-dark" width="100%" cellspacing="0">
-                    <thead>
+                <table id="customers" class="table table-bordered table-striped " width="100%" cellspacing="0">
+                    <thead class="table-dark">
                         <tr>
                             <th style="">S/No</th>
                             <th>Trade</th>
@@ -104,8 +104,8 @@
                             <th>Str</th>
                             <th>Exist</th>
                             <th>Retd</th>
-                            <th>promoted pre PB</th>
-                            <th>Ttl</th>
+                            {{-- <th>promoted pre PB</th> --}}
+                            <th>Ttl vac</th>
                             <th>Sheet No</th>
                             <th style="">Action</th>
                         </tr>
@@ -121,7 +121,7 @@
                                 <td>{{ $pbPreviouseVac->str }}</td>
                                 <td>{{ $pbPreviouseVac->exist }}</td>
                                 <td>{{ $pbPreviouseVac->retd }}</td>
-                                <td>{{ $pbPreviouseVac->promoted_pre_pb}}</td>
+                                {{-- <td>{{ $pbPreviouseVac->promoted_pre_pb}}</td> --}}
                                 <td>{{ $pbPreviouseVac->ttl}}</td>
                                 <td>{{ $pbPreviouseVac->sheetNo}}</td>
                                 <td style="text-align: center;">

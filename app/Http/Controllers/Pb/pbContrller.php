@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\pb;
 
 
-use App\Http\Controllers\Controller;
+use Exception;
+use App\Models\User;
+use App\Models\Trade;
+use App\Models\pbperslist;
+use App\Exports\UsersExport;
+use App\Models\ConductSheet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Exception;
-use App\Exports\UsersExport;
-
-use App\Models\User;
-use App\Models\pbperslist;
+use App\Http\Controllers\Controller;
+use App\Models\Rank;
 
 class pbContrller extends Controller
 {
@@ -20,7 +22,7 @@ class pbContrller extends Controller
     public function pbListShow(Request $request)
     {
         $user_id = $request->header('id');
-        $userName = User::where('id', $user_id)->select('userName')->first();
+        // $userName = User::where('id', $user_id)->select('userName')->first();
         $user = User::find($user_id);
         if($user->lastName !== "pb"){
             return redirect()->back()->with("error","You are unauthorize.");
@@ -33,9 +35,13 @@ class pbContrller extends Controller
         $data = pbperslist::where('trade', $trade)
                 ->where('sheetNo', $sheetNo)
                 ->get();
+
         $dataCount=pbperslist::where('trade', $trade)
                 ->where('sheetNo', $sheetNo)
                 ->count();
+        $trades = Trade::all();
+        $ranks = Rank::all();
+        // dd($ranks);
         if($dataCount > 0){
 
         $rank=pbperslist::select('rank')
@@ -60,7 +66,7 @@ class pbContrller extends Controller
         $vacNextYear = DB::table('vac_create_next_yrs')
                     -> where('trade', $trade)
                     ->where('sheetNo', $sheetNo)
-                    ->get();
+                    ->first();
                     // dd($vacNextYear);
         $countRecom =pbperslist:: SELECT(DB::raw('count(decision) as pers_recom'))
                     -> where('trade', $trade)
@@ -116,9 +122,11 @@ class pbContrller extends Controller
                     ->where('rank','WO')
                     ->where('decision', 'true')
                     ->count();
+                    // $conductSheets = ConductSheet::where('bdno', $data->bdno)->get();
+                    // $conductSheets = $conductSheets->isEmpty() ? null : $conductSheets;
             // dd($recomSwo);
-            return view('pb.pb', compact('data', 'i', 'previousPb', 'totalEntry', 'sheetNo', 'vacNextYear', 'countRecom', 'scoreMAxMin', 'aboveScore', 'bellowScore',
-                                    'recomScore', 'currentPb', 'recompers', 'trade','sheetNo', 'rank', 'lastEntrySwo', 'lastEntryWo', 'recomMwo', 'recomSwo', 'userName'));
+            return view('pb.pb', compact('dataCount','data', 'i', 'previousPb', 'totalEntry', 'sheetNo', 'vacNextYear', 'countRecom', 'scoreMAxMin', 'aboveScore', 'bellowScore',
+                                    'recomScore', 'currentPb', 'recompers', 'trade','sheetNo', 'rank', 'lastEntrySwo', 'lastEntryWo', 'recomMwo', 'recomSwo', 'user', 'trades', 'ranks'));
         }else{
             $rank=pbperslist::select('rank')
                 ->where('trade', $trade)
@@ -141,7 +149,7 @@ class pbContrller extends Controller
         $vacNextYear = DB::table('vac_create_next_yrs')
                     -> where('trade', $trade)
                     ->where('sheetNo', $sheetNo)
-                    ->get();
+                    ->first();
                     // dd($vacNextYear);
         $countRecom =pbperslist:: SELECT(DB::raw('count(decision) as pers_recom'))
                     -> where('trade', $trade)
@@ -198,7 +206,7 @@ class pbContrller extends Controller
                     ->where('decision', 'true')
                     ->count();
             return view('pb.pb-blank', compact('previousPb', 'totalEntry', 'sheetNo', 'vacNextYear', 'countRecom', 'scoreMAxMin', 'aboveScore', 'bellowScore',
-                                    'recomScore', 'currentPb', 'recompers', 'trade','sheetNo', 'rank', 'lastEntrySwo', 'lastEntryWo', 'recomMwo', 'recomSwo', 'userName'))->with('error', 'Data no fund');
+                                    'recomScore', 'currentPb', 'recompers', 'trade','sheetNo', 'rank', 'lastEntrySwo', 'lastEntryWo', 'recomMwo', 'recomSwo', 'user', 'trades', 'ranks'))->with('error', 'Data no fund');
         }
 
     }

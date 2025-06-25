@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\PbVacencyController;
 use App\Http\Controllers\Admin\PbPreviouseVacController;
 use App\Http\Controllers\Admin\PbNextVacController;
 use App\Http\Controllers\Admin\PersListController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Evaluation\EbPersController;
 use App\Http\Controllers\Evaluation\HomeController as EvaluationHomeController;
 use App\Http\Controllers\pb\pbBaseWiseController;
@@ -80,6 +81,7 @@ Route::get('/userProfile',[UserController::class,'ProfilePage'])->middleware([To
     Route::post('/admin/pb/PersList/store', [PersListController::class, 'store'])->name('PbPersList.store')->middleware([TokenVerificationMiddleware::class]);
     Route::post('/admin/pb/PersList/edit/{id}', [PersListController::class, 'edit'])->name('PbPersList.edit')->middleware([TokenVerificationMiddleware::class]);
     Route::get('/admin/pb/PersList/delete/{id}', [PersListController::class, 'destroy'])->name('PersList.delete')->middleware([TokenVerificationMiddleware::class]);
+    Route::get('/admin/pb/nav-settings', [SettingsController::class, 'NavSettings'])->name('nav.settings')->middleware([TokenVerificationMiddleware::class]);
 
     //Pb Route
 
@@ -99,6 +101,36 @@ Route::get('/userProfile',[UserController::class,'ProfilePage'])->middleware([To
     Route::get('/Export/{trade}', [ExportController::class, 'pbRcomExportList'])->middleware([TokenVerificationMiddleware::class]);
     Route::get('/selection', [SelectionController::class, 'SelectedList'])->middleware([TokenVerificationMiddleware::class]);
     Route::get('/stanby', [StanByController::class, 'StanBy'])->middleware([TokenVerificationMiddleware::class]);
+
+    //Image Upload
+    Route::get('/pb-image',[PbItemController::class, 'ImagePage'])->name('ImagePage')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/pb-image-upload',[PbItemController::class, 'ImageUpload'])->name('ImageUpload')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/delete-all-image', [PbItemController::class, 'DeleteImage'])->middleware([TokenVerificationMiddleware::class]);
+    //Profile Upload
+    Route::get('/pb-Profile',[PbItemController::class, 'ProfilePage'])->name('ProfilePage')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/pb-profile-upload',[PbItemController::class, 'ProfileUpload'])->name('profileUpload')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/delete-all-profile', [PbItemController::class, 'DeleteProfile'])->middleware([TokenVerificationMiddleware::class]);
+
+    //Conduct sheet Upload
+    Route::get('/pb-conduct-sheet',[PbItemController::class, 'ConductSheetPage'])->name('ConductSheetPage')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/pb-conduct-sheet-upload',[PbItemController::class, 'ConductSheetUpload'])->name('ConductSheetUpload')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/delete-all-conduct-sheet', [PbItemController::class, 'DeleteConductSheet'])->middleware([TokenVerificationMiddleware::class]);
+
+    //Application upload
+    Route::get('/pb-application',[PbItemController::class, 'ApplicationPage'])->name('applicationPage')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/pb-application-upload',[PbItemController::class, 'ApplicationUpload'])->name('applicationUpload')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/delete-all-application', [PbItemController::class, 'DeleteApplication'])->middleware([TokenVerificationMiddleware::class]);
+
+    //Salient Point
+    Route::get('/pb-salient',[PbItemController::class, 'salientPage'])->name('salientPage')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/pb-salient-upload',[PbItemController::class, 'salientUpload'])->name('salientUpload')->middleware([TokenVerificationMiddleware::class]);
+
+    //Add new pb person
+    Route::get('/pb-add-new-person',[PbItemController::class, 'CreatePerson'])->name('CreatePerson')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/pb-store-person',[PbItemController::class, 'Store'])->name('store')->middleware([TokenVerificationMiddleware::class]);
+    //Add new pb person
+    Route::get('/pb-person-upload-ecxel',[PbItemController::class, 'UploadExcelPage'])->name('UploadExcelPage')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/pb-upload-excel',[PbItemController::class, 'UploadExcel'])->name('store')->middleware([TokenVerificationMiddleware::class]);
 
     // Pb Base wise Route
     Route::get('/pb-home-base', [pbBaseWiseController::class, 'index'])->name('pb.baseWise')->middleware([TokenVerificationMiddleware::class]);
@@ -146,3 +178,4 @@ Route::get('/userProfile',[UserController::class,'ProfilePage'])->middleware([To
     //Add new eb person
     Route::get('/eb-person-upload-ecxel',[EbPersController::class, 'UploadExcelPage'])->name('UploadExcelPage')->middleware([TokenVerificationMiddleware::class]);
     Route::post('/eb-upload-excel',[EbPersController::class, 'UploadExcel'])->name('store')->middleware([TokenVerificationMiddleware::class]);
+    Route::get('/eb-bdno',[EbPersController::class, 'Bdno'])->name('bdno.show')->middleware([TokenVerificationMiddleware::class]);

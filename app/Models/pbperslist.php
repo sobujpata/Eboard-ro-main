@@ -13,6 +13,7 @@ class pbperslist extends Model
         "rank",
         "name",
         "trade",
+        "basic_trade",
         "entry_no",
         "avg_par",
         "career_marks",
@@ -22,9 +23,16 @@ class pbperslist extends Model
         "conduct_sheet",
         "weight",
         "base_unit",
+        "base",
+        "sheetNo",
         "other_rmks",
         "rmks",
         "rmks_1",
         "decision",
     ] ;
+
+    // function conductSheet(){
+    //     return $this->belongsTo(ConductSheet::class, 'bdno' ,'bdno');
+    // }
+
 }

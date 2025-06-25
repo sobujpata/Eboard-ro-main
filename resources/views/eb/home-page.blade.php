@@ -37,6 +37,7 @@
                                     <td>{{$policy->published_on}}</td>
                                     <td class="text-center">
                                         <a href="{{asset($policy->file)}}" class="btn btn-success" target="_blank">View</a>
+                                        <a href="" class="btn btn-primary">Edit</a>
                                     </td>
                                 </tr>
                             @endforeach

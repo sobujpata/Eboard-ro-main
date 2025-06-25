@@ -72,26 +72,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4 text-center">
-                        <h3>All pb Next Year Vacencys</h3>
+                    <div class="col-sm-4 text-center text-decoration-underline">
+                        <h3>Vacencys For {{substr(date('Y') + 1, -2)}} & {{substr(date('Y') + 2, -2)}}</h3>
                     </div>
                     <div class="col-sm-4"></div>
                 </div>
 
             </div>
             <div class="card-body">
-                <table id="customers" class="table table-bordered table-striped table-dark" width="100%" cellspacing="0">
-                    <thead>
+                <table id="customers" class="table table-bordered table-striped" width="100%" cellspacing="0">
+                    <thead class="table-dark">
                         <tr>
                             <th style="">S/No</th>
                             <th>Trade</th>
                             <th>Rank</th>
-                            <th>next_yr</th>
-                            <th>next_2yrs</th>
-                            <th>score_min</th>
+                            <th>Vac-{{substr(date('Y') + 1, -2)}}</th>
+                            <th>Vac-{{substr(date('Y') + 2, -2)}}</th>
+                            {{-- <th>score_min</th> --}}
                             <th>sheetNo</th>
-                            <th>Insert time</th>
-                            <th>update_at</th>
                             <th style="">Action</th>
                         </tr>
                     </thead>
@@ -104,14 +102,12 @@
                                 <td>{{ $PbNextVac->rank }}</td>
                                 <td>{{ $PbNextVac->next_yr }}</td>
                                 <td>{{ $PbNextVac->next_2yrs }}</td>
-                                <td>{{ $PbNextVac->score_min }}</td>
+                                {{-- <td>{{ $PbNextVac->score_min }}</td> --}}
                                 <td>{{ $PbNextVac->sheetNo }}</td>
-                                <td>{{ $PbNextVac->insert_time}}</td>
-                                <td>{{ $PbNextVac->update_at}}</td>
                                 <td style="text-align: center;">
                                         <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModel{{$PbNextVac->id}}">
-                                        <i class="fa-solid fa-edit"></i>
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModel{{$PbNextVac->id}}">
+                                        Edit
                                     </button>
 
                                     <!-- Modal -->
@@ -150,18 +146,18 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="form-lavel">next_yr</label>
+                                                        <label class="form-lavel">Vac- {{substr(date('Y') + 1, -2)}}</label>
                                                         <input type="text" name="next_yr" class="form-control" placeholder="Enter next_yr" value="{{$PbNextVac->next_yr}}">
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="form-lavel">next_2yrs</label>
+                                                        <label class="form-lavel">Vac- {{substr(date('Y') + 2, -2)}}</label>
                                                         <input type="text" name="next_2yrs" class="form-control" placeholder="Enter next_2yrs" value="{{$PbNextVac->next_2yrs}}">
                                                     </div>
-                                                    <div class="form-group">
+                                                    {{-- <div class="form-group">
                                                         <label class="form-lavel">score_min</label>
                                                         <input type="text" name="score_min" class="form-control" placeholder="Enter score_min" value="{{$PbNextVac->score_min}}">
-                                                    </div>
+                                                    </div> --}}
                                                     <div class="form-group">
                                                         <label class="form-lavel">sheetNo</label>
                                                         <input type="text" name="sheetNo" class="form-control" placeholder="Enter sheetNo" value="{{$PbNextVac->sheetNo}}">
@@ -178,7 +174,7 @@
                                         </div>
                                         </div>
                                     </div>
-                                    <a href="{{Route('PbNextVac.delete', $PbNextVac->id)}}"  class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                    <a href="{{Route('PbNextVac.delete', $PbNextVac->id)}}"  class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>
                         @endforeach

@@ -18,8 +18,8 @@ class PbPreviouseVacController extends Controller
     //    dd('policies');
         $pbPreviouseVacs = DB::table('previouse_pb')
                 ->get();
-        
-        
+
+
                 $trades = trade::get();
                 $ranks = rank::get();
                 // dd($trades);
@@ -42,8 +42,8 @@ class PbPreviouseVacController extends Controller
         $ttl = $request->ttl;
         $sheetNo = $request->sheetNo;
         // dd($str);
-        
-        DB::insert('insert into previouse_pb (trade, rank, estb, str, exist, retd, promoted_pre_pb, ttl, sheetNo) 
+
+        DB::insert('insert into previouse_pb (trade, rank, estb, str, exist, retd, promoted_pre_pb, ttl, sheetNo)
                     values(?,?,?,?,?,?,?,?,?)', [$trade, $rank, $estb, $str, $exist, $retd,$promoted_pre_pb,$ttl, $sheetNo]);
 
         return redirect()->back()->with("success","Data inserted successfully.");
@@ -63,19 +63,34 @@ class PbPreviouseVacController extends Controller
      */
     public function edit(Request $request, $id)
     {
+        // dd($request);
         $trade = $request->trade;
         $rank = $request->rank;
         $estb = $request->estb;
         $str = $request->str;
         $exist = $request->exist;
         $retd = $request->retd;
-        $promoted_pre_pb = $request->promoted_pre_pb;
+        $promotion = $request->promotion;
         $ttl = $request->ttl;
         $sheetNo = $request->sheetNo;
+        $score_max = $request->score_max;
+        $score_min = $request->score_min;
 
-       
-       DB::table('previouse_pb')->where('id', $id)->update(['trade'=>$trade, 'rank'=>$rank, 'estb'=>$estb, 'str'=>$str, 'exist'=>$exist, 'retd'=>$retd, 'promoted_pre_pb'=>$promoted_pre_pb, 'ttl'=>$ttl, 'sheetNo'=>$sheetNo] );
-        return redirect()->back()->with("success","Data update successfully.");
+
+       DB::table('previouse_pb')->where('id', $id)->update([
+        'trade'=>$trade,
+        'rank'=>$rank,
+        'estb'=>$estb,
+        'str'=>$str,
+        'exist'=>$exist,
+        'retd'=>$retd,
+        'promotion'=>$promotion,
+        'ttl'=>$ttl,
+        'score_max'=>$score_max,
+        'score_min'=>$score_min,
+        'sheetNo'=>$sheetNo
+        ] );
+        return redirect()->back()->with("status","Data update successfully.");
     }
 
     /**

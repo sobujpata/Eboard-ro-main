@@ -39,6 +39,7 @@
                                     echo $year;
                                 @endphp</u></b></td>
                                 <td align="center"><b><u>Score</u></b></td>
+                                <td align="center" rowspan="2" style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp"><b><u>Action</u></b></td>
                             </tr>
                             @foreach ($previousPb as $prePb)
                                 <tr>
@@ -58,6 +59,12 @@
                                     <td align="center"><b>{{ $prePb->ttl }}</b></td>
                                     <td align="center"><b>{{ $prePb->promotion }}</b></td>
                                     <td align="center"><b>{{ $prePb->score_min }}</b></td>
+                                    <td align="center" style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#previous_pb{{ $prePb->id }}">
+                                            Edit
+                                        </button>
+                                        @include('pb.previouse_pb')
+                                    </td>
                                 </tr>
                             @endforeach
                         </table>
@@ -77,6 +84,7 @@
                                     <b>VAC</b></td>
                                 <td align="center"><b>Entry</b></td>
                                 <td align="center"><b>Recom</b></td>
+                                <td align="center" style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp"><b>Action</b></td>
                             </tr>
 
                             <td align="center" style="vertical-align: top;">
@@ -122,10 +130,8 @@
                             </td>
                             <td align="center" style="vertical-align: top !important; background-color:#007bff!important;">
                                 <b>
-                                    @foreach ($vacNextYear as $vacYear)
-                                        {{ 'PB-' . substr(date('Y') + 1, -2) . ': ' . $vacYear->next_yr }}<br>
-                                        {{ 'PB-' . substr(date('Y') + 2, -2) . ': ' . $vacYear->next_2yrs }}
-                                    @endforeach
+                                    {{ 'PB-' . substr((date('Y') + 1), -2) . ': ' . ($vacNextYear->next_yr ?? 'N/A') }}<br>
+                                    {{ 'PB-' . substr((date('Y') + 2), -2) . ': ' . ($vacNextYear->next_2yrs ?? 'N/A') }}
                                 </b>
                             </td>
                             <td align="center" style="vertical-align: top;">
@@ -141,6 +147,11 @@
                                         {{ $recom->pers_recom }}<br>
                                     @endforeach
                             </td>
+                            <td align="center" style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#next_2yrs{{ $vacNextYear->id }}">
+                                    Edit
+                                </button>
+                                @include('pb.next_2yrs')
                             </td>
                         </table>
                     </div>
@@ -199,18 +210,19 @@
                                     $year = date('Y');
                                     echo $year;
                                 @endphp</u></b></td>
-                                <td align="center" colspan="3"><b><u>VAC-@php
+                                <td align="center" colspan="@if($currentPb->rank =='MWO' ) {{'3'}} @else {{'4'}}  @endif"><b><u>VAC-@php
                                     $year = date('Y');
                                     echo $year;
                                 @endphp</u></b></td>
                                 <td align="center"colspan="2"><b><u>Decision</u></b></td>
+                                <td align="center" rowspan="2" style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp"><b>Action</b></td>
                             </tr>
                             <tr>
                                 <td align="center"><b>Estb</b></td>
                                 <td align="center"><b>Str</b></td>
                                 <td align="center"><b>Exist</b></td>
                                 <td align="center"><b>Retd</b></td>
-                                <td align="center" style="display:@foreach($rank as $rk) @if( $rk->rank =='SWO' ) {{'none'}} @endif  @endforeach"><b></b> CD</td>
+                                <td align="center" style="display: @if($currentPb->rank =='MWO' ) {{'none'}} @endif"><b></b> CD</td>
                                 <td align="center"><b>Vac</b></td>
                                 <td align="center"><b>Recom</b></td>
                                 <td align="center"><b>Left</b></td>
@@ -232,7 +244,7 @@
                                             @endif
                                         @endforeach
                                         </b></td>
-                                    <td align="center" style="display: @foreach($rank as $rk) @if( $rk->rank =='SWO' ) {{'none'}} @endif  @endforeach"><b>
+                                    <td align="center" style="display: @if($currentPb->rank =='MWO' ) {{'none'}} @endif"><b>
                                         @foreach($rank as $rk)
                                             @if($rk->rank=='WO')
                                                 {{ $recomMwo }}
@@ -266,7 +278,17 @@
                                         <h5><span><b class="blinking" id="checkId1">{{ $recompers }}</b></h5></span>
                                     </td>
                                     <td align="center">
-
+                                        <h5><span class="blinking">
+                                            <b id="minCheck1">
+                                                {{-- {{ $vac - $recompers }} --}}
+                                            </b>
+                                        </h5></span>
+                                    </td>
+                                    <td align="center" style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#currentPb{{ $currentPb->id }}">
+                                            Edit
+                                        </button>
+                                        @include('pb.current_pb')
                                     </td>
                                 </tr>
                             @else
@@ -280,6 +302,8 @@
                 </div>
             </div>
         </div>
+        <br>
+        <br>
         <table id="tableData" class="table table-striped table-bordered table-responsive-lg table-hover" style="width:100%">
             <thead>
                 <tr align="center" style="background:#33a8ff;">
