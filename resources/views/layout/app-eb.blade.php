@@ -12,12 +12,19 @@
     <script src="{{asset('js/axios.min.js')}}"></script>
     <script src="{{asset('js/config.js')}}"></script>
 
+
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/dropzone.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/dropzone.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/bootstrap-icons.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/bootstrap-icons.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/bootstrap-icons.min.css') }}" rel="stylesheet"/>
+    {{-- Summernote --}}
+    <link href="{{ asset('summernote/summernote-lite.min.css') }}" rel="stylesheet"/>
+    <script src="{{ asset('summernote/jquery-3.5.1.slim.min.js') }}"></script>
+    <script src="{{asset('summernote/summernote-lite.min.js')}}"></script>
+    {{-- @vite(['resources/js/app.js']) --}}
 </head>
 
 <body>
@@ -36,9 +43,8 @@
 <script>
 
 </script>
+    {{-- <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script> --}}
 
-
-    <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
     <script src="{{ asset('js/jquery.datatables.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/dropzone.min.js') }}"></script>

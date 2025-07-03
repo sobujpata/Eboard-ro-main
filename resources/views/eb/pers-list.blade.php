@@ -10,6 +10,29 @@
             padding-bottom: 15px;
         }
     </style>
+    <div id="recom-display" class="sticky-top" style="width:450px; border-radius: 50%; overflow:visible; float:right; top:60px; display:none;">
+        <div class="card">
+            <!-- Board Summary -->
+            <div class="card-body p-1">
+                <table id="heading-table" class="table table-bordered ml-3 mt-3 table-striped">
+                    <tr>
+                        <td><b>Total Application</b></td>
+                        <td align="center"><b>{{ $TotalPersons }}</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>Recom For Retd</b></td>
+                        <td align="center"><b id="checkId1">{{ $SelectedPersons }}</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>Not Recom</b></td>
+                        <td align="center">
+                            <blink><b id="minCheck1">{{ $NotSelectedPersons }}</b></blink>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid">
         @if (session('status'))
             <div class="alert alert-success" role="alert">
@@ -17,7 +40,7 @@
             </div>
         @endif
         <div class="card mt-6">
-            <div class="card-body bg-white">
+            <div class="card-body bg-white p-1">
                 <div class="row">
                     <div class="col-md-9">
                         <h3 class="text-decoration-underline text-center"
@@ -37,12 +60,12 @@
                             </tr>
                             <tr>
                                 <td><b>Recom For Retd</b></td>
-                                <td align="center"><b>{{ $SelectedPersons }}</b></td>
+                                <td align="center"><b id="checkId">{{ $SelectedPersons }}</b></td>
                             </tr>
                             <tr>
                                 <td><b>Not Recom</b></td>
                                 <td align="center">
-                                    <blink><b>{{ $NotSelectedPersons }}</b></blink>
+                                    <blink><b id="minCheck">{{ $NotSelectedPersons }}</b></blink>
                                 </td>
                             </tr>
                         </table>
@@ -50,6 +73,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row justify-content-center" style="margin-top: 10px;">
             <div class="col-md-12">
                 <div class="card p-0 m-0">
@@ -61,8 +85,13 @@
                                     <th class="text-center">S/No</th>
                                     <th class="text-center">Image</th>
                                     <th class="text-center">BD No</th>
-                                    <th class="text-center">Particulars</th>
-                                    <th class="text-center" style="vertical-align:middle;">Dt of Enrolment</th>
+                                    <th class="text-center">Rank & Name</th>
+                                    <th class="text-center">Trade</th>
+                                    <th class="text-center">Entry No</th>
+                                    <th class="text-center">Base/Unit</th>
+                                    <th class="text-center"
+                                        style="vertical-align:middle; writing-mode: vertical-rl; transform: rotate(180deg);">
+                                        Dt of Enrolment</th>
                                     <th class="text-center"
                                         style="vertical-align:middle; writing-mode: vertical-rl; transform: rotate(180deg);">
                                         PAR(Avg of<br>Last 5yrs)</th>
@@ -115,8 +144,11 @@
                                                 target='_blank' style="text-decoration: none"><b>{{ $person->bdno }}</b>
                                             </a>
                                         </td>
-                                        <td>{{ $person->rank }} {{ $person->name }}<br> {{ $person->trade }} <br>Entry
-                                            No: {{ $person->entry_no }} <br>{{ $person->base_unit }}</td>
+                                        <td>{{ $person->rank }} {{ $person->name }}</td>
+                                        <td>{{ $person->trade }}</td>
+                                        <td>{{ $person->entry_no }} </td>
+                                        <td>{{ $person->base_unit }}</td>
+
                                         <td>{{ $person->doe }}</td>
                                         <td>{{ $person->avg_par }}</td>
                                         <td>{{ $person->career_marks }}</td>
@@ -133,13 +165,16 @@
                                                 <div class="modal-dialog" style="max-width: 1260px !important;">
                                                     <div class="modal-content" style="background-color: #06c5f0;">
                                                         <div class="modal-header">
-                                                            <h3 class="modal-title" id="myModalLabel" style="width:100%;">
+                                                            <h3 class="modal-title text-decoration-underline" id="myModalLabel" style="width:100%;">
                                                                 Conduct Sheet</h3>
+
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="container-fluid">
+                                                                <p class="text-bolder fs-4">BD/{{ $person->bdno }} {{ $person->rank }}
+                                                                    {{ $person->name }} {{ $person->trade }}</p>
                                                                 <img src="{{ asset('evaluation-board/conduct-sheet/' . $person->bdno . '.png') }}"
                                                                     style="width:1200px; border: 2px solid blueviolet; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
 
@@ -190,11 +225,9 @@
                                                                             alt='Photo N/A' class="w-100">
 
                                                                     </div>
-                                                                    <div class="col-9 bg-white pt-4">
-                                                                        <p
-                                                                            style="font-size:20px; font-weight: bold; text-align:justify; padding-left: 15px;">
-                                                                            {!! $person->salient_points !!}
-                                                                        </p>
+                                                                    <div class="col-9 bg-white pt-4 fs-5 text-bold pl-2 text-left"
+                                                                        style="text-align: left;">
+                                                                        {!! $person->salient_points !!}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -457,28 +490,21 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="row">
-                                                                        <div class="col-md-6">
+                                                                        <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <label for="rmks_by_ro">Remarks By Ro/D
                                                                                     Pers</label>
                                                                                 <textarea name="rmks_by_ro" id="" cols="" rows="3" class="form-control">{{ $person->rmks_by_ro }}</textarea>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-6">
+                                                                        <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <label for="rmks_by_board">Remarks By
                                                                                     Board</label>
                                                                                 <textarea name="rmks_by_board" id="" cols="" rows="3" class="form-control">{{ $person->rmks_by_board }}</textarea>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label for="salient_points">Salient
-                                                                                    Points</label>
-                                                                                <textarea name="salient_points" id="" cols="" rows="10" class="form-control">{{ $person->salient_points }}</textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-3">
+                                                                        <div class="col-md-4">
                                                                             <div class="form-group">
                                                                                 <label for="type">Pers Type</label>
                                                                                 <select name="type" id=""
@@ -494,6 +520,24 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
+                                                                        <div class="col-md-12">
+                                                                            <div class="form-group">
+                                                                                <label for="salient_points">Salient
+                                                                                    Points</label>
+                                                                                <textarea name="salient_points" id="summernote_{{ $person->id }}" cols="" rows="10"
+                                                                                    class="form-control">{{ $person->salient_points }}</textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <script>
+                                                                            $(document).ready(function() {
+                                                                                $('#summernote_{{ $person->id }}').summernote({
+                                                                                    placeholder: 'Enter Salient Points',
+                                                                                    tabsize: 2,
+                                                                                    height: 200
+                                                                                });
+                                                                            });
+                                                                        </script>
+
                                                                         <div class="col-md-3">
                                                                             <img src="{{ asset('evaluation-board/image') }}/{{ $person->bdno }}.gif"
                                                                                 class="mt-2" alt=""
@@ -538,7 +582,7 @@
 
                 // Determine the new value of the decision based on checkbox state
                 var decision = $(this).is(':checked');
-                // console.log(decision);
+                //console.log(decision);
                 if (decision == true) {
                     $("#tr" + id).addClass('tr-row-bg-select');
                 }
@@ -573,6 +617,72 @@
             let result = ($(this).is(':checked'));
             // console.log(result);
             //document.getElementById("demo").innerHTML=result
+        });
+
+        $(document).ready(function() {
+            // Initialize the sum variable with your starting number
+            let sum = {{ $SelectedPersons }} // Example initial value
+            //console.log(sum)
+            let min = {{ $TotalPersons - $SelectedPersons }} // Example initial value
+
+            $('input').on('change', function() {
+                // Get the checked state
+                if (localStorage.input === 'true') {
+                    let isChecked = $(this).is(':checked') ? 1 : 0;
+
+                    // Store the checked state in localStorage
+                    localStorage.setItem('input', isChecked);
+
+                    // Log the checked state to the console
+                    console.log(isChecked);
+
+                    // Add the isChecked value to the sum
+                    sum += isChecked;
+                    min -= isChecked;
+
+                    if (min < 0) {
+                        document.getElementById("minCheck1").style.color = 'red';
+                        document.getElementById("minCheck").style.color = 'red';
+                    } else {
+                        document.getElementById("minCheck1").style.color = 'black';
+                        document.getElementById("minCheck").style.color = 'black';
+                    }
+
+                    // Log the updated sum to the console
+                    console.log('Updated sum:', sum);
+                    console.log('Updated min:', min);
+
+                    document.getElementById("checkId1").innerHTML = sum;
+                    document.getElementById("minCheck1").innerHTML = min;
+                    document.getElementById("checkId").innerHTML = sum;
+                    document.getElementById("minCheck").innerHTML = min;
+                    // document.getElementById("rowColor").innerHTML= isChecked.style.backgroundColor='red';
+
+
+                    // Optionally update the DOM element with the sum
+                    // document.getElementById("sumId").innerHTML = sum;
+                } else {
+                    let isUnChecked = $(this).is(':checked') ? 0 : 1;
+                    // Store the checked state in localStorage
+                    localStorage.setItem('input', isUnChecked);
+
+                    // Log the checked state to the console
+                    // console.log(isUnChecked);
+
+                    // Add the isUnChecked value to the sum
+                    sum -= isUnChecked;
+                    min += isUnChecked;
+
+
+                    // Log the updated sum to the console
+                    console.log('Updated sum:', sum);
+                    console.log('Updated min:', min);
+                    document.getElementById("checkId").innerHTML = sum;
+                    document.getElementById("checkId1").innerHTML = sum;
+                    document.getElementById("minCheck").innerHTML = min;
+                    document.getElementById("minCheck1").innerHTML = min;
+                }
+            });
         });
 
 
@@ -640,8 +750,8 @@
                 document.getElementById("minCheck1").style.color = 'red';
                 document.getElementById("minCheck").style.color = 'red';
             } else {
-                document.getElementById("minCheck1").style.color = 'white';
-                document.getElementById("minCheck").style.color = 'white';
+                document.getElementById("minCheck1").style.color = 'black';
+                document.getElementById("minCheck").style.color = 'black';
             }
         })
     </script>

@@ -330,6 +330,17 @@ class EbPersController extends Controller
         $userName = $user->userName;
         return view('eb.salient-uload', compact('userName'));
     }
+    public function ebPersByBdnoForSalientPoint(Request $request){
+        $bdno = $request->input('bdno');
+        // dd($bdno);
+        $person = EbPerson::where('bdno', $bdno)->first();
+
+        if($person == null){
+            return response()->json(['error' => 'Person not available.'], 404);
+        }
+
+        return response()->json(['person' => $person]);
+    }
     public function salientUpload(Request $request){
         $bdno = $request->input('bdno');
         $salient_points = $request->input('salient_point');

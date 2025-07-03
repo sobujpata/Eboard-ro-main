@@ -1,11 +1,8 @@
 @extends('layout.app-eb')
 @section('title', 'Add Person')
 @section('content')
-<style>
 
-</style>
 <div class="container">
-
     <div class="row justify-content-center" style="margin-top: 10px;">
         <div class="col-md-12">
             <div class="card">
@@ -104,25 +101,19 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="rmks_by_ro">Remarks By Ro/D Pers</label>
                                     <textarea name="rmks_by_ro" id="" cols="" rows="3" class="form-control"></textarea>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="rmks_by_board">Remarks By Board</label>
                                     <textarea name="rmks_by_board" id="" cols="" rows="3" class="form-control"></textarea>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="salient_points">Salient Points</label>
-                                    <textarea name="salient_points" id="" cols="" rows="4" class="form-control"></textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="type">Pers Type</label>
                                     <select name="type" id="" class="form-control form-select">
@@ -132,12 +123,19 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="salient_points">Salient Points</label>
+                                    <textarea name="salient_points" id="summernote" cols="" rows="4" class="form-control"></textarea>
+                                </div>
+                            </div>
+
 
                         </div>
 
                         <div class="modal-footer gap-2">
                             <button type="button" class="btn btn-danger"
-                                data-bs-dismiss="modal">Close</button>
+                                data-bs-dismiss="modal">Clear</button>
                             <button type="submit" class="btn btn-success"
                                 name="update_data">Save</button>
                         </div>
@@ -150,4 +148,15 @@
         </div>
     </div>
 </div>
+
+    <script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            placeholder: 'Salient Points',
+            tabsize: 2,
+            height: 200
+        });
+    });
+  </script>
+
 @endsection

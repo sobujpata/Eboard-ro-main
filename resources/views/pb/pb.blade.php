@@ -1050,7 +1050,9 @@
                     // console.log('Updated sum:', sum);
                     // console.log('Updated min:', min);
                     document.getElementById("checkId").innerHTML = sum;
+                    document.getElementById("checkId1").innerHTML = sum;
                     document.getElementById("minCheck").innerHTML = min;
+                    document.getElementById("minCheck1").innerHTML = min;
                 }
             });
         });

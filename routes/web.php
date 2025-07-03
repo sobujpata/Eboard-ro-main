@@ -139,7 +139,7 @@ Route::get('/userProfile',[UserController::class,'ProfilePage'])->middleware([To
     //Evaluation Board Route
 
     Route::get('/eb-home',[EvaluationHomeController::class, 'index'])->middleware([TokenVerificationMiddleware::class]);
-    Route::get('/eb/{type}',[EbPersController::class, 'index'])->middleware([TokenVerificationMiddleware::class]);
+    Route::get('/eb/{type}',[EbPersController::class, 'index'])->name('eb.list')->middleware([TokenVerificationMiddleware::class]);
     Route::post('/eb-update/{id}',[EbPersController::class, 'update'])->name('eb.update')->middleware([TokenVerificationMiddleware::class]);
     Route::get('/eb/items/{id}/update-decision',[EbPersController::class, 'updateDecision'])->name('eb.decision')->middleware([TokenVerificationMiddleware::class]);
     Route::get('/eb-selection',[EbPersController::class, 'EbSelectedList'])->middleware([TokenVerificationMiddleware::class]);
@@ -170,6 +170,7 @@ Route::get('/userProfile',[UserController::class,'ProfilePage'])->middleware([To
 
     //Salient Point
     Route::get('/eb-salient',[EbPersController::class, 'salientPage'])->name('salientPage')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/eb-pers-for-saliant-point-by-bdno',[EbPersController::class, 'ebPersByBdnoForSalientPoint'])->name('ebPersByBdnoForSalientPoint')->middleware([TokenVerificationMiddleware::class]);
     Route::post('/eb-salient-upload',[EbPersController::class, 'salientUpload'])->name('salientUpload')->middleware([TokenVerificationMiddleware::class]);
 
     //Add new eb person
