@@ -1,33 +1,34 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Pb\pbContrller;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\Pb\HomeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Pb\HomeController;
-use App\Http\Controllers\Pb\pbContrller;
-use App\Http\Controllers\Pb\pbRecomController;
 use App\Http\Controllers\Pb\allRecomSummary;
-use App\Http\Controllers\Pb\PbItemController;
 use App\Http\Controllers\Pb\ExportController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\UserController;
-use App\Http\Middleware\TokenVerificationMiddleware;
-use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\Admin\HomeController;
-use App\Http\Controllers\Admin\userListController;
-use App\Http\Controllers\Admin\PoliciesController;
-use App\Http\Controllers\Admin\PbVacencyController;
-use App\Http\Controllers\Admin\PbPreviouseVacController;
-use App\Http\Controllers\Admin\PbNextVacController;
-use App\Http\Controllers\Admin\PersListController;
-use App\Http\Controllers\Admin\SettingsController;
-use App\Http\Controllers\Evaluation\EbPersController;
-use App\Http\Controllers\Evaluation\HomeController as EvaluationHomeController;
-use App\Http\Controllers\pb\pbBaseWiseController;
-use App\Http\Controllers\Pb\SelectionController;
+use App\Http\Controllers\Pb\PbItemController;
 use App\Http\Controllers\Pb\StanByController;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Pb\pbRecomController;
+// use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Pb\SelectionController;
+use App\Http\Controllers\pb\pbBaseWiseController;
+use App\Http\Controllers\Admin\PersListController;
+use App\Http\Controllers\Admin\PoliciesController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\userListController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PbNextVacController;
+use App\Http\Controllers\Admin\PbVacencyController;
+use App\Http\Middleware\TokenVerificationMiddleware;
+use App\Http\Controllers\Evaluation\EbPersController;
+use App\Http\Controllers\Admin\PbPreviouseVacController;
+use App\Http\Controllers\Evaluation\HomeController as EvaluationHomeController;
 
 // Web API Routes
 Route::post('/user-registration',[UserController::class,'UserRegistration']);
@@ -82,6 +83,10 @@ Route::get('/userProfile',[UserController::class,'ProfilePage'])->middleware([To
     Route::post('/admin/pb/PersList/edit/{id}', [PersListController::class, 'edit'])->name('PbPersList.edit')->middleware([TokenVerificationMiddleware::class]);
     Route::get('/admin/pb/PersList/delete/{id}', [PersListController::class, 'destroy'])->name('PersList.delete')->middleware([TokenVerificationMiddleware::class]);
     Route::get('/admin/pb/nav-settings', [SettingsController::class, 'NavSettings'])->name('nav.settings')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/admin/nav/store', [SettingsController::class, 'NavEdit'])->name('nav.edit')->middleware([TokenVerificationMiddleware::class]);
+    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('menus', \App\Http\Controllers\MenuController::class);
+});
 
     //Pb Route
 

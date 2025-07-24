@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="card-header text-center">
                     <h2 class="bolder text-decoration-underline">Multi Conduct Sheet Upload by Drag and Dop.</h2>
-                    <h5 class="text-danger"><strong>Note : Conduct Sheet name will be BD No and extention .jpg</strong></h5>
+                    <h5 class="text-danger"><strong>Note : Conduct Sheet name will be BD No and extention .png</strong></h5>
 
                 </div>
                 <div class="card-body">

@@ -18,10 +18,6 @@
                                 data-bs-target="#exampleModal">
                                 +Add New
                             </button>
-                            <button type="button" class="btn btn-success">
-                                <a href="{{ url('/admin/users-download') }}" style="color:white; text-decoration:none;">
-                                    Download</a>
-                            </button>
 
                             <!-- Modal -->
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -29,43 +25,47 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Users</h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Nav Items</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body" style="padding: 10px 30px 10px 30px;">
-                                            <form method="POST" action="{{ url('/admin/user/store') }}">
+                                            <form method="POST" action="{{ url('/admin/nav/store') }}">
                                                 @csrf
                                                 <div class="form-group">
-                                                    <label class="form-lavel">User Name</label>
-                                                    <input type="text" name="name" class="form-control"
-                                                        placeholder="Enter user name">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="form-lavel">Email</label>
-                                                    <input type="text" name="email" class="form-control"
-                                                        placeholder="Enter email">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="form-lavel">Password</label>
-                                                    <input type="password" name="password" class="form-control"
-                                                        placeholder="Enter password">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="form-lavel">User Type</label>
-                                                    <select name="type" id="" class="form-select"
-                                                        aria-label="Default select example">
-                                                        <option value="" desable>Selected One</option>
-                                                        <option value="1">Admin</option>
-                                                        <option value="0">Promotion Board</option>
-                                                        <option value="2">Evaluation Board</option>
-                                                        <option value="3">Mission Selection</option>
+                                                    <label class="form-lavel">Select Trande Name</label>
+                                                    <select name="trade_id" id="" class="form-control form-select">
+                                                        <option value="" disabled selected>Select Trade</option>
+                                                        @foreach ($trades as $trade)
+                                                            <option value="{{ $trade->id }}">{{ $trade->trade }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="form-lavel">Profile</label>
-                                                    <input type="file" name="profile" class="form-control"
-                                                        placeholder="Enter Image">
+                                                    <label class="form-lavel">Item Name</label>
+                                                    <select name="name" id="" class="form-control form-select">
+                                                        <option value="" disabled selected>Select Nav Item</option>
+                                                        <option value="SWO-MWO">SWO-MWO</option>
+                                                        <option value="WO-SWO">WO-SWO</option>
+                                                        <option value="Sgt-WO">Sgt-WO</option>
+                                                        <option value="Download Summary">Download Summary</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-lavel">Page No</label>
+                                                    <input type="text" name="page_no" class="form-control"
+                                                        placeholder="Enter page no">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-lavel">URL</label>
+                                                    <input type="text" name="url" class="form-control"
+                                                        placeholder="Enter url">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-lavel">Status</label>
+                                                    <input type="text" name="status" class="form-control"
+                                                        placeholder="Enter status">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -81,7 +81,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-center">
-                            <h3>All Users</h3>
+                            <h3>All Nav Items</h3>
                         </div>
                         <div class="col-sm-4"></div>
                     </div>
@@ -89,10 +89,10 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-start">
-                        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
-                            aria-orientation="vertical">
+                        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" style="width:300px !important;"
+                            role="tablist" aria-orientation="vertical">
                             @foreach ($trades as $trade)
-                                <button class="nav-link @if ($loop->first) active @endif"
+                                <button class="nav-link @if ($loop->first) active @endif text-left"
                                     id="v-pills-tab-{{ $trade->id }}" data-bs-toggle="pill"
                                     data-bs-target="#v-pills-{{ $trade->id }}" type="button" role="tab"
                                     aria-controls="v-pills-{{ $trade->id }}"
@@ -107,22 +107,10 @@
                                 <div class="tab-pane fade @if ($loop->first) show active @endif"
                                     id="v-pills-{{ $trade->id }}" role="tabpanel"
                                     aria-labelledby="v-pills-tab-{{ $trade->id }}" tabindex="0">
-
-                                    {{-- <ul class="list-group">
-                                    @forelse ($trade->navbars as $navbar)
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            {{ $navbar->name }}
-                                            <small class="text-muted">{{ $navbar->url }}</small>
-                                        </li>
-                                    @empty
-                                        <li class="list-group-item text-muted">No navbar items found.</li>
-                                    @endforelse
-                                </ul> --}}
                                     <div class="card">
                                         <div class="card-body">
-                                            <h3>Navbar list For {{$trade->trade}}</h3>
-                                            <table class="table table-striped table-bordered"
-                                                style="width: 100% !important">
+                                            <h3>Navbar list For {{ $trade->trade }}</h3>
+                                            <table class="table table-striped" style="width: 100% !important">
                                                 <thead>
                                                     <tr>
                                                         <th>S/L</th>
@@ -134,9 +122,9 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @forelse ($trade->navbars as $navbar)
+                                                    @forelse ($trade->navbars as $key=>$navbar)
                                                         <tr>
-                                                            <td>1</td>
+                                                            <td>{{ $key + 1 }}</td>
                                                             <td>{{ $navbar->name }}</td>
                                                             <td>{{ $navbar->page_no }}</td>
                                                             <td>{{ $navbar->url }}</td>

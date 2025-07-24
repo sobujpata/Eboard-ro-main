@@ -3,6 +3,7 @@ namespace App\Http\Controllers\pb;
 use App\Models\Rank;
 use App\Models\User;
 use App\Models\Trade;
+use App\Models\EbPerson;
 use Illuminate\Http\Request;
 use App\Imports\PbPersonImport;
 use Illuminate\Support\Facades\DB;

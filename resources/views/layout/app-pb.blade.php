@@ -18,7 +18,7 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/dropzone.min.css') }}" rel="stylesheet" />
 
-    
+
 </head>
 
 <body>
@@ -30,7 +30,7 @@
 </div>
 
 <div class="main-content">
-    @include('layout.partials.header')
+    @include('layout.partials.navbar-pb')
     @yield('content')
     @include('layout.partials.footer')
 </div>

@@ -585,10 +585,6 @@
                         <li><a class="dropdown-item nav-link" href="{{url('/pb-Profile')}}">Profile Upload</a></li>
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{url('/pb-conduct-sheet')}}">Contduct Sheet Upload</a></li>
-                        {{-- <div class="dropdown-divider"></div>
-                        <li><a class="dropdown-item nav-link" href="{{url('/pb-application')}}">Application and Wornig Ltr</a></li>
-                        <div class="dropdown-divider"></div>
-                        <li><a class="dropdown-item nav-link" href="{{url('/pb-salient')}}">Salient Pts of Appl & Wornig Ltr</a></li> --}}
                     </ul>
                 </li>
                 <li class="nav-item active">

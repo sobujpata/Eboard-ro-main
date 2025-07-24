@@ -88,11 +88,11 @@
                                 <td class="text-left">{{ $policy->subject }}</td>
                                 <td class="text-center">{{ $policy->published_on }}</td>
                                 <td  class="text-center"style="text-align: center">
-                                    <a href="{{asset('policies')}}/{{ $policy->file}}" target="_blank" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>
+                                    <a href="{{asset($policy->file)}}" target="_blank" class="btn btn-success">View</a>
 
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModel{{$policy->id}}">
-                                        <i class="fa-solid fa-edit"></i>
+                                        Edit
                                     </button>
 
                                     <!-- Modal -->
@@ -159,7 +159,7 @@
                                         </div>
                                         </div>
                                     </div>
-                                    <a href="{{Route('policy.delete', $policy->id)}}"  class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                    <a href="{{Route('policy.delete', $policy->id)}}"  class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>
                         @endforeach
