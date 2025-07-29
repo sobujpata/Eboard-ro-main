@@ -81,11 +81,14 @@ Route::get('/userProfile',[UserController::class,'ProfilePage'])->middleware([To
     Route::get('/admin/pb/PersList', [PersListController::class, 'index'])->name('PersList.index')->middleware([TokenVerificationMiddleware::class]);
     Route::post('/admin/pb/PersList/store', [PersListController::class, 'store'])->name('PbPersList.store')->middleware([TokenVerificationMiddleware::class]);
     Route::post('/admin/pb/PersList/edit/{id}', [PersListController::class, 'edit'])->name('PbPersList.edit')->middleware([TokenVerificationMiddleware::class]);
-    Route::get('/admin/pb/PersList/delete/{id}', [PersListController::class, 'destroy'])->name('PersList.delete')->middleware([TokenVerificationMiddleware::class]);
+    Route::delete('/admin/pb/PersList/delete/{id}', [PersListController::class, 'PersonDestroy'])->name('PersList.delete')->middleware([TokenVerificationMiddleware::class]);
     Route::get('/admin/pb/nav-settings', [SettingsController::class, 'NavSettings'])->name('nav.settings')->middleware([TokenVerificationMiddleware::class]);
     Route::post('/admin/nav/store', [SettingsController::class, 'NavEdit'])->name('nav.edit')->middleware([TokenVerificationMiddleware::class]);
     Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('menus', \App\Http\Controllers\MenuController::class);
+});
+    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('bases', \App\Http\Controllers\BaseController::class);
 });
 
     //Pb Route
@@ -136,6 +139,9 @@ Route::get('/userProfile',[UserController::class,'ProfilePage'])->middleware([To
     //Add new pb person
     Route::get('/pb-person-upload-ecxel',[PbItemController::class, 'UploadExcelPage'])->name('UploadExcelPage')->middleware([TokenVerificationMiddleware::class]);
     Route::post('/pb-upload-excel',[PbItemController::class, 'UploadExcel'])->name('store')->middleware([TokenVerificationMiddleware::class]);
+
+    //All Bdno
+    Route::get('/pb-bdno',[PbItemController::class, 'PbBdno'])->name('bdno.show')->middleware([TokenVerificationMiddleware::class]);
 
     // Pb Base wise Route
     Route::get('/pb-home-base', [pbBaseWiseController::class, 'index'])->name('pb.baseWise')->middleware([TokenVerificationMiddleware::class]);

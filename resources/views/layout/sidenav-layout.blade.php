@@ -3,9 +3,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title></title>
 
     <link rel="icon" type="image/x-icon" href="{{asset('/favicon.ico')}}" />
+    <link href="{{asset('css/jquery.dataTables.min.css')}}" rel="stylesheet" />
     <link href="{{asset('css/bootstrap.css')}}" rel="stylesheet" />
     <link rel="stylesheet" href="{{asset('css/bootstrap-icons.min.css')}}">
     <link href="{{asset('css/animate.min.css')}}" rel="stylesheet" />
@@ -18,9 +20,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 
-    <link href="{{asset('css/jquery.dataTables.min.css')}}" rel="stylesheet" />
-    <script src="{{asset('js/jquery-3.7.0.min.js')}}"></script>
-    <script src="{{asset('js/jquery.dataTables.min.js')}}"></script>
+
+
 
 
     <script src="{{asset('js/toastify-js.js')}}"></script>
@@ -76,6 +77,10 @@
         <i class="bi bi-graph-up"></i>
         <span class="side-bar-item-caption">Dashboard</span>
     </a>
+    <a href="{{url("/pb/pb-home")}}" class="side-bar-item">
+        <i class="bi bi-graph-up"></i>
+        <span class="side-bar-item-caption">PB Home</span>
+    </a>
 
     <a href="{{url("/admin/pb/PersList")}}" class="side-bar-item">
         <i class="bi bi-people"></i>
@@ -106,13 +111,17 @@
         <i class="bi bi-file-earmark-bar-graph"></i>
         <span class="side-bar-item-caption">PB VAC-{{substr(date('Y') + 1, -2)}} & {{substr(date('Y') + 2, -2)}}</span>
     </a>
-    <a href="{{url('/admin/pb/nav-settings')}}" class="side-bar-item">
+    {{-- <a href="{{url('/admin/pb/nav-settings')}}" class="side-bar-item">
         <i class="bi bi-file-earmark-bar-graph"></i>
         <span class="side-bar-item-caption">Navbar Settings</span>
-    </a>
+    </a> --}}
     <a href="{{url('/admin/menus')}}" class="side-bar-item">
         <i class="bi bi-file-earmark-bar-graph"></i>
-        <span class="side-bar-item-caption">Menu</span>
+        <span class="side-bar-item-caption">PB Menu</span>
+    </a>
+    <a href="{{url('/admin/bases')}}" class="side-bar-item">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span class="side-bar-item-caption">Bases</span>
     </a>
     <a href="{{url('/reportPage')}}" class="side-bar-item">
         <i class="bi bi-file-earmark-bar-graph"></i>
@@ -128,7 +137,8 @@
 </div>
 
 
-
+<script src="{{asset('js/jquery-3.7.0.min.js')}}"></script>
+<script src="{{ asset('js/jquery.datatables.min.js') }}"></script>
 <script>
     function MenuBarClickHandler() {
         let sideNav = document.getElementById('sideNavRef');

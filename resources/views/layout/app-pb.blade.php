@@ -17,6 +17,10 @@
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/dropzone.min.css') }}" rel="stylesheet" />
+    {{-- Summernote --}}
+    <link href="{{ asset('summernote/summernote-lite.min.css') }}" rel="stylesheet"/>
+    <script src="{{ asset('summernote/jquery-3.5.1.slim.min.js') }}"></script>
+    <script src="{{asset('summernote/summernote-lite.min.js')}}"></script>
 
 
 </head>
@@ -39,7 +43,7 @@
 </script>
 
 
-    <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script> --}}
     <script src="{{ asset('js/jquery.datatables.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/dropzone.min.js') }}"></script>

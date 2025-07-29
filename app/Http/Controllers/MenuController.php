@@ -7,10 +7,18 @@ use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $Nav_menus = Menu::with('parent')->orderBy('parent_id')->orderBy('order')->get();
-        
+        // $Nav_menus = Menu::with('parent')->orderBy('parent_id')->orderBy('order')->get();
+        $query = Menu::with('parent');
+
+        if ($request->has('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhere('url', 'like', '%' . $request->search . '%');
+        }
+
+        $Nav_menus = $query->orderBy('parent_id')->orderBy('order')->paginate(15);
+
         return view('admin.menus.index', compact('Nav_menus'));
     }
 
@@ -36,7 +44,7 @@ class MenuController extends Controller
 
     public function edit(Menu $menu)
     {
-        $parents = Menu::whereNull('parent_id')->where('id', '!=', $menu->id)->pluck('title', 'id');
+        $parents = Menu::pluck('title', 'id');
         return view('admin.menus.edit', compact('menu', 'parents'));
     }
 
@@ -51,7 +59,7 @@ class MenuController extends Controller
 
         $menu->update($request->all());
 
-        return redirect()->route('admin.menus.index')->with('success', 'Menu updated successfully.');
+        return redirect()->route('admin.menus.index', ['edited_id' => $menu->id])->with('success', 'Menu updated successfully.');
     }
 
     public function destroy(Menu $menu)

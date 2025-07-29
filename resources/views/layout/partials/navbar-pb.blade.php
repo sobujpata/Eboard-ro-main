@@ -97,7 +97,13 @@
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/pb-conduct-sheet') }}">Contduct Sheet
                                 Upload</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{ url('/pb-bdno') }}">All BD NO</a></li>
                     </ul>
+                </li>
+                <li class="nav-item"
+                    style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                    <a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a>
                 </li>
             </ul>
             <!-- Right Side Of Navbar -->

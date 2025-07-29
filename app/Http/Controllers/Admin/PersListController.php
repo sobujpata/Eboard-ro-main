@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\pbperslist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\trade;
@@ -13,18 +14,31 @@ class PersListController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-    //    dd('policies');
-        $data = DB::table('pbperslists')
-                ->paginate(10);
+        // Uncomment the line below if you want to debug policies
+        $query = $request->input('search');
 
+        $persons = pbperslist::query();
+// dd($persons);
+        if ($query) {
+            $persons->where('bdno', 'like', "%{$query}%")
+                    ->orWhere('name', 'like', "%{$query}%")
+                    ->orWhere('rank', 'like', "%{$query}%")
+                    ->orWhere('entry_no', 'like', "%{$query}%")
+                    ->orWhere('base_unit', 'like', "%{$query}%")
+                    ->orWhere('base', 'like', "%{$query}%");
+        }
 
-                $trades = trade::get();
-                $ranks = rank::get();
-                // dd($data);
-                $i = ($data->perPage() * ($data->currentPage() - 1)) + 1;
-        return view('admin.pbPersList', compact('data','i', 'trades', 'ranks'));
+        $results = $persons->paginate(10);
+
+        // $data = DB::table('pbperslists')
+        //         ->paginate(10);
+
+        $trades = trade::get();
+        $ranks = rank::get();
+        $i = ($results->perPage() * ($results->currentPage() - 1)) + 1;
+        return view('admin.pbPersList', compact('results', 'trades', 'ranks', 'i'));
     }
     /**
      * Show the form for creating a new resource.
@@ -95,4 +109,9 @@ class PersListController extends Controller
        $deleteData = DB::table('vac_create_next_yrs')->where('id', $id)->delete();
        return redirect()->back()->with('delete', 'Delete data successfully.');
     }
+    public function PersonDestroy(Request $request, $id)
+    {
+        $deleteData = DB::table('pbperslists')->where('id', $id)->delete();
+        return redirect()->back()->with('delete', 'Delete data successfully.');
+    }   
 }

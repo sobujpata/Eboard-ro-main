@@ -892,9 +892,45 @@
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="sheetNo">Sheet No</label>
-                                                                    <input type="text" name="sheetNo" id=""
-                                                                        class="form-control"
-                                                                        value="{{ $item->sheetNo }}">
+                                                                    <select name="sheetNo" id=""
+                                                                        class="form-control form-select" required>
+                                                                        <option value="" disabled selected>Select
+                                                                            Sheet No</option>
+                                                                        <option value="1"
+                                                                            @if ($item->sheetNo == 1) selected @endif>
+                                                                            SWO - MWO</option>
+                                                                        <option value="2"
+                                                                            @if ($item->sheetNo == 2) selected @endif>
+                                                                            WO - SWO</option>
+                                                                        <option value="3"
+                                                                            @if ($item->sheetNo == 3) selected @endif>
+                                                                            Sgt - WO</option>
+                                                                        <option value="4"
+                                                                            @if ($item->sheetNo == 4) selected @endif>
+                                                                            Sgt - WO (Booklet-2)</option>
+                                                                        <option value="5"
+                                                                            @if ($item->sheetNo == 5) selected @endif>
+                                                                            Sgt - WO (Booklet-3)</option>
+                                                                        <option value="6"
+                                                                            @if ($item->sheetNo == 6) selected @endif>
+                                                                            Sgt - WO (Booklet-4)</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <label for="base">Under Base</label>
+                                                                    <select name="base" id=""
+                                                                        class="form-control form-select">
+                                                                        <option value="" disabled selected>Select
+                                                                            Base</option>
+                                                                        @foreach ($bases as $base)
+                                                                            <option value="{{$base->name}}" @if ($item->base == $base->name) selected
+
+                                                                            @endif>{{$base->name}}</option>
+                                                                        @endforeach
+                                                                    </select>
+
                                                                 </div>
                                                             </div>
 
@@ -903,10 +939,18 @@
                                                         <div class="row">
                                                             <div class="col-md-9">
                                                                 <div class="form-group">
-                                                                    <label for="other_rmks">Remarks summernote</label>
-                                                                    {{-- <textarea id="summernote" name="other_rmks" class="form-control"> {{ $item->other_rmks }}</textarea> --}}
-
-                                                                    <textarea name="other_rmks" id="" cols="" rows="3" class="form-control">{{ $item->other_rmks }}</textarea>
+                                                                    <label for="other_rmks">Remarks by RO / D Pers</label>
+                                                                    <textarea name="other_rmks" id="summernote_{{ $item->id }}" cols="" rows="3"
+                                                                        class="form-control">{{ $item->other_rmks }}</textarea>
+                                                                    <script>
+                                                                        $(document).ready(function() {
+                                                                            $('#summernote_{{ $item->id }}').summernote({
+                                                                                placeholder: 'Enter Remarks by RO/D Pers',
+                                                                                tabsize: 2,
+                                                                                height: 200
+                                                                            });
+                                                                        });
+                                                                    </script>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">

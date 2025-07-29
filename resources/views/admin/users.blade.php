@@ -189,30 +189,20 @@
 @endsection
 @push('other_script')
     <script>
-        let table = new DataTable('#customers', {
-            info: true,
-            ordering: false,
-            paging: false,
-            layout: {
-                // topStart: 'pageLength',
-                // topEnd: 'search',
-                topStart: 'info',
-                // bottomEnd: 'paging'
-            }
-
-
+        $(document).ready(function() {
+            // Initialize DataTable
+            let table = new DataTable('#customers', {
+                info: true,
+                ordering: true,
+                paging: true,
+                layout: {
+                    // topStart: 'pageLength',
+                    topEnd: 'search',
+                    topStart: 'info',
+                    // bottomEnd: 'paging'
+                }
+            });
         });
-        // table.on('click', 'tbody tr', function () {
-        //         let data = table.row(this).data();
 
-        //         alert('You clicked on ' + data[0] + "'s row");
-        //     });
-        // table.on('click', 'tbody tr', function (e) {
-        //     e.currentTarget.classList.toggle('selected');
-        // });
-
-        // document.querySelector('#button').addEventListener('click', function () {
-        //     alert(table.rows('.selected').data().length + ' row(s) selected');
-        // });
     </script>
 @endpush

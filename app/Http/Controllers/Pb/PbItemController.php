@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Imports\PbPersonImport;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Base;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\pbperslist; // Import the Item model
@@ -33,7 +34,8 @@ class PbItemController extends Controller
 
         $ranks = Rank::get();
         $trades = Trade::get();
-        return view('pb.add-new-person', compact('user', 'ranks', 'trades'));
+        $bases = Base::get();
+        return view('pb.add-new-person', compact('user', 'ranks', 'trades', 'bases'));
     }
     public function Store(Request $request){
         // dd($request);
@@ -52,6 +54,7 @@ class PbItemController extends Controller
         $conduct_sheet = $request->input('conduct_sheet');
         $weight = $request->input('weight');
         $base_unit = $request->input('base_unit');
+        $base = $request->input('base');
         $sheet_no = $request->input('sheet_no');
         $rmks_by_ro = $request->input('rmks_by_ro');
         $rmks_by_board = $request->input('rmks_by_board');
@@ -179,53 +182,62 @@ class PbItemController extends Controller
         File::cleanDirectory($uploadPath);
         return response()->json(['message' => 'All files deleted successfully!']);
     }
-    public function ApplicationPage(Request $request){
-        $type = $request->type;
+    // public function ApplicationPage(Request $request){
+    //     $type = $request->type;
+    //     $user_id = $request->header('id');
+    //     $user = User::find($user_id);
+    //     $userName = $user->userName;
+    //     return view('eb.application-uload', compact('userName'));
+    // }
+    // public function ApplicationUpload(Request $request){
+    //     if ($request->hasFile('files')) {
+    //         foreach ($request->file('files') as $file) {
+    //             $fileName = $file->getClientOriginalName();
+    //             $file->move(public_path('promotionBoard/indv_application'), $fileName);
+    //         }
+    //         return response()->json(['message' => 'Application uploaded successfully!']);
+    //     }
+
+    //     return response()->json(['message' => 'No Application uploaded'], 400);
+    // }
+    // public function DeleteApplication(){
+    //     $uploadPath = public_path('promotionBoard/indv_application');
+    //     File::cleanDirectory($uploadPath);
+    //     return response()->json(['message' => 'All files deleted successfully!']);
+    // }
+    // public function salientPage(Request $request){
+    //     $type = $request->type;
+    //     $user_id = $request->header('id');
+    //     $user = User::find($user_id);
+    //     $userName = $user->userName;
+    //     return view('eb.salient-uload', compact('userName'));
+    // }
+    // public function salientUpload(Request $request){
+    //     $bdno = $request->input('bdno');
+    //     $salient_points = $request->input('salient_point');
+    //     // dd($salient_points);
+    //     $person = EbPerson::where('bdno', $bdno)->first();
+
+    //     if($person == null){
+    //         return redirect()->route('salientPage')->with('error', "Person not available.");
+    //     }
+
+    //     $person->update([
+    //         'salient_points'=>$salient_points,
+    //     ]);
+
+    //     return redirect()->route('salientPage')->with('message', "Salient upload successfully.");
+    // }
+
+    public function PbBdno(Request $request)
+    {
+        $bdnos = pbperslist::pluck('bdno')->all();
+        $totalBdNos = count($bdnos);
         $user_id = $request->header('id');
         $user = User::find($user_id);
         $userName = $user->userName;
-        return view('eb.application-uload', compact('userName'));
+        return view('pb.all-bdno', compact('bdnos', 'userName', 'user', 'totalBdNos'));
+
     }
-    public function ApplicationUpload(Request $request){
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                $fileName = $file->getClientOriginalName();
-                $file->move(public_path('promotionBoard/indv_application'), $fileName);
-            }
-            return response()->json(['message' => 'Application uploaded successfully!']);
-        }
-
-        return response()->json(['message' => 'No Application uploaded'], 400);
-    }
-    public function DeleteApplication(){
-        $uploadPath = public_path('promotionBoard/indv_application');
-        File::cleanDirectory($uploadPath);
-        return response()->json(['message' => 'All files deleted successfully!']);
-    }
-    public function salientPage(Request $request){
-        $type = $request->type;
-        $user_id = $request->header('id');
-        $user = User::find($user_id);
-        $userName = $user->userName;
-        return view('eb.salient-uload', compact('userName'));
-    }
-    public function salientUpload(Request $request){
-        $bdno = $request->input('bdno');
-        $salient_points = $request->input('salient_point');
-        // dd($salient_points);
-        $person = EbPerson::where('bdno', $bdno)->first();
-
-        if($person == null){
-            return redirect()->route('salientPage')->with('error', "Person not available.");
-        }
-
-        $person->update([
-            'salient_points'=>$salient_points,
-        ]);
-
-        return redirect()->route('salientPage')->with('message', "Salient upload successfully.");
-    }
-
-
 
 }

@@ -134,22 +134,36 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="base">Under Base</label>
-                                    <input type="text" name="base" id="" class="form-control" value="">
+                                    <select name="base" id="" class="form-control form-select">
+                                        <option value="" disabled selected>Select Base</option>
+                                        @foreach ($bases as $base)
+                                        <option value="{{$base->name}}">{{$base->name}}</option>
+                                        @endforeach
+                                    </select>
+
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="sheet_no">Sheet No</label>
-                                    <input type="number" name="sheet_no" class="form-control">
+                                    <select name="sheet_no" id="" class="form-control form-select" required>
+                                        <option value="" disabled selected>Select Sheet No</option>
+                                        <option value="1">SWO - MWO</option>
+                                        <option value="2">WO - SWO</option>
+                                        <option value="3">Sgt - WO</option>
+                                        <option value="4">Sgt - WO (Booklet-2)</option>
+                                        <option value="5">Sgt - WO (Booklet-3)</option>
+                                        <option value="6">Sgt - WO (Booklet-4)</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-10">
                                 <div class="form-group">
                                     <label for="rmks_by_ro">Remarks By Ro/D Pers</label>
-                                    <textarea name="rmks_by_ro" id="" cols="" rows="3" class="form-control"></textarea>
+                                    <textarea name="rmks_by_ro" id="summernote" cols="" rows="3" class="form-control"></textarea>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="rmks_by_board">Remarks By Board</label>
                                     <textarea name="rmks_by_board" id="" cols="" rows="3" class="form-control"></textarea>
@@ -174,4 +188,13 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            placeholder: 'Remarks By Ro/D Pers',
+            tabsize: 2,
+            height: 200
+        });
+    });
+  </script>
 @endsection
