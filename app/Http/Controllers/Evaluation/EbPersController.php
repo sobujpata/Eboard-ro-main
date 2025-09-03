@@ -381,7 +381,8 @@ class EbPersController extends Controller
     }
 
     public function Bdno(Request $request){
-        $bdnos = EbPerson::pluck('bdno')->all();
+        $bdnos = EbPerson::orderBy('bdno', 'ASC')->pluck('bdno');
+
         $user_id = $request->header('id');
         $user = User::find($user_id);
         $userName = $user->userName;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\pb;
+namespace App\Http\Controllers\Pb;
 
 use App\Models\User;
 use App\Models\pbperslist;

@@ -40,7 +40,7 @@
                                             <select name="rank" id="" class="form-select" aria-label="Default select example">
                                                 <option value="" desable>Selected One</option>
                                                 @foreach ($ranks as $rank)
-                                                    <option value="{{$rank->rank}}">{{$rank->rank}}</option>
+                                                    <option value="{{$rank->short_name}}">{{$rank->short_name}}</option>
                                                 @endforeach
 
                                             </select>
@@ -150,16 +150,15 @@
                                                             @endforeach
 
                                                         </select>
-                                                        {{-- <input type="text" name="trade" class="form-control" placeholder="Enter Trade"> --}}
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="form-lavel">Rank</label>
                                                         <select name="rank" id="" class="form-select" aria-label="Default select example">
                                                             <option value="" desable>Selected One</option>
                                                             @foreach ($ranks as $rank)
-                                                                <option value="{{$rank->rank}}" @if ($rank->rank==$pbCurrentVac->rank)
+                                                                <option value="{{$rank->short_name}}" @if ($rank->short_name==$pbCurrentVac->rank)
                                                                     {{'selected'}}
-                                                                @endif>{{$rank->rank}}</option>
+                                                                @endif>{{$rank->short_name}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>

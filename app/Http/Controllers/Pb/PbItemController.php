@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\pb;
+namespace App\Http\Controllers\Pb;
 use App\Models\Rank;
 use App\Models\User;
 use App\Models\Trade;
@@ -21,9 +21,8 @@ class PbItemController extends Controller
 
        $update = pbperslist::where('id', $id)
             ->update(['decision' => $decision]);
-            $msg = 'Decision updated successfully';
 
-        return response()->json(['success' => $msg]);
+        return response()->json(['success' => 'Recom Update Successfully.']);
 
     }
 
@@ -231,7 +230,7 @@ class PbItemController extends Controller
 
     public function PbBdno(Request $request)
     {
-        $bdnos = pbperslist::pluck('bdno')->all();
+        $bdnos = pbperslist::orderBy('bdno','ASC')->pluck('bdno');
         $totalBdNos = count($bdnos);
         $user_id = $request->header('id');
         $user = User::find($user_id);

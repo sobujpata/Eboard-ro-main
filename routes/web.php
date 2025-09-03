@@ -97,7 +97,9 @@ Route::get('/userProfile',[UserController::class,'ProfilePage'])->middleware([To
     Route::get('/pb/pb-policy', [HomeController::class, 'policy'])->name('pb.home')->middleware([TokenVerificationMiddleware::class]);
     Route::get('/pb/{trade}/{sheetNo}', [pbContrller::class, 'pbListShow'])->name('pb.index')->middleware([TokenVerificationMiddleware::class]);
     Route::post('/pb/{id}', [pbContrller::class, 'updatermks'])->name('pb.update')->middleware([TokenVerificationMiddleware::class]);
-    Route::post('/pb/{id}/pers-edit', [pbContrller::class, 'edit'])->name('pb.edit')->middleware([TokenVerificationMiddleware::class]);
+    Route::post('/pb-pers-by-id', [pbContrller::class, 'pbPersById'])->name('pb.byId')->middleware([TokenVerificationMiddleware::class]);
+
+    Route::post('/pb-pers-edit', [pbContrller::class, 'edit'])->name('pb.edit')->middleware([TokenVerificationMiddleware::class]);
     Route::get('/pb/recomList', [pbRecomController::class, 'index'])->name('pb.recommend')->middleware([TokenVerificationMiddleware::class]);
     Route::get('/pb/recomList/{trade}/{rank}', [pbRecomController::class, 'index'])->name('recomPromotion.index')->middleware([TokenVerificationMiddleware::class]);
     Route::get('/pb/summary', [pbRecomController::class, 'ChartSummary'])->name('pb.chartForSummary')->middleware([TokenVerificationMiddleware::class]);

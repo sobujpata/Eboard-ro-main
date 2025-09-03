@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\pb;
+namespace App\Http\Controllers\Pb;
 
 
 use Exception;
@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class pbContrller extends Controller
+class PbContrller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,8 +25,8 @@ class pbContrller extends Controller
         $user_id = $request->header('id');
         // $userName = User::where('id', $user_id)->select('userName')->first();
         $user = User::find($user_id);
-        if($user->lastName !== "pb"){
-            return redirect()->back()->with("error","You are unauthorize.");
+        if ($user->lastName !== "pb") {
+            return redirect()->back()->with("error", "You are unauthorize.");
         }
         // dd($userName);
 
@@ -35,217 +35,246 @@ class pbContrller extends Controller
         $sheetNo = $request->sheetNo;
         // dd($sheetNo);
         $data = pbperslist::where('trade', $trade)
-                ->where('sheetNo', $sheetNo)
-                ->get();
+            ->where('sheetNo', $sheetNo)
+            ->get();
 
-        $dataCount=pbperslist::where('trade', $trade)
-                ->where('sheetNo', $sheetNo)
-                ->count();
+        $dataCount = pbperslist::where('trade', $trade)
+            ->where('sheetNo', $sheetNo)
+            ->count();
         $trades = Trade::all();
         $ranks = Rank::all();
         // dd($ranks);
-        if($dataCount > 0){
+        if ($dataCount > 0) {
 
-        $rank=pbperslist::select('rank')
+            $rank = pbperslist::select('rank')
                 ->where('trade', $trade)
                 ->where('sheetNo', $sheetNo)
                 ->distinct()->get();
-        // dd($rank);
-        $previousPb = DB::table('previouse_pb')
-                    ->where('trade', $trade)
-                    ->where('sheetNo', $sheetNo)
-                    ->get();
-                    //  dd($previousPb);
-        $i=1;
+            // dd($rank);
+            $previousPb = DB::table('previouse_pb')
+                ->where('trade', $trade)
+                ->where('sheetNo', $sheetNo)
+                ->get();
+            //  dd($previousPb);
+            $i = 1;
 
-        $totalEntry =pbperslist:: SELECT('entry_no', DB::raw('count(*) as pers_count'))
-                    -> where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->groupBy('entry_no')
-                    ->get();
-                // dd($totalEntry);
+            $totalEntry = pbperslist::SELECT('entry_no', DB::raw('count(*) as pers_count'))
+                ->where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->groupBy('entry_no')
+                ->get();
+            // dd($totalEntry);
 
-        $vacNextYear = DB::table('vac_create_next_yrs')
-                    -> where('trade', $trade)
-                    ->where('sheetNo', $sheetNo)
-                    ->first();
-                    // dd($vacNextYear);
-        $countRecom =pbperslist:: SELECT(DB::raw('count(decision) as pers_recom'))
-                    -> where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->where('decision', 'true')
-                    ->groupBy('entry_no')
-                    ->get();
-        $scoreMAxMin =pbperslist:: where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->selectRaw('MIN(ttl_score) as min_score, MAX(ttl_score) as max_score')
-                    ->limit(1)
-                    ->first();
-        $aboveScore =pbperslist:: where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->where('ttl_score','>=',150)
-                    ->count();
-        $bellowScore =pbperslist:: where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->where('ttl_score','<',150)
-                    ->count();
-        $recomScore =pbperslist:: where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->where('decision', 'true')
-                    ->selectRaw('MIN(ttl_score) as min_recom, MAX(ttl_score) as max_recom')
-                    ->limit(1)
-                    ->first();
-        $currentPb =DB::table('pb_current_estb_str_vac')
-                    -> where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->limit(1)
-                    ->first();
+            $vacNextYear = DB::table('vac_create_next_yrs')
+                ->where('trade', $trade)
+                ->where('sheetNo', $sheetNo)
+                ->first();
+            // dd($vacNextYear);
+            $countRecom = pbperslist::SELECT(DB::raw('count(decision) as pers_recom'))
+                ->where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->where('decision', 'true')
+                ->groupBy('entry_no')
+                ->get();
+            $scoreMAxMin = pbperslist::where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->selectRaw('MIN(ttl_score) as min_score, MAX(ttl_score) as max_score')
+                ->limit(1)
+                ->first();
+            $aboveScore = pbperslist::where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->where('ttl_score', '>=', 150)
+                ->count();
+            $bellowScore = pbperslist::where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->where('ttl_score', '<', 150)
+                ->count();
+            $recomScore = pbperslist::where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->where('decision', 'true')
+                ->selectRaw('MIN(ttl_score) as min_recom, MAX(ttl_score) as max_recom')
+                ->limit(1)
+                ->first();
+            $currentPb = DB::table('pb_current_estb_str_vac')
+                ->where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->limit(1)
+                ->first();
 
-                    // dd($currentPb->retd);
-        $recompers = pbperslist:: where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->where('decision', 'true')
-                    ->count();
-        $lastEntrySwo = pbperslist:: where('trade', $trade)
-                    ->where('rank', 'SWO')
-                    ->where('entry_no','21')
-                    ->where('decision','true')
-                    ->count();
-        $lastEntryWo = pbperslist:: where('trade', $trade)
-                    ->where('rank', 'SWO')
-                    ->where('entry_no','22')
-                    ->where('decision','true')
-                    ->count();
-        $recomMwo = pbperslist:: where('trade', $trade)
-                    ->where('rank','SWO')
-                    ->where('decision', 'true')
-                    ->count();
-        $recomSwo = pbperslist:: where('trade', $trade)
-                    ->where('rank','WO')
-                    ->where('decision', 'true')
-                    ->count();
-                    // $conductSheets = ConductSheet::where('bdno', $data->bdno)->get();
-                    // $conductSheets = $conductSheets->isEmpty() ? null : $conductSheets;
+            // dd($currentPb->retd);
+            $recompers = pbperslist::where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->where('decision', 'true')
+                ->count();
+            $lastEntrySwo = pbperslist::where('trade', $trade)
+                ->where('rank', 'SWO')
+                ->where('entry_no', '21')
+                ->where('decision', 'true')
+                ->count();
+            $lastEntryWo = pbperslist::where('trade', $trade)
+                ->where('rank', 'SWO')
+                ->where('entry_no', '22')
+                ->where('decision', 'true')
+                ->count();
+            $recomMwo = pbperslist::where('trade', $trade)
+                ->where('rank', 'SWO')
+                ->where('decision', 'true')
+                ->count();
+            $recomSwo = pbperslist::where('trade', $trade)
+                ->where('rank', 'WO')
+                ->where('decision', 'true')
+                ->count();
+            // $conductSheets = ConductSheet::where('bdno', $data->bdno)->get();
+            // $conductSheets = $conductSheets->isEmpty() ? null : $conductSheets;
             // dd($recomSwo);
-            return view('pb.pb', compact('dataCount','data', 'i', 'previousPb', 'totalEntry', 'sheetNo', 'vacNextYear', 'countRecom', 'scoreMAxMin', 'aboveScore', 'bellowScore',
-                                    'recomScore', 'currentPb', 'recompers', 'trade','sheetNo', 'rank', 'lastEntrySwo', 'lastEntryWo', 'recomMwo', 'recomSwo', 'user', 'trades', 'ranks', 'bases'))->with('success', 'Data found');
-        }else{
-            $rank=pbperslist::select('rank')
+            return view('pb.pb', compact(
+                'dataCount',
+                'data',
+                'i',
+                'previousPb',
+                'totalEntry',
+                'sheetNo',
+                'vacNextYear',
+                'countRecom',
+                'scoreMAxMin',
+                'aboveScore',
+                'bellowScore',
+                'recomScore',
+                'currentPb',
+                'recompers',
+                'trade',
+                'sheetNo',
+                'rank',
+                'lastEntrySwo',
+                'lastEntryWo',
+                'recomMwo',
+                'recomSwo',
+                'user',
+                'trades',
+                'ranks',
+                'bases'
+            ))->with('success', 'Data found');
+        } else {
+            $rank = pbperslist::select('rank')
                 ->where('trade', $trade)
                 ->where('sheetNo', $sheetNo)
                 ->distinct()->get();
-        // dd($rank);
-        $previousPb = DB::table('previouse_pb')
-                    ->where('trade', $trade)
-                    ->where('sheetNo', $sheetNo)
-                    ->get();
-        $i=1;
+            // dd($rank);
+            $previousPb = DB::table('previouse_pb')
+                ->where('trade', $trade)
+                ->where('sheetNo', $sheetNo)
+                ->get();
+            $i = 1;
 
-        $totalEntry =pbperslist:: SELECT('entry_no', DB::raw('count(*) as pers_count'))
-                    -> where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->groupBy('entry_no')
-                    ->get();
-                // dd($totalEntry);
+            $totalEntry = pbperslist::SELECT('entry_no', DB::raw('count(*) as pers_count'))
+                ->where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->groupBy('entry_no')
+                ->get();
+            // dd($totalEntry);
 
-        $vacNextYear = DB::table('vac_create_next_yrs')
-                    -> where('trade', $trade)
-                    ->where('sheetNo', $sheetNo)
-                    ->first();
-                    // dd($vacNextYear);
-        $countRecom =pbperslist:: SELECT(DB::raw('count(decision) as pers_recom'))
-                    -> where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->where('decision', 'true')
-                    ->groupBy('entry_no')
-                    ->get();
-        $scoreMAxMin =pbperslist:: where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->selectRaw('MIN(ttl_score) as min_score, MAX(ttl_score) as max_score')
-                    ->limit(1)
-                    ->first();
-        $aboveScore =pbperslist:: where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->where('ttl_score','>=',150)
-                    ->count();
-        $bellowScore =pbperslist:: where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->where('ttl_score','<',150)
-                    ->count();
-        $recomScore =pbperslist:: where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->where('decision', 'true')
-                    ->selectRaw('MIN(ttl_score) as min_recom, MAX(ttl_score) as max_recom')
-                    ->limit(1)
-                    ->first();
-        $currentPb =DB::table('pb_current_estb_str_vac')
-                    -> where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->limit(1)
-                    ->first();
+            $vacNextYear = DB::table('vac_create_next_yrs')
+                ->where('trade', $trade)
+                ->where('sheetNo', $sheetNo)
+                ->first();
+            // dd($vacNextYear);
+            $countRecom = pbperslist::SELECT(DB::raw('count(decision) as pers_recom'))
+                ->where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->where('decision', 'true')
+                ->groupBy('entry_no')
+                ->get();
+            $scoreMAxMin = pbperslist::where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->selectRaw('MIN(ttl_score) as min_score, MAX(ttl_score) as max_score')
+                ->limit(1)
+                ->first();
+            $aboveScore = pbperslist::where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->where('ttl_score', '>=', 150)
+                ->count();
+            $bellowScore = pbperslist::where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->where('ttl_score', '<', 150)
+                ->count();
+            $recomScore = pbperslist::where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->where('decision', 'true')
+                ->selectRaw('MIN(ttl_score) as min_recom, MAX(ttl_score) as max_recom')
+                ->limit(1)
+                ->first();
+            $currentPb = DB::table('pb_current_estb_str_vac')
+                ->where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->limit(1)
+                ->first();
 
-                    // dd($currentPb->retd);
-        $recompers = pbperslist:: where('trade', $trade)
-                    ->where('sheetno', $sheetNo)
-                    ->where('decision', 'true')
-                    ->count();
-        $lastEntrySwo = pbperslist:: where('trade', $trade)
-                    ->where('rank', 'SWO')
-                    ->where('entry_no','21')
-                    ->where('decision','true')
-                    ->count();
-        $lastEntryWo = pbperslist:: where('trade', $trade)
-                    ->where('rank', 'SWO')
-                    ->where('entry_no','22')
-                    ->where('decision','true')
-                    ->count();
-        $recomMwo = pbperslist:: where('trade', $trade)
-                    ->where('rank','SWO')
-                    ->where('decision', 'true')
-                    ->count();
-        $recomSwo = pbperslist:: where('trade', $trade)
-                    ->where('rank','WO')
-                    ->where('decision', 'true')
-                    ->count();
-            return view('pb.pb-blank', compact('previousPb', 'totalEntry', 'sheetNo', 'vacNextYear', 'countRecom', 'scoreMAxMin', 'aboveScore', 'bellowScore',
-                                    'recomScore', 'currentPb', 'recompers', 'trade','sheetNo', 'rank', 'lastEntrySwo', 'lastEntryWo', 'recomMwo', 'recomSwo', 'user', 'trades', 'ranks', 'bases'))->with('error', 'Data no fund');
+            // dd($currentPb->retd);
+            $recompers = pbperslist::where('trade', $trade)
+                ->where('sheetno', $sheetNo)
+                ->where('decision', 'true')
+                ->count();
+            $lastEntrySwo = pbperslist::where('trade', $trade)
+                ->where('rank', 'SWO')
+                ->where('entry_no', '21')
+                ->where('decision', 'true')
+                ->count();
+            $lastEntryWo = pbperslist::where('trade', $trade)
+                ->where('rank', 'SWO')
+                ->where('entry_no', '22')
+                ->where('decision', 'true')
+                ->count();
+            $recomMwo = pbperslist::where('trade', $trade)
+                ->where('rank', 'SWO')
+                ->where('decision', 'true')
+                ->count();
+            $recomSwo = pbperslist::where('trade', $trade)
+                ->where('rank', 'WO')
+                ->where('decision', 'true')
+                ->count();
+            return view('pb.pb-blank', compact(
+                'previousPb',
+                'totalEntry',
+                'sheetNo',
+                'vacNextYear',
+                'countRecom',
+                'scoreMAxMin',
+                'aboveScore',
+                'bellowScore',
+                'recomScore',
+                'currentPb',
+                'recompers',
+                'trade',
+                'sheetNo',
+                'rank',
+                'lastEntrySwo',
+                'lastEntryWo',
+                'recomMwo',
+                'recomSwo',
+                'user',
+                'trades',
+                'ranks',
+                'bases'
+            ))->with('error', 'Data no fund');
         }
-
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Request $request, $id)
+    public function pbPersById(Request $request)
     {
         $id = $request->id;
+        $person = pbperslist::find($id);
+
+        return response()->json($person);
+    }
+
+    public function edit(Request $request)
+    {
+        $id = $request->updateId;
         $trade = $request->trade;
         $sheetNo = $request->sheetNo;
-        // dd($sheetNo);
         $s_no = $request->s_no;
         $bdno = $request->bdno;
         $rank = $request->rank;
@@ -261,29 +290,45 @@ class pbContrller extends Controller
         $base_unit = $request->base_unit;
         $base = $request->base;
         $other_rmks = $request->other_rmks;
+        $image = $request->file('image');
 
+        if ($image != null) {
+            // Get extension only
+            $extension = $image->getClientOriginalExtension();
+
+            // Rename file with bdno instead of original name
+            $fileName = $bdno . '.' . $extension;
+
+            // Move to public/promotionBoard/image
+            $image->move(public_path('promotionBoard/image'), $fileName);
+
+            // Save path or filename to DB if needed
+            $file = 'promotionBoard/image/' . $fileName;
+        }
+
+        $person = pbperslist::find($id);
 
         // Perform database update
-        pbperslist::where('id', $id)->update([
-            's_no'=>$s_no,
-            'bdno'=>$bdno,
-            'rank'=>$rank,
-            'name'=>$name,
-            'trade'=>$trade,
-            'entry_no'=>$entry_no,
-            'avg_par'=>$avg_par,
-            'career_marks'=>$career_marks,
-            'ttl_score'=>$ttl_score,
-            'es'=>$es, 'cs'=>$cs,
-            'conduct_sheet'=>$conduct_sheet,
-            'weight'=>$weight,
-            'base_unit'=>$base_unit,
-            'base'=>$base,
-            'other_rmks'=>$other_rmks,
-            'sheetNo'=>$sheetNo
+        $person->update([
+            's_no' => $s_no,
+            'bdno' => $bdno,
+            'rank' => $rank,
+            'name' => $name,
+            'trade' => $trade,
+            'entry_no' => $entry_no,
+            'avg_par' => $avg_par,
+            'career_marks' => $career_marks,
+            'ttl_score' => $ttl_score,
+            'es' => $es,
+            'cs' => $cs,
+            'conduct_sheet' => $conduct_sheet,
+            'weight' => $weight,
+            'base_unit' => $base_unit,
+            'base' => $base,
+            'other_rmks' => $other_rmks,
+            'sheetNo' => $sheetNo
         ]);
-
-            return redirect()->back()->with("success","Data update successfully.");
+        return redirect()->back()->with("success", "Data update successfully.");
     }
 
     /**
@@ -311,7 +356,7 @@ class pbContrller extends Controller
         pbperslist::where('id', $id)
             ->update(['rmks' => $rmk, 'decision' => $decision, 'rmks_1' => $rmks_1]);
 
-            return redirect()->back()->with("success","Data update successfully.");
+        return redirect()->back()->with("success", "Data update successfully.");
     }
 
 
@@ -322,6 +367,4 @@ class pbContrller extends Controller
     {
         //
     }
-
-
 }

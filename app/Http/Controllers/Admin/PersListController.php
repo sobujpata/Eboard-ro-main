@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\pbperslist;
@@ -113,5 +113,5 @@ class PersListController extends Controller
     {
         $deleteData = DB::table('pbperslists')->where('id', $id)->delete();
         return redirect()->back()->with('delete', 'Delete data successfully.');
-    }   
+    }
 }

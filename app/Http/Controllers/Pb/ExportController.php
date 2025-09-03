@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\pb;
+namespace App\Http\Controllers\Pb;
 
 use Illuminate\Http\Request;
 use App\Exports\PbrecomExport;
@@ -17,5 +17,5 @@ class ExportController extends Controller
         return Excel::download(new PbrecomExport($trade), "{$trade}-pbrecom.xlsx");
         // dd($trade);
     }
-    
+
 }
