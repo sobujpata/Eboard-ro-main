@@ -41,10 +41,9 @@ class EbPersController extends Controller
 
        $update = EbPerson::where('id', $id)
             ->update(['decision' => $decision]);
-            $msg = 'Decision updated successfully';
 
-        return response()->json(['success' => $msg]);
 
+        return response()->json(['success', 'Recom Update Successfully.']);
     }
 
     public function PersUpdate(Request $request, $id){
@@ -97,7 +96,7 @@ class EbPersController extends Controller
 
         $person->delete();
 
-        return redirect()->back()->with('message', 'Deleted Successfully.');
+        return redirect()->back()->with('success', 'Deleted Successfully.');
     }
     public function CreatePerson(Request $request){
         $user_id = $request->header('id');
@@ -166,7 +165,7 @@ class EbPersController extends Controller
         ]);
 
 
-        return redirect()->back()->with('message', 'Update Successfully.');
+        return redirect()->back()->with('success', 'Recom Update Successfully.');
     }
 
 

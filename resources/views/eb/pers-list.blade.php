@@ -597,10 +597,12 @@
                         'decision': decision // Example decision value
                     },
                     success: function(response) {
-                        // alert(response.success);
+                        successToast('Recom Update Successfully!')
+                        // flasher.success('Recom Update Successfully!');
                     },
                     error: function(response) {
-
+                        // flasher.error('Recom Update Failed!');
+                        errorToast('Recom Update Failed!')
                     }
                 });
             });

@@ -14,9 +14,9 @@ class PoliciesController extends Controller
      */
     public function index()
     {
-    //    dd('policies');
+        //    dd('policies');
         $policies = DB::table('policies')->get();
-        $count=1;
+        $count = 1;
         return view('admin.policies', compact('policies', 'count'));
     }
     /**
@@ -35,7 +35,7 @@ class PoliciesController extends Controller
 
         $policyData = DB::insert('insert into policies (name, subject, published_on, policy_for, filename) values(?,?,?,?,?)', [$name, $subject, $published_on, $policy_for, $fileName]);
 
-        return redirect()->back()->with("success","Data inserted successfully.");
+        return redirect()->back()->with("success", "Data inserted successfully.");
     }
 
     /**
@@ -59,46 +59,44 @@ class PoliciesController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Request $request, $id)
-{
+    {
 
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'subject' => 'required|string|max:255',
-        'published_on' => 'required|string|max:255',
-        'policy_for' => 'required|string|max:255',
-        'policyFile' => 'nullable|file|mimes:pdf,doc,docx,pptx|max:2048',
-    ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'subject' => 'required|string|max:255',
+            'published_on' => 'required|string|max:255',
+            'policy_for' => 'required|string|max:255',
+            'policyFile' => 'nullable|file|mimes:pdf,doc,docx,pptx|max:2048',
+        ]);
+        // dd($request->all());
+        $policy = Policy::find($id);
+        if (!$policy) {
+            return redirect()->back()->with("error", "Data update Failed.");
+        }
 
-    $policy = Policy::find($id);
+        $file_url = $policy->file; // default to existing
 
+        if ($request->hasFile('policyFile')) {
+            $policyFile = $request->file('policyFile');
+            $t = time();
+            $originalName = preg_replace('/\s+/', '-', $policyFile->getClientOriginalName());
+            $file_name = "{$t}-{$originalName}";
+            $policyFile->move(public_path('policies'), $file_name);
+            $file_url = "policies/{$file_name}";
+        }
 
-    if (!$policy) {
-        return redirect()->back()->with("error", "Data update Failed.");
+        // dd($file_url); // Remove this in production
+
+        $policy->update([
+            'name' => $request->name,
+            'subject' => $request->subject,
+            'published_on' => $request->published_on,
+            'policy_for' => $request->policy_for,
+            'file' => $file_url,
+        ]);
+
+        return redirect()->back()->with("success", "Data updated successfully.");
     }
-
-    $file_url = $policy->file; // default to existing
-
-    if ($request->hasFile('policyFile')) {
-        $policyFile = $request->file('policyFile');
-        $t = time();
-        $originalName = preg_replace('/\s+/', '-', $policyFile->getClientOriginalName());
-        $file_name = "{$t}-{$originalName}";
-        $policyFile->move(public_path('policies'), $file_name);
-        $file_url = "policies/{$file_name}";
-    }
-
-    // dd($file_url); // Remove this in production
-
-    $policy->update([
-        'name' => $request->name,
-        'subject' => $request->subject,
-        'published_on' => $request->published_on,
-        'policy_for' => $request->policy_for,
-        'file' => $file_url,
-    ]);
-
-    return redirect()->back()->with("success", "Data updated successfully.");
-}
 
 
     /**
@@ -106,7 +104,7 @@ class PoliciesController extends Controller
      */
     public function destroy(string $id)
     {
-       $deleteData = DB::table('policies')->where('id', $id)->delete();
-       return redirect()->back()->with('delete', 'Delete data successfully.');
+        $deleteData = DB::table('policies')->where('id', $id)->delete();
+        return redirect()->back()->with('delete', 'Delete data successfully.');
     }
 }
