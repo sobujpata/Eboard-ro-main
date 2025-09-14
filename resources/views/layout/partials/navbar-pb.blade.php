@@ -99,6 +99,8 @@
                                 Upload</a></li>
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/pb-bdno') }}">All BD NO</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{ url('/booklets') }}">Booklets</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"

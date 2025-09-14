@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\Pb\pbContrller;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
@@ -14,14 +15,15 @@ use App\Http\Controllers\Pb\ExportController;
 use App\Http\Controllers\Pb\PbItemController;
 use App\Http\Controllers\Pb\StanByController;
 use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Pb\pbRecomController;
 // use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Pb\pbRecomController;
 use App\Http\Controllers\Pb\SelectionController;
 use App\Http\Controllers\pb\pbBaseWiseController;
 use App\Http\Controllers\Admin\PersListController;
 use App\Http\Controllers\Admin\PoliciesController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\userListController;
+use App\Http\Controllers\DatabaseBackupController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PbNextVacController;
 use App\Http\Controllers\Admin\PbVacencyController;
@@ -149,6 +151,9 @@ Route::get('/pb-bdno', [PbItemController::class, 'PbBdno'])->name('bdno.show')->
 Route::get('/pb-home-base', [pbBaseWiseController::class, 'index'])->name('pb.baseWise')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/basewise/pb-base/{trade}/{sheetNo}', [pbBaseWiseController::class, 'PbPers'])->name('pb.baseWise')->middleware([TokenVerificationMiddleware::class]);
 
+//Booklet Download
+Route::get('/booklets', [PdfController::class, 'index'])->middleware([TokenVerificationMiddleware::class]);
+Route::get('/pdf', [PdfController::class, 'generate'])->middleware([TokenVerificationMiddleware::class]);
 //Evaluation Board Route
 
 Route::get('/eb-home', [EvaluationHomeController::class, 'index'])->middleware([TokenVerificationMiddleware::class]);
@@ -193,3 +198,5 @@ Route::post('/eb-store-person', [EbPersController::class, 'Store'])->name('store
 Route::get('/eb-person-upload-ecxel', [EbPersController::class, 'UploadExcelPage'])->name('UploadExcelPage')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/eb-upload-excel', [EbPersController::class, 'UploadExcel'])->name('store')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/eb-bdno', [EbPersController::class, 'Bdno'])->name('bdno.show')->middleware([TokenVerificationMiddleware::class]);
+
+Route::get('/download-backup', [DatabaseBackupController::class, 'download'])->name('backup.download')->middleware([TokenVerificationMiddleware::class]);

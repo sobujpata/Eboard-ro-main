@@ -119,7 +119,7 @@
             <i class="bi bi-file-earmark-bar-graph"></i>
             <span class="side-bar-item-caption">Bases</span>
         </a>
-        <a href="{{ url('/reportPage') }}" class="side-bar-item">
+        <a href="{{ route('backup.download') }}" class="side-bar-item">
             <i class="bi bi-file-earmark-bar-graph"></i>
             <span class="side-bar-item-caption">Export Database</span>
         </a>

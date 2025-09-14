@@ -12,6 +12,7 @@
                         <h2 class="bolder text-decoration-underline">Person Excel list Upload</h2>
                         <h5><strong>Note : </strong>The Excel file should be arranged as shown in the table below.</h5>
                         <p>Note : SheetNo will be SWO-MWO = 1, WO-SWO = 2, Sgt-WO = 3, Sgt-WO (Booklet-2) = 4 and Sgt-WO (Booklet-3) = 5</p>
+                        <p class="text-danger text-bolder">Note : CS Count for Excel sheet is =RANK.EQ(P2, $P$2:$P$100, 0)+COUNTIF($P$2:P2, P2)-1</p>
                         <p>Base will be this parson where under base.</p>
                         <p>This is table header copy and setup excel header top.</p>
                         @if (session('message'))
