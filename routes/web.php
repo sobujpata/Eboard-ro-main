@@ -153,6 +153,9 @@ Route::get('/basewise/pb-base/{trade}/{sheetNo}', [pbBaseWiseController::class, 
 
 //Booklet Download
 Route::get('/booklets', [PdfController::class, 'index'])->middleware([TokenVerificationMiddleware::class]);
+
+Route::post('/booklets-download', [PdfController::class, 'BookleteDownload'])->name('booklets.download')->middleware([TokenVerificationMiddleware::class]);
+
 Route::get('/pdf', [PdfController::class, 'generate'])->middleware([TokenVerificationMiddleware::class]);
 //Evaluation Board Route
 
