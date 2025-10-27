@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Trade extends Model
+class RetdVac extends Model
 {
+    use HasFactory;
     protected $fillable = [
-        'id',
         'trade',
-        'fullname'
+        'sheet_no',
+        'entry_no',
+        'vac_on_retd',
+        'remarks'
     ];
-    public function navbars()
-    {
-        return $this->hasMany(Navbar::class, 'trade_id', 'id');
-    }
-
 }

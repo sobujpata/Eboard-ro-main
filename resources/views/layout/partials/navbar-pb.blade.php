@@ -87,8 +87,9 @@
                         <li><a class="dropdown-item nav-link" href="{{ url('/pb-add-new-person') }}">Add New Person</a>
                         </li>
                         <div class="dropdown-divider"></div>
-                        <li><a class="dropdown-item nav-link" href="{{ url('/pb-person-upload-ecxel') }}">Add New
-                                Person By Upload Excel</a></li>
+                        <li><a class="dropdown-item nav-link" href="{{ url('/pb-person-upload-ecxel') }}">Add New Person By Upload Excel</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{ url('/pb-conduct-sheet-upload-ecxel') }}">Add Conduct Sheet By Upload Excel</a></li>
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/pb-image') }}">Profile Image Upload</a>
                         </li>
@@ -101,6 +102,8 @@
                         <li><a class="dropdown-item nav-link" href="{{ url('/pb-bdno') }}">All BD NO</a></li>
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/booklets') }}">Booklets</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{ url('/instraction') }}">Instraction</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"

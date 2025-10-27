@@ -30,7 +30,10 @@ use App\Http\Controllers\Admin\PbVacencyController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use App\Http\Controllers\Evaluation\EbPersController;
 use App\Http\Controllers\Admin\PbPreviouseVacController;
+use App\Http\Controllers\ConductSheetController;
 use App\Http\Controllers\Evaluation\HomeController as EvaluationHomeController;
+use App\Http\Controllers\InstractionController;
+use App\Http\Controllers\RetdvacController;
 
 // Web API Routes
 Route::post('/user-registration', [UserController::class, 'UserRegistration']);
@@ -143,6 +146,9 @@ Route::post('/pb-store-person', [PbItemController::class, 'Store'])->name('store
 //Add new pb person
 Route::get('/pb-person-upload-ecxel', [PbItemController::class, 'UploadExcelPage'])->name('UploadExcelPage')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/pb-upload-excel', [PbItemController::class, 'UploadExcel'])->name('store')->middleware([TokenVerificationMiddleware::class]);
+//Add Coduct sheet
+Route::get('/pb-conduct-sheet-upload-ecxel', [ConductSheetController::class, 'index'])->name('UploadExcelPage')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/conduct-sheet-upload-excel', [ConductSheetController::class, 'UploadExcel'])->name('store')->middleware([TokenVerificationMiddleware::class]);
 
 //All Bdno
 Route::get('/pb-bdno', [PbItemController::class, 'PbBdno'])->name('bdno.show')->middleware([TokenVerificationMiddleware::class]);
@@ -156,9 +162,23 @@ Route::get('/booklets', [PdfController::class, 'index'])->middleware([TokenVerif
 
 Route::post('/booklets-download', [PdfController::class, 'BookleteDownload'])->name('booklets.download')->middleware([TokenVerificationMiddleware::class]);
 
-Route::get('/pdf', [PdfController::class, 'generate'])->middleware([TokenVerificationMiddleware::class]);
-//Evaluation Board Route
+Route::get('/instraction', [InstractionController::class, 'index'])->middleware([TokenVerificationMiddleware::class]);
+Route::post('/instraction/update', [InstractionController::class, 'update'])->name('instraction.update')->middleware([TokenVerificationMiddleware::class]);
 
+//trade list
+Route::get('/trades', [RetdvacController::class, 'trade'])->middleware(TokenVerificationMiddleware::class);
+//Vac create on retairment
+Route::get('/vac-on-retd', [RetdvacController::class, 'index'])->middleware(TokenVerificationMiddleware::class);
+//api
+Route::get('/vac-on-retd-list', [RetdvacController::class, 'show'])->middleware(TokenVerificationMiddleware::class);
+Route::post('/vac-on-retd-create', [RetdvacController::class, 'create'])->middleware(TokenVerificationMiddleware::class);
+Route::post('/vac-on-retd-by-id', [RetdvacController::class, 'showById'])->middleware(TokenVerificationMiddleware::class);
+Route::post('/vac-on-retd-update/{id}', [RetdvacController::class, 'update'])->middleware(TokenVerificationMiddleware::class);
+Route::post('/vac-on-retd-delete', [RetdvacController::class, 'destroy'])->middleware(TokenVerificationMiddleware::class);
+
+Route::get('/pdf', [PdfController::class, 'generate'])->middleware([TokenVerificationMiddleware::class]);
+
+//Evaluation Board Route
 Route::get('/eb-home', [EvaluationHomeController::class, 'index'])->middleware([TokenVerificationMiddleware::class]);
 Route::get('/eb/{type}', [EbPersController::class, 'index'])->name('eb.list')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/eb-update/{id}', [EbPersController::class, 'update'])->name('eb.update')->middleware([TokenVerificationMiddleware::class]);
@@ -166,6 +186,8 @@ Route::get('/eb/items/{id}/update-decision', [EbPersController::class, 'updateDe
 Route::get('/eb-selection', [EbPersController::class, 'EbSelectedList'])->middleware([TokenVerificationMiddleware::class]);
 Route::get('/eb-stanby', [EbPersController::class, 'EbStandByList'])->middleware([TokenVerificationMiddleware::class]);
 Route::get('/eb-all-pers', [EbPersController::class, 'EbList'])->middleware([TokenVerificationMiddleware::class]);
+Route::get('/eb-pers-pdf-download', [EbPersController::class, 'EbPersByPdf'])->middleware([TokenVerificationMiddleware::class]);
+Route::get('/eb-all-pers-pdf', [EbPersController::class, 'EbListPdf'])->middleware([TokenVerificationMiddleware::class]);
 Route::post('/eb-edit-pers/{id}', [EbPersController::class, 'PersUpdate'])->name('eb.edit')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/eb-pers-delete/{id}', [EbPersController::class, 'EbDelete'])->name('eb.delete')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/eb-summary', [EbPersController::class, 'Summary'])->name('eb.summary')->middleware([TokenVerificationMiddleware::class]);

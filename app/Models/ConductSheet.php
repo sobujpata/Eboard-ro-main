@@ -7,6 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class ConductSheet extends Model
 {
-    use HasFactory;
-    protected $fillable = ['bdno', 'punishment_base', 'dt_of_offense', 'rank', 'offense', 'dt_of_punishment', 'awarded', 'entry'];
+    protected $fillable = [
+        'bdno',
+        'present_rank',
+        'name',
+        'trade',
+        'base_or_unit',
+        'date_of_offense',
+        'rank',
+        'offense',
+        'date_of_punishment',
+        'awarded',
+        'entry',
+        'moral_trapitude',
+    ];
 }

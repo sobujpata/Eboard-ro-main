@@ -103,7 +103,7 @@
                                         Punishment</th>
                                     <th class="text-center"
                                         style="vertical-align:middle; writing-mode: vertical-rl; transform: rotate(180deg);">
-                                        Dt of Retd <br>(If Considered)</th>
+                                        Ttl Svc During Retd <br>(If Considered)</th>
                                     <th class="text-center"
                                         style="vertical-align:middle; writing-mode: vertical-rl; transform: rotate(180deg);">
                                         Svc Left in<br> Present Rank</th>
@@ -150,8 +150,8 @@
                                         <td>{{ $person->base_unit }}</td>
 
                                         <td>{{ $person->doe }}</td>
-                                        <td>{{ $person->avg_par }}</td>
-                                        <td>{{ $person->career_marks }}</td>
+                                        <td>{{ number_format($person->avg_par, 2) }}</td>
+                                        <td>{{ number_format($person->career_marks, 2) }}</td>
 
                                         <td align='center' style="vertical-align:middle">
                                             <a class="btn btn-white text-danger mt-2" data-bs-toggle="modal"
@@ -185,7 +185,19 @@
                                             </div>
 
                                         </td>
-                                        <td>{{ $person->dor }}</td>
+                                        <td>
+                                            <?php
+                                                $enrollment = DateTime::createFromFormat('d-m-Y', $person->doe);
+                                                $today = new DateTime();
+                                                $diff = $enrollment->diff($today);
+                                                $years = $diff->y; // only years
+                                                if($person->type == 0){
+                                                    echo $years+1 . ' Yrs';
+                                                }else{
+                                                    echo '21 Yrs';
+                                                }
+                                            ?>
+                                        </td>
                                         <td>{{ $person->dor }}</td>
                                         <td class="text-center">
                                             <a href="{{ asset('evaluation-board/indv_application/' . $person->bdno . '.pdf') }}"
@@ -238,7 +250,7 @@
 
                                         </td>
 
-                                        <td class="text-left">{{ $person->rmks_by_ro }}</td>
+                                        <td class="text-left">{!! $person->rmks_by_ro !!}</td>
                                         <td class="text-center">{{ $person->rmks_by_board }}</td>
                                         <td class="text-center">
                                             @if ($person->decision == 'true')
@@ -248,9 +260,10 @@
                                             @else
                                                 <label class='container1'>
                                                     <input type="checkbox" data-column_name="decision"
-                                                        {{-- <!-- Data attribute for column name --> --}} data-id="{{ $person->id }}"
+                                                        {{-- <!-- Data attribute for column name --> --}}
+                                                        data-id="{{ $person->id }}"
                                                         {{-- <!-- Data attribute for person ID --> --}} {{ $person->decision ? 'checked' : '' }}>
-                                                    <!-- Blade syntax to conditionally add 'checked' attribute -->
+                                                        <!-- Blade syntax to conditionally add 'checked' attribute -->
                                                     <span class="checkmark"></span>
                                                     <!-- This is likely the styling for the checkbox -->
                                                 </label>
@@ -425,7 +438,7 @@
                                                                                     value="{{ $person->trade }}">
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-3">
+                                                                        <div class="col-md-2">
                                                                             <div class="form-group">
                                                                                 <label for="entry_no">Entry No</label>
                                                                                 <input type="text" name="entry_no"
@@ -433,7 +446,7 @@
                                                                                     value="{{ $person->entry_no }}">
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-3">
+                                                                        <div class="col-md-2">
                                                                             <div class="form-group">
                                                                                 <label for="avg_par">PAR (AVG)</label>
                                                                                 <input type="text" name="avg_par"
@@ -441,7 +454,7 @@
                                                                                     value="{{ $person->avg_par }}">
                                                                             </div>
                                                                         </div>
-                                                                        <div class="col-md-3">
+                                                                        <div class="col-md-2">
                                                                             <div class="form-group">
                                                                                 <label for="career_marks">Career
                                                                                     Marks</label>
@@ -450,9 +463,6 @@
                                                                                     value="{{ $person->career_marks }}">
                                                                             </div>
                                                                         </div>
-
-                                                                    </div>
-                                                                    <div class="row">
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <label for="doe">Dt of
@@ -462,6 +472,10 @@
                                                                                     value="{{ $person->doe }}">
                                                                             </div>
                                                                         </div>
+
+
+                                                                    </div>
+                                                                    <div class="row">
                                                                         <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <label for="dor">Dt of Retd</label>
@@ -488,23 +502,7 @@
                                                                                     value="{{ $person->base_unit }}">
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <label for="rmks_by_ro">Remarks By Ro/D
-                                                                                    Pers</label>
-                                                                                <textarea name="rmks_by_ro" id="" cols="" rows="3" class="form-control">{{ $person->rmks_by_ro }}</textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
-                                                                            <div class="form-group">
-                                                                                <label for="rmks_by_board">Remarks By
-                                                                                    Board</label>
-                                                                                <textarea name="rmks_by_board" id="" cols="" rows="3" class="form-control">{{ $person->rmks_by_board }}</textarea>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-3">
                                                                             <div class="form-group">
                                                                                 <label for="type">Pers Type</label>
                                                                                 <select name="type" id=""
@@ -520,6 +518,23 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12 mb-2">
+                                                                            <div class="form-group">
+                                                                                <label for="rmks_by_ro">Remarks By Ro/D Pers</label>
+                                                                                <textarea name="rmks_by_ro" id="summernote_remarks{{ $person->id }}" cols="" rows="3" class="form-control">{{ $person->rmks_by_ro }}</textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <script>
+                                                                            $(document).ready(function() {
+                                                                                $('#summernote_remarks{{ $person->id }}').summernote({
+                                                                                    placeholder: 'Enter Remarks By Ro/D Pers',
+                                                                                    tabsize: 2,
+                                                                                    height: 200
+                                                                                });
+                                                                            });
+                                                                        </script>
                                                                         <div class="col-md-12">
                                                                             <div class="form-group">
                                                                                 <label for="salient_points">Salient
@@ -537,13 +552,6 @@
                                                                                 });
                                                                             });
                                                                         </script>
-
-                                                                        <div class="col-md-3">
-                                                                            <img src="{{ asset('evaluation-board/image') }}/{{ $person->bdno }}.gif"
-                                                                                class="mt-2" alt=""
-                                                                                style="width: 70px">
-                                                                            {{-- <input type="file" name="image" id="" value=""> --}}
-                                                                        </div>
                                                                     </div>
 
                                                                     <div class="modal-footer">

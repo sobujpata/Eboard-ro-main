@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Evaluation;
 
+use DateTime;
+use Mpdf\Mpdf;
 use App\Models\User;
+use Carbon\Traits\Date;
 use App\Models\EbPerson;
 use Illuminate\Http\Request;
 use App\Exports\EbListExport;
+use App\Imports\EbPersonImport;
 use App\Exports\EbStandbyExport;
 use App\Exports\EbSelectedExport;
-use App\Imports\EbPersonImport;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
@@ -177,6 +180,131 @@ class EbPersController extends Controller
     }
     public function EbList(){
         return Excel::download(new EbListExport,"Eb_Pers_List.xlsx");
+    }
+
+    public function EbPersByPdf(Request $request){
+        $user_id = $request->header('id');
+        $user = User::find($user_id);
+        $userName = $user->userName;
+        // $trades = Trade::get();
+        return view('eb.pdf-person-list', compact('user', 'userName'));
+    }
+    public function EbListPdf(Request $request){
+        if($request->decision == 1){
+            $persons = EbPerson::all();
+            $headerText = "List of airmen";
+        }elseif($request->decision == 2){
+            $persons = EbPerson::where('type', 0)->get();
+            $headerText = "List of airmen applied for retd after completion of 25 yrs or more svc";
+        }elseif($request->decision == 3){
+            $persons = EbPerson::where('type', 1)->get();
+            $headerText = "List of airmen screening from svc after completion of 21 yrs of svc";
+        }elseif($request->decision == 4){
+            $persons = EbPerson::where('decision','true')->where('type',0)->get();
+            $headerText = "List of airmen applied for retd after completion of 25 yrs or more svc";
+        }else{
+            $persons = EbPerson::where('decision','true')->where('type',1)->get();
+            $headerText = "List of airmen screening from svc after completion of 21 yrs of svc";
+        }
+        $today = new DateTime();
+        // Set A3 Landscape
+        $mpdf = new Mpdf([
+            'format' => 'A4-L',
+            // 'margin_top' => 52, // important for header space
+            // 'margin_bottom' => 20,  // keep space for footer
+        ]);
+        $year = Date('Y');
+        // Write some HTML content
+        $headerHtml = '
+            <div style="text-align:center; font-size:12px; color:gray;">
+                CONFIDENTIAL
+            </div>
+        ';
+        $mpdf->SetHTMLHeader($headerHtml);
+        $footerHtml = '
+            <div style="text-align:center; font-size:12px; color:gray;">
+                Page {PAGENO} of {nbpg}<br>
+                CONFIDENTIAL
+            </div>
+        ';
+        $mpdf->SetHTMLFooter($footerHtml);
+
+        $WriteHTML='<h3 style="color:black; text-align:center; text-decoration:underline; text-transform:uppercase;">Evaluation Board-'.$year.'<br>'.$headerText.'</h3>';
+        $WriteHTML.='<table border="1" style="border-collapse: collapse; width: 100%; font-size:12px;">';
+        $WriteHTML.='
+        <thead style="background-color: #f2f2f2;">
+            <tr>
+                <th style="width:3%;">Ser No</th>
+                <th style="width:5%;">Photo</th>
+                <th style="width:5%;">BD No</th>
+                <th style="width:5%;">Rank</th>
+                <th style="width:15%;">Name</th>
+                <th style="width:5%;">Trade</th>
+                <th style="width:5%;">Entry No</th>
+                <th style="width:7%;">DOE</th>
+                <th style="width:4%;">Avg PAR</th>
+                <th style="width:5%;">Career Marks</th>
+                <th style="width:10%;">Conduct Sheet</th>
+                <th style="width:5%;">Ttl Svc During Retd</th>
+                <th style="width:7%;">Retd</th>
+                <th style="width:20%;">Remarks</th>
+                <th style="width:6%;">Decision By Board</th>
+            </tr>
+        </thead>
+        <tbody>
+        ';
+        foreach($persons as $person){
+            $enrollment = DateTime::createFromFormat('d-m-Y', $person->doe);
+            $today = new DateTime();
+            $diff = $enrollment->diff($today);
+
+            $years = $diff->y+1; // only years
+            $month = $diff->m; // only years
+            if($person->type == 0){
+                $retd_yrs = $years.' Yrs';
+            }else{
+                $retd_yrs = '21 Yrs';
+            }
+
+            if($person->decision == 'true'){
+                $decision = '<span style="color:green;">Recom for Retd</span>';
+            }elseif($person->decision == 'false'){
+                $decision = 'Stanby for Retd';
+            }else{
+                if($person->type == 0)
+                    $decision = 'Not Recom';
+                else
+                $decision = 'Recom for Retention';
+            }
+            // dd($enrollment);
+            $WriteHTML.='<tr>
+                <td style="text-align:center;">'.$person->s_no.'</td>
+                <td style="text-align:center;"><img src="'.public_path('evaluation-board/image/'.$person->bdno.'.gif').'" alt="Photo" width="50" height="60"></td>
+                <td style="text-align:center;">'.$person->bdno.'</td>
+                <td style="text-align:center;">'.$person->rank.'</td>
+                <td style="text-align:left; padding-left:5px;">'.$person->name.'</td>
+                <td style="text-align:center;">'.$person->trade.'</td>
+                <td style="text-align:center;">'.$person->entry_no.'</td>
+                <td style="text-align:center;">'.$person->doe.'</td>
+                <td style="text-align:center;">'.number_format($person->avg_par, 2).'</td>
+                <td style="text-align:center;">'.number_format($person->career_marks, 2).'</td>
+                <td style="text-align:center;">'.$person->conduct_sheet.'</td>
+                <td style="text-align:center;">'.$retd_yrs.'</td>
+                <td style="text-align:center;">'.$person->dor.'</td>
+                <td style="text-align:left;">'.(isset($person->rmks_by_ro) ? $person->rmks_by_ro : '').'</td>
+                <td style="text-align:center;">'.$decision.'</td>
+            </tr>';
+        }
+
+        $WriteHTML.='</tbody></table>';
+        $mpdf->WriteHTML($WriteHTML);
+
+
+
+        // Output to browser
+        return response($mpdf->Output('', 'S'), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="example.pdf"');
     }
 
 

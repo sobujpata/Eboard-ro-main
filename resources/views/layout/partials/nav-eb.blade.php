@@ -64,6 +64,8 @@
                             <li><a class="dropdown-item nav-link" href="{{ url('/eb-stanby') }}">Stanby List</a></li>
                             <div class="dropdown-divider"></div>
                             <li><a class="dropdown-item nav-link" href="{{ url('/eb-all-pers') }}">All Pers List</a>
+                            <div class="dropdown-divider"></div>
+                            <li><a class="dropdown-item nav-link" href="{{ url('/eb-pers-pdf-download') }}">Person List Pdf</a>
                             </li>
                         </ul>
                     </li>

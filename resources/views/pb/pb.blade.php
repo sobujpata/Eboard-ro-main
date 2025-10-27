@@ -435,16 +435,16 @@
         </div>
         <div class="page-header mt-2 mb-2">
             <div class='row'>
-                <div class='col-md-4 text-right'></div>
-                <div class='col-md-2 text-right'><b>
-                        <h4 id="rcorners1">Please Select Entry No ></h4>
+                <div class='col-md-3 text-right'></div>
+                <div class='col-md-3 text-right'><b>
+                        <h4 id="rcorners1" class="text-end">Please Select Entry No ></h4>
                     </b></div>
-                <div class='col-md-2'>
+                <div class='col-md-3'>
                     <select id="positionFilter" class="form-control" name="entry_no">
                         <option value="" selected='selected' id="allShow">All Entry</option>
                     </select>
                 </div>
-                <div class='col-md-4 text-right'></div>
+                <div class='col-md-3 text-right'></div>
             </div>
         </div>
 

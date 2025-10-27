@@ -11,7 +11,7 @@
                     <h2 class="bolder text-decoration-underline text-center">Download Booklet</h2>
                     <div class="row mt-4 mb-4">
                         <div class="col-md-4 offset-4">
-                            <form action="{{route('booklets.download')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('booklets.download')}}" method="post" enctype="multipart/form-data" target="_blank">
                                 @csrf
                                 <div class="form-group gap-3 mb-2">
                                     {{-- <label for="exampleFormControlSelect1">Select Trade</label> --}}

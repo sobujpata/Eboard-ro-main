@@ -145,11 +145,11 @@
                                     <label for="base">Under Base</label>
                                     <select name="base" id="" class="form-control form-select">
                                         <option value="" disabled selected>Select Base</option>
-                                        {{-- @foreach ($bases as $base)
+                                        @foreach ($bases as $base)
                                             <option value="{{ $base->name }}"
                                                 @if ($item->base == $base->name) selected @endif>{{ $base->name }}
                                             </option>
-                                        @endforeach --}}
+                                        @endforeach
                                     </select>
 
                                 </div>

@@ -10,20 +10,20 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('/favicon.ico') }}" />
     <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-icons.min.css') }}">
     <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet" />
-    {{-- <link href="{{asset('css/fontawesome.css')}}" rel="stylesheet" /> --}}
+    <link href="{{asset('css/fontawesome.css')}}" rel="stylesheet" />
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/toastify.min.css') }}" rel="stylesheet" />
 
 
-    <link href="{{ asset('css/bootstrap-icons.min.css') }}" rel="stylesheet" />
+    {{-- <link href="{{ asset('css/bootstrap-icons.min.css') }}" rel="stylesheet" /> --}}
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> --}}
+    <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.datatables.min.js') }}"></script>
     <script src="{{ asset('js/toastify-js.js') }}"></script>
     <script src="{{ asset('js/axios.min.js') }}"></script>
     <script src="{{ asset('js/config.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
-
 </head>
 
 <body>
@@ -111,6 +111,10 @@
         <i class="bi bi-file-earmark-bar-graph"></i>
         <span class="side-bar-item-caption">Navbar Settings</span>
     </a> --}}
+        <a href="{{ url('/vac-on-retd') }}" class="side-bar-item">
+            <i class="bi bi-file-earmark-bar-graph"></i>
+            <span class="side-bar-item-caption">Vac On Retd</span>
+        </a>
         <a href="{{ url('/admin/menus') }}" class="side-bar-item">
             <i class="bi bi-file-earmark-bar-graph"></i>
             <span class="side-bar-item-caption">PB Menu</span>
@@ -131,10 +135,6 @@
     <div id="contentRef" class="content">
         @yield('content')
     </div>
-
-
-    <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.datatables.min.js') }}"></script>
     <script>
         function MenuBarClickHandler() {
             let sideNav = document.getElementById('sideNavRef');
