@@ -100,7 +100,7 @@
                                     value="{{ $prePb->score_min }}">
                             </div>
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-4 mb-3 d-none">
                             <div class="form-group">
                                 <label class="form-lavel">Sheet No</label>
                                 <input type="text" name="sheetNo" class="form-control" placeholder="Enter Sheet No"

@@ -11,7 +11,7 @@
                     <img src="{{asset('logo/ro.png')}}" alt="" style="width: 20%;">
                 </div>
                 <div class="card-body">
-                    <h3 class="text-center">EBOARD RO</h3>
+                    <h3 class="text-center">PROMOTION BOARD RO</h3>
                     <h4 class="text-center">PLEASE SIGN IN</h4>
                     <br/>
                     <input id="email" placeholder="User Email" class="form-control" type="email"/>
@@ -20,7 +20,7 @@
                     <br/>
                     <button onclick="SubmitLogin()" class="btn w-100 bg-gradient-primary">Next</button>
                     <hr/>
-                    
+
                 </div>
             </div>
         </div>

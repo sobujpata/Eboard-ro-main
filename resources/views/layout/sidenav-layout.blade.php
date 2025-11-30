@@ -11,32 +11,29 @@
     <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet" />
-    <link href="{{asset('css/fontawesome.css')}}" rel="stylesheet" />
+    <link href="{{ asset('css/fontawesome.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/toastify.min.css') }}" rel="stylesheet" />
-
-
-    {{-- <link href="{{ asset('css/bootstrap-icons.min.css') }}" rel="stylesheet" /> --}}
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"> --}}
     <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
     <script src="{{ asset('js/jquery.datatables.min.js') }}"></script>
     <script src="{{ asset('js/toastify-js.js') }}"></script>
     <script src="{{ asset('js/axios.min.js') }}"></script>
     <script src="{{ asset('js/config.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
+    {{-- Summernote --}}
+    <link href="{{ asset('summernote/summernote-lite.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('summernote/jquery-3.5.1.slim.min.js') }}"></script>
+    <script src="{{ asset('summernote/summernote-lite.min.js') }}"></script>
 </head>
 
 <body>
-
     <div id="loader" class="LoadingOverlay d-none">
         <div class="Line-Progress">
             <div class="indeterminate"></div>
         </div>
     </div>
-
     <nav class="navbar fixed-top px-0 shadow-sm bg-white">
         <div class="container-fluid">
-
             <a class="navbar-brand" href="#">
                 <span class="icon-nav m-0 h5" onclick="MenuBarClickHandler()">
                     <img class="nav-logo-sm mx-2" src="{{ asset('images/menu.svg') }}" alt="logo" />
@@ -67,7 +64,6 @@
 
 
     <div id="sideNavRef" class="side-nav-open">
-
         <a href="{{ url('/dashboard') }}" class="side-bar-item">
             <i class="bi bi-graph-up"></i>
             <span class="side-bar-item-caption">Dashboard</span>
@@ -107,10 +103,6 @@
             <span class="side-bar-item-caption">PB VAC-{{ substr(date('Y') + 1, -2) }} &
                 {{ substr(date('Y') + 2, -2) }}</span>
         </a>
-        {{-- <a href="{{url('/admin/pb/nav-settings')}}" class="side-bar-item">
-        <i class="bi bi-file-earmark-bar-graph"></i>
-        <span class="side-bar-item-caption">Navbar Settings</span>
-    </a> --}}
         <a href="{{ url('/vac-on-retd') }}" class="side-bar-item">
             <i class="bi bi-file-earmark-bar-graph"></i>
             <span class="side-bar-item-caption">Vac On Retd</span>
@@ -127,11 +119,7 @@
             <i class="bi bi-file-earmark-bar-graph"></i>
             <span class="side-bar-item-caption">Export Database</span>
         </a>
-
-
     </div>
-
-
     <div id="contentRef" class="content">
         @yield('content')
     </div>
@@ -152,7 +140,7 @@
             }
         }
     </script>
-
+    @stack('other_script')
 </body>
 
 </html>

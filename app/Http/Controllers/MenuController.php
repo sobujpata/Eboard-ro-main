@@ -18,8 +18,8 @@ class MenuController extends Controller
         }
 
         $Nav_menus = $query->orderBy('parent_id')->orderBy('order')->paginate(15);
-
-        return view('admin.menus.index', compact('Nav_menus'));
+        $parents = Menu::pluck('title', 'id');
+        return view('admin.menus.index', compact('Nav_menus', 'parents'));
     }
 
     public function create()
@@ -34,7 +34,8 @@ class MenuController extends Controller
             'title' => 'required|string|max:255',
             'url' => 'nullable|string',
             'parent_id' => 'nullable|exists:menus,id',
-            'order' => 'nullable|integer'
+            'order' => 'nullable|integer',
+            'status' => 'nullable|integer'
         ]);
 
         Menu::create($request->all());
@@ -54,12 +55,13 @@ class MenuController extends Controller
             'title' => 'required|string|max:255',
             'url' => 'nullable|string',
             'parent_id' => 'nullable|exists:menus,id',
-            'order' => 'nullable|integer'
+            'order' => 'nullable|integer',
+            'status' => 'nullable|integer',
         ]);
 
         $menu->update($request->all());
 
-        return redirect()->route('admin.menus.index', ['edited_id' => $menu->id])->with('success', 'Menu updated successfully.');
+        return redirect()->back()->with('success', 'Menu updated successfully.');
     }
 
     public function destroy(Menu $menu)

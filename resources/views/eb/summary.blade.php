@@ -7,7 +7,7 @@
             {{ session('status') }}
         </div>
     @endif
-    <div class="row justify-content-center" style="margin-top: 10px;"
+    <div class="row justify-content-center" style="margin-top: 10px;">
         <div class="col-md-12">
             <div class="card">
 

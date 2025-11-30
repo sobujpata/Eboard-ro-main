@@ -15,10 +15,9 @@
     @endif
     <div class="row justify-content-center" style="margin-top: 10px;">
         <div class="col-md-12">
-            <div class="card">
-
-                <div class="card-header text-center">
-                    <h3>Promotion Policy</h3>
+            <div class="card mt-5">
+                <div class="card-header text-center bg-primary text-white">
+                    <h3 class="text-bold text-uppercase">Promotion Policy</h3>
                 </div>
                 <div class="card-body">
                     <table class="example1 table table-bordered table-striped" width="100%" cellspacing="0">
@@ -45,7 +44,7 @@
                                     <td class="text-center">
                                         <a href="{{asset($policy->file)}}" class="btn btn-success" target="_blank">View</a>
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModel{{$policy->id}}" style="{{ $user->userName == 'pbuser' ? 'display: none;' : '' }}">
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModel{{$policy->id}}" style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
                                             Edit
                                         </button>
 
@@ -105,7 +104,7 @@
                                             </div>
                                             </div>
                                         </div>
-                                        <a href="{{Route('policy.delete', $policy->id)}}"  class="btn btn-danger" style="{{ $user->userName == 'pbuser' ? 'display: none;' : '' }}">Delete</a>
+                                        <a href="{{Route('policy.delete', $policy->id)}}"  class="btn btn-danger" style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">Delete</a>
 
                                     </td>
                                 </tr>

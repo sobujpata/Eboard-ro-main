@@ -306,28 +306,36 @@
         <br>
         <table id="tableData" class="table table-striped table-bordered table-responsive-lg table-hover" style="width:100%">
             <thead>
-                <tr align="center" style="background:#33a8ff;">
-                    <th style="vertical-align: middle; width: 2% !important;">SL No</th>
-                    <th style="vertical-align: middle; width: 5% !important;">Image</th>
-                    <th style="vertical-align: middle; width: 4% !important;">BD No</th>
-                    <th style="vertical-align: middle; width: 15% !important;">Rank & Name</th>
-                    <th style="vertical-align: middle; width: 3% !important;">Entry No</th>
-                    <th style="vertical-align: middle; width: 5% !important;">PAR (Avg)</th>
-                    <th style="vertical-align: middle; width: 5% !important;">Marks(TTB, TTA, ST) (Avg)</th>
-                    <th style="vertical-align: middle; width: 5% !important;">Total Score</th>
-                    <th style="vertical-align: middle; width: 3% !important;">Entry Sr</th>
-                    <th style="vertical-align: middle; width: 3% !important;">Comd Sr</th>
-                    <th style="vertical-align: middle; width: 5% !important;">Conduct Sheet</th>
-                    <th style="vertical-align: middle; width: 3% !important;">Weight (lbs)</th>
-                    <th style="vertical-align: middle; width: 4% !important;">Base/ Unit</th>
-                    <th style="vertical-align: middle; width: 5% !important;">Recom</th>
-                    <th style="vertical-align: middle; width: 15% !important;">Remarks</th>
-                    <th style="vertical-align: middle; width: 10% !important;">Remarks By PB</th>
-                    {{-- <th style="vertical-align: middle; width: 2% !important; ">Decision</th> --}}
-                    {{-- <th style="vertical-align: middle; width: 2% !important; display:@php if($userName->userName == 'pbuser'){ echo 'none;'; } @endphp">Decision</th> --}}
-                    {{-- <th style="vertical-align: middle; width: 2% !important;">Edit</th> --}}
-                </tr>
-            </thead>
+                    <tr align="center" style="background:#33a8ff;">
+                        <th rowspan="2" style="vertical-align: middle; width: 2% !important;">SL No</th>
+                        <th rowspan="2" style="vertical-align: middle; width: 5% !important;">Photo</th>
+                        <th rowspan="2" style="vertical-align: middle; width: 4% !important;">BD No</th>
+                        <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Rank</th>
+                        <th rowspan="2" style="vertical-align: middle; width: 15% !important;">Name & Basic Trade</th>
+                        <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Entry No</th>
+                        {{-- <th style="vertical-align: middle; width: 5% !important;">PAR (Avg)</th> --}}
+                        <th colspan="2" style="vertical-align: middle; width: 9% !important;">POINTS</th>
+                        {{-- <th style="vertical-align: middle; width: 5% !important;">Marks(TTB, TTA, ST) (Avg)</th> --}}
+                        <th rowspan="2" style="vertical-align: middle; width: 5% !important;">Total Score</th>
+                        <th colspan="2" style="vertical-align: middle; width: 5% !important;">Entry Sr</th>
+                        {{-- <th style="vertical-align: middle; width: 3% !important;">Entry Sr</th> --}}
+                        {{-- <th style="vertical-align: middle; width: 3% !important;">Comd Sr</th> --}}
+                        <th rowspan="2" style="vertical-align: middle; width: 10% !important;">Conduct Sheet (Last
+                            3yrs)</th>
+                        <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Weight (lbs)</th>
+                        <th rowspan="2" style="vertical-align: middle; width: 4% !important;">Base/ Unit</th>
+                        <th rowspan="2" style="vertical-align: middle; width: 5% !important;">Recom</th>
+                        <th rowspan="2" style="vertical-align: middle; width: 15% !important;">Remarks</th>
+                        <th rowspan="2" style="vertical-align: middle; width: 10% !important;">Remarks By PB</th>
+                        
+                    </tr>
+                    <tr align="center" style="background:#33a8ff;">
+                        <th>Avg PAR</th>
+                        <th style="font-size: 10px">Mks of career courses Bas-40% Adv-40% ST-20%</th>
+                        <th>ES</th>
+                        <th>CS</th>
+                    </tr>
+                </thead>
             <tbody>
                 <tr>
                     <td colspan="17" class="text-center">No Data Found</td>

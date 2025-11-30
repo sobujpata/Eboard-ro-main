@@ -45,26 +45,33 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    <label for="basic_trade">Basic Trade</label>
+                                    <input type="text" name="basic_trade" id="basic_trade" class="form-control"
+                                        value="">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label for="trade">Trade</label>
                                     <input type="text" name="trade" id="trade" class="form-control"
                                         value="">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="entry_no">Entry No</label>
                                     <input type="text" name="entry_no" id="entry_no" class="form-control"
                                         value="">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="avg_par">PAR (AVG)</label>
                                     <input type="text" name="avg_par" id="avg_par" class="form-control"
                                         value="">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="career_marks">Career Marks</label>
                                     <input type="text" name="career_marks" id="career_marks" class="form-control"
@@ -143,12 +150,10 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="base">Under Base</label>
-                                    <select name="base" id="" class="form-control form-select">
+                                    <select name="base" id="bese" class="form-control form-select">
                                         <option value="" disabled selected>Select Base</option>
                                         @foreach ($bases as $base)
-                                            <option value="{{ $base->name }}"
-                                                @if ($item->base == $base->name) selected @endif>{{ $base->name }}
-                                            </option>
+                                            <option value="{{ $base->name }}">{{ $base->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -194,6 +199,7 @@
             document.getElementById('bdno').value =res.data.bdno;
             document.getElementById('rank').value =res.data.rank;
             document.getElementById('name').value =res.data.name;
+            document.getElementById('basic_trade').value =res.data.basic_trade;
             document.getElementById('trade').value =res.data.trade;
             document.getElementById('entry_no').value =res.data.entry_no;
             document.getElementById('avg_par').value =res.data.avg_par;
@@ -204,6 +210,7 @@
             document.getElementById('conduct_sheet').value =res.data.conduct_sheet;
             document.getElementById('weight').value =res.data.weight;
             document.getElementById('base_unit').value =res.data.base_unit;
+            document.getElementById('bese').value =res.data.base;
             document.getElementById('sheetNo').value =res.data.sheetNo;
             $('#summernote').summernote('code', res.data.other_rmks);
 

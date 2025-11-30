@@ -105,13 +105,9 @@
                                 <td class="text-center">{{ $user->password }}</td>
                                 <td class="text-center">{{ $user->type }}</td>
                                 <td class="text-center" style="text-align: center;">
-                                    {{-- <a href="{{asset('users')}}/{{ $user->profile }}" target="_blank" class="btn btn-success"><i class="fa-solid fa-eye"></i></a> --}}
-
-                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModel{{$user->id}}">
+                                    <button type="button" class="btn btn-primary mb-0" data-bs-toggle="modal" data-bs-target="#editModel{{$user->id}}">
                                         <i class="fa-solid fa-edit"></i>
                                     </button>
-
                                     <!-- Modal -->
                                     <div class="modal fade" id="editModel{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -125,7 +121,7 @@
                                                     @csrf
                                                     <div class="form-group">
                                                         <input type="hidden" name="id" value="{{$user->id}}">
-                                                        <label class="form-lavel">user Name</label>
+                                                        <label class="form-lavel text-left">user Name</label>
                                                         <input type="text" name="name" class="form-control" placeholder="Enter user name" value="{{$user->name}}">
                                                     </div>
                                                     <div class="form-group">
@@ -176,7 +172,7 @@
                                         </div>
                                         </div>
                                     </div>
-                                    <a href="{{Route('user.delete', $user->id)}}"  class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                    <a href="{{Route('user.delete', $user->id)}}"  class="btn btn-danger mb-0"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
                         @endforeach

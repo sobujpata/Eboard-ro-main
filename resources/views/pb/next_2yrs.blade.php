@@ -48,7 +48,6 @@
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
-
                             <div class="form-group">
                                 <label class="form-lavel">Nexr 2 yrs</label>
                                 <input type="text" name="next_2yrs" class="form-control" placeholder="Enter next_2yrs"
@@ -56,6 +55,13 @@
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label class="form-lavel">Next aval {{$booklateRank}}</label>
+                                <input type="text" name="remarks" class="form-control" placeholder="Enter Next aval {{$booklateRank}}"
+                                    value="{{ $vacNextYear->remarks }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3 d-none">
                             <div class="form-group">
                                 <label class="form-lavel">Sheet No</label>
                                 <input type="text" name="sheetNo" class="form-control" placeholder="Enter Sheet No"

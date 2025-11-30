@@ -39,19 +39,31 @@
                 <th>Parent</th>
                 <th>URL</th>
                 <th>Order</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($Nav_menus as $key=>$menu)
                 <tr @if(request('edited_id') == $menu->id) class="table-success" id="edited-row" @endif>
-                    <td>{{ $Nav_menus->firstItem() + $key }}</td>
+                    <td class="text-center">{{ $Nav_menus->firstItem() + $key }}</td>
                     <td>{{ $menu->title }}</td>
                     <td>{{ $menu->parent->title ?? '—' }}</td>
                     <td>{{ $menu->url }}</td>
-                    <td>{{ $menu->order }}</td>
-                    <td>
-                        <a href="{{ route('admin.menus.edit', $menu->id) }}" class="btn btn-sm btn-warning mb-0">Edit</a>
+                    <td class="text-center">{{ $menu->order }}</td>
+                    <td class="text-center">
+                        @if ($menu->status == '1')
+                            <span class="text-success">&#9679; Active</span>
+                        @else
+                            <span class="text-danger">&#9679; Disable</span>
+                        @endif
+                    </td>
+                    <td class="text-center">
+                        {{-- <a href="{{ route('admin.menus.edit', $menu->id) }}" class="btn btn-sm btn-warning mb-0">Edit</a> --}}
+                        <button type="button" class="btn btn-sm btn-warning mb-0" data-bs-toggle="modal" data-bs-target="#editModel{{ $menu->id }}">
+                            Edit
+                        </button>
+                        @include('admin.menus.edit')
                         <form action="{{ route('admin.menus.destroy', $menu->id) }}" method="POST" style="display:inline;">
                             @csrf @method('DELETE')
                             <button onclick="return confirm('Delete this?')" class="btn btn-sm btn-danger mb-0">Del</button>
@@ -61,8 +73,6 @@
             @endforeach
         </tbody>
     </table>
-    <div class="d-flex justify-content-center mt-3">
     {{ $Nav_menus->withQueryString()->links() }}
-    </div>
 </div>
 @endsection

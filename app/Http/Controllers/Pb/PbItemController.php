@@ -103,7 +103,7 @@ class PbItemController extends Controller
 
         try {
             Excel::import(new PbPersonImport, $request->file('file_upload'));
-            return redirect()->back()->with('message', 'Excel imported successfully.');
+            return redirect()->back()->with('success', 'Excel imported successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Import failed: ' . $e->getMessage());
         }

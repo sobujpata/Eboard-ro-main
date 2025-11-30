@@ -20,7 +20,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <h6 style="font-weight: 800">Airmen Promotion Board-24</h6>
+                        <h6 style="font-weight: 800">Airmen & MODC (Air) PB-25</h6>
                     </td>
                 </tr>
             </table>
@@ -52,7 +52,7 @@
                         @if ($parent->children->count())
                             <ul class="dropdown-menu bg-info">
                                 @foreach ($parent->children as $child)
-                                    @if ($child->children->count())
+                                    @if ($child->children->count() && $child->status==1)
                                         <li>
                                             <a class="dropdown-item" href="{{url($child->url)}}">{!! $child->title !!}</a>
                                             <ul class="submenu dropdown-menu bg-info">
@@ -76,9 +76,6 @@
                     </li>
                 @endforeach
 
-                {{-- @foreach ($menus as $menu)
-                    @include('layout.partials.menu-item', ['menu' => $menu])
-                @endforeach --}}
                 <li class="nav-item dropdown"
                     style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -91,17 +88,20 @@
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/pb-conduct-sheet-upload-ecxel') }}">Add Conduct Sheet By Upload Excel</a></li>
                         <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{url('/conduct-sheet')}}">Conduct Sheet</a></li>
+                        <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/pb-image') }}">Profile Image Upload</a>
                         </li>
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/pb-Profile') }}">Profile Upload</a></li>
-                        <div class="dropdown-divider"></div>
-                        <li><a class="dropdown-item nav-link" href="{{ url('/pb-conduct-sheet') }}">Contduct Sheet
-                                Upload</a></li>
+                        {{-- <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{ url('/pb-conduct-sheet') }}">Contduct Sheet Upload</a></li> --}}
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/pb-bdno') }}">All BD NO</a></li>
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/booklets') }}">Booklets</a></li>
+                        <div class="dropdown-divider"></div>
+                        <li><a class="dropdown-item nav-link" href="{{ url('/image-url-generator') }}">Image URL Generator</a></li>
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/instraction') }}">Instraction</a></li>
                     </ul>

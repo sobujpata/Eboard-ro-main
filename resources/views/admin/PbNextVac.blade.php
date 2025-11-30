@@ -94,16 +94,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @dd($policies) --}}
-                        @foreach ($PbNextVacs as $PbNextVac)
+                        @foreach ($PbNextVacs as $key => $PbNextVac)
                             <tr>
-                                <td>{{$count++}}</td>
-                                <td>{{ $PbNextVac->trade }}</td>
-                                <td>{{ $PbNextVac->rank }}</td>
-                                <td>{{ $PbNextVac->next_yr }}</td>
-                                <td>{{ $PbNextVac->next_2yrs }}</td>
-                                {{-- <td>{{ $PbNextVac->score_min }}</td> --}}
-                                <td>{{ $PbNextVac->sheetNo }}</td>
+                                <td class="text-center">{{$PbNextVacs->firstItem() + $key}}</td>
+                                <td class="text-center">{{ $PbNextVac->trade }}</td>
+                                <td class="text-center">{{ $PbNextVac->rank }}</td>
+                                <td class="text-center">{{ $PbNextVac->next_yr }}</td>
+                                <td class="text-center">{{ $PbNextVac->next_2yrs }}</td>
+                                <td class="text-center">{{ $PbNextVac->sheetNo }}</td>
                                 <td style="text-align: center;">
                                         <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editModel{{$PbNextVac->id}}">
@@ -179,21 +177,8 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>S/No</th>
-                            <th>Trade</th>
-                            <th>Rank</th>
-                            <th>next_yr</th>
-                            <th>next_2yrs</th>
-                            <th>score_min</th>
-                            <th>sheetNo</th>
-                            <th>Insert time</th>
-                            <th>update_at</th>
-                            <th>Action</th>
-                        </tr>
-                    </tfoot>
                 </table>
+                {{ $PbNextVacs->withQueryString()->links() }}
             </div>
         </div>
     </div>
@@ -201,30 +186,18 @@
 @endsection
 @push('other_script')
     <script>
-        let table = new DataTable('#customers', {
-            info: true,
-            ordering: false,
-            paging: false,
-            layout: {
-                // topStart: 'pageLength',
-                // topEnd: 'search',
-                topStart: 'info',
-                // bottomEnd: 'paging'
-            }
+        // let table = new DataTable('#customers', {
+        //     info: true,
+        //     ordering: false,
+        //     paging: false,
+        //     layout: {
+        //         // topStart: 'pageLength',
+        //         // topEnd: 'search',
+        //         topStart: 'info',
+        //         // bottomEnd: 'paging'
+        //     }
 
 
-        });
-        // table.on('click', 'tbody tr', function () {
-        //         let data = table.row(this).data();
-
-        //         alert('You clicked on ' + data[0] + "'s row");
-        //     });
-        // table.on('click', 'tbody tr', function (e) {
-        //     e.currentTarget.classList.toggle('selected');
-        // });
-
-        // document.querySelector('#button').addEventListener('click', function () {
-        //     alert(table.rows('.selected').data().length + ' row(s) selected');
         // });
     </script>
 @endpush

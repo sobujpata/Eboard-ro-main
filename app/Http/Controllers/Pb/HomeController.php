@@ -12,6 +12,7 @@ class HomeController extends Controller
     function pbHomePage(Request $request){
         $user_id = $request->header("id");
         $user = User::find($user_id);
+        // dd($user);
         $policies = Policy::where('policy_for', '=', 'pb')->get();
         if($user->lastName !== "pb"){
             return redirect()->back()->with("error","You are unauthorize.");

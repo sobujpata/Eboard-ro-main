@@ -21,6 +21,8 @@ class pbperslist extends Model
         "es",
         "cs",
         "conduct_sheet",
+        "punishment_date",
+        "morale_turpitude",
         "weight",
         "base_unit",
         "base",
@@ -30,9 +32,4 @@ class pbperslist extends Model
         "rmks_1",
         "decision",
     ] ;
-
-    // function conductSheet(){
-    //     return $this->belongsTo(ConductSheet::class, 'bdno' ,'bdno');
-    // }
-
 }

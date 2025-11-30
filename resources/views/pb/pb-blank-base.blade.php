@@ -1,4 +1,4 @@
-@extends('pb.layout.app-pb-base')
+@extends('layout.app-pb-base')
 
 @section('content')
     <div class="container-fluid p-0">
@@ -137,9 +137,9 @@
                             </td>
                             <td align="center" style="vertical-align: top;">
                                 <b>
-                                    @foreach ($countRecom as $recom)
+                                    {{-- @foreach ($countRecom as $recom)
                                         {{ $recom->pers_recom }}<br>
-                                    @endforeach
+                                    @endforeach --}}
                             </td>
                             </td>
                         </table>
@@ -299,9 +299,6 @@
                     <th style="vertical-align: middle; width: 5% !important;">Recom</th>
                     <th style="vertical-align: middle; width: 15% !important;">Remarks</th>
                     <th style="vertical-align: middle; width: 10% !important;">Remarks By PB</th>
-                    {{-- <th style="vertical-align: middle; width: 2% !important; ">Decision</th> --}}
-                    {{-- <th style="vertical-align: middle; width: 2% !important; display:@php if($userName->userName == 'pbuser'){ echo 'none;'; } @endphp">Decision</th> --}}
-                    {{-- <th style="vertical-align: middle; width: 2% !important;">Edit</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -312,8 +309,3 @@
         </table>
     </div>
 @endsection
-
-
-</body>
-
-</html>

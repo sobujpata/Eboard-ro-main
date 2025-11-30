@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content bg-success">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="currentPbLabel">Next 2 Yrs Vac</h1>
+                <h1 class="modal-title fs-5" id="currentPbLabel">Current Pb Vac</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -69,15 +69,30 @@
                                     value="{{ $currentPb->retd }}">
                             </div>
                         </div>
-                        <div class="col-md-4 mb-3">
-
+                        <div class="col-md-3 mb-3 @if ($currentPb->rank =='MWO')
+                            d-none
+                        @endif">
+                            <div class="form-group">
+                                <label class="form-lavel">Exp vac on promotion</label>
+                                <input type="text" name="promoted_pre_pb" class="form-control" placeholder="Enter Exp vac on promotion"
+                                    value="{{ $currentPb->promoted_pre_pb }}">
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
                             <div class="form-group">
                                 <label class="form-lavel">Total Vac</label>
                                 <input type="text" name="ttl" class="form-control" placeholder="Enter total"
                                 value="{{ $currentPb->ttl }}">
                             </div>
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group">
+                                <label class="form-lavel">Remarks</label>
+                                <input type="text" name="remarks" class="form-control" placeholder="Enter Remarks"
+                                value="{{ $currentPb->remarks }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3 d-none">
                             <div class="form-group">
                                 <label class="form-lavel">Sheet No</label>
                                 <input type="text" name="sheetNo" class="form-control" placeholder="Enter Sheet No"

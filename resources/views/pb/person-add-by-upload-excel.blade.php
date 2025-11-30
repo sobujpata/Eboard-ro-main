@@ -30,7 +30,7 @@
                         <strong>Excel Table</strong>
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table-dark table">
+                                <table class="">
                                     <thead>
                                         <tr>
                                             <th>s_no</th>
@@ -55,6 +55,8 @@
                                             <th>weight</th>
                                             <th>madical_category</th>
                                             <th>conduct_sheet</th>
+                                            <th>punishment_date</th>
+                                            <th>morale_turpitude</th>
                                             <th>other_rmks</th>
                                             <th>sheetNo</th>
                                             <th>base</th>

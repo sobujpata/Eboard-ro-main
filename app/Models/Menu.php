@@ -13,20 +13,16 @@ class Menu extends Model
         'url',
         'parent_id',
         'order',
+        'status',
     ];
-
-
-
     public function parent()
     {
         return $this->belongsTo(Menu::class, 'parent_id');
     }
-
     public function children()
     {
-        return $this->hasMany(Menu::class, 'parent_id');
+        return $this->hasMany(Menu::class, 'parent_id')->where('status', 1);
     }
-
     public function childrenRecursive()
     {
         return $this->children()->with('childrenRecursive');

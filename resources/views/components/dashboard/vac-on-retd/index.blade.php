@@ -79,10 +79,10 @@
                     <td>${item.remarks ?? ''}</td>
                     <td>
                         <button data-id="${item.id}" class="btn editBtn btn-sm btn-outline-success mb-0">
-                            <i class="fa text-sm fa-pen"></i>
+                            Edit
                         </button>
                         <button data-id="${item.id}" class="btn deleteBtn btn-sm btn-outline-danger mb-0">
-                            <i class="fa text-sm fa-trash-alt"></i>
+                            Delete
                         </button>
                     </td>
                 </tr>`;

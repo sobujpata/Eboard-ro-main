@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Base;
 use App\Models\pbperslist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\trade;
 use App\Models\rank;
+use Mpdf\Tag\P;
 
 class PersListController extends Controller
 {
@@ -18,56 +20,46 @@ class PersListController extends Controller
     {
         // Uncomment the line below if you want to debug policies
         $query = $request->input('search');
-
         $persons = pbperslist::query();
-// dd($persons);
         if ($query) {
             $persons->where('bdno', 'like', "%{$query}%")
                     ->orWhere('name', 'like', "%{$query}%")
                     ->orWhere('rank', 'like', "%{$query}%")
+                    ->orWhere('trade', 'like', "%{$query}%")
                     ->orWhere('entry_no', 'like', "%{$query}%")
                     ->orWhere('base_unit', 'like', "%{$query}%")
                     ->orWhere('base', 'like', "%{$query}%");
         }
-
-        $results = $persons->paginate(10);
-
-        // $data = DB::table('pbperslists')
-        //         ->paginate(10);
-
+        $results = $persons->orderBy('trade','asc')->orderBy('rank', 'asc')->orderBy('bdno', 'asc')->paginate(10);
         $trades = trade::get();
         $ranks = rank::get();
+        $bases = Base::get();
         $i = ($results->perPage() * ($results->currentPage() - 1)) + 1;
-        return view('admin.pbPersList', compact('results', 'trades', 'ranks', 'i'));
+        return view('admin.pbPersList', compact('results', 'trades', 'ranks', 'i', 'bases'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function store(Request $request)
     {
-
         $trade = $request->trade;
         $rank = $request->rank;
         $next_yr = $request->next_yr;
         $next_2yrs = $request->next_2yrs;
         $score_min = $request->score_min;
         $sheetNo = $request->sheetNo;
-
         // dd($sheetNo);
-
         DB::insert('insert into vac_create_next_yrs (trade, rank, next_yr, next_2yrs, score_min, sheetNo)
                     values(?,?,?,?,?,?)', [$trade, $rank, $next_yr, $next_2yrs, $score_min, $sheetNo]);
-
         return redirect()->back()->with("success","Data inserted successfully.");
     }
-
-
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         //
+
     }
 
     /**
@@ -79,6 +71,7 @@ class PersListController extends Controller
         $bdno = $request->bdno;
         $rank = $request->rank;
         $name = $request->name;
+        $basic_trade = $request->basic_trade;
         $trade = $request->trade;
         $entry_no = $request->entry_no;
         $avg_par = $request->avg_par;
@@ -92,12 +85,27 @@ class PersListController extends Controller
         $other_rmks = $request->other_rmks;
         $sheetNo = $request->sheetNo;
 
-        $trades = trade::get();
-        $ranks = rank::get();
+        $pbperson = pbperslist::find($id);
+        $pbperson->update([
+            's_no' => $s_no,
+            'bdno' => $bdno,
+            'rank' => $rank,
+            'name' => $name,
+            'basic_trade' => $basic_trade,
+            'trade' => $trade,
+            'entry_no' => $entry_no,
+            'avg_par' => $avg_par,
+            'career_marks' => $career_marks,
+            'ttl_score' => $ttl_score,
+            'es' => $es,
+            'cs' => $cs,
+            'conduct_sheet' => $conduct_sheet,
+            'weight' => $weight,
+            'base_unit' => $base_unit,
+            'other_rmks' => $other_rmks,
+            'sheetNo' => $sheetNo
+        ]);
 
-       DB::table('pbperslists')->where('id', $id)->update(['s_no'=>$s_no,'bdno'=>$bdno,'rank'=>$rank,'name'=>$name,'trade'=>$trade,'entry_no'=>$entry_no,
-                'avg_par'=>$avg_par, 'career_marks'=>$career_marks, 'ttl_score'=>$ttl_score, 'es'=>$es, 'cs'=>$cs, 'conduct_sheet'=>$conduct_sheet, 'weight'=>$weight,'base_unit'=>$base_unit,
-                 'other_rmks'=>$other_rmks, 'sheetNo'=>$sheetNo]);
         return redirect()->back()->with("success","Data update successfully.");
     }
 

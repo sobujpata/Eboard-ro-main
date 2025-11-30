@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\PbPreviouseVacController;
 use App\Http\Controllers\ConductSheetController;
 use App\Http\Controllers\Evaluation\HomeController as EvaluationHomeController;
 use App\Http\Controllers\InstractionController;
+use App\Http\Controllers\Pb\PbContrller as PbPbContrller;
 use App\Http\Controllers\RetdvacController;
 
 // Web API Routes
@@ -78,7 +79,9 @@ Route::get('/admin/pb/CurrentVac/delete/{id}', [PbVacencyController::class, 'des
 Route::get('/admin/pb/PreviouseVac', [PbPreviouseVacController::class, 'index'])->name('PreviouseVac.index')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/admin/pb/PreviouseVac/store', [PbPreviouseVacController::class, 'store'])->name('PbPreviouseVac.store')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/admin/pb/PreviouseVac/edit/{id}', [PbPreviouseVacController::class, 'edit'])->name('PbPreviouseVac.edit')->middleware([TokenVerificationMiddleware::class]);
-Route::get('/admin/pb/PreviouseVac/delete/{id}', [PbPreviouseVacController::class, 'destroy'])->name('PbPreviouseVac.delete')->middleware([TokenVerificationMiddleware::class]);
+// Route::get('/admin/pb/PreviouseVac/delete/{id}', [PbPreviouseVacController::class, 'destroy'])->name('PbPreviouseVac.delete')->middleware([TokenVerificationMiddleware::class]);
+Route::delete('/pb-previouse-vac/{id}', [PbPreviouseVacController::class, 'destroy'])->name('PbPreviouseVac.delete')->middleware([TokenVerificationMiddleware::class]);
+
 Route::get('/admin/pb/PbNextVac', [PbNextVacController::class, 'index'])->name('PbNextVac.index')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/admin/pb/PbNextVac/store', [PbNextVacController::class, 'store'])->name('PbPbNextVac.store')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/admin/pb/PbNextVac/edit/{id}', [PbNextVacController::class, 'edit'])->name('PbPbNextVac.edit')->middleware([TokenVerificationMiddleware::class]);
@@ -110,6 +113,12 @@ Route::get('/pb/recomList/{trade}/{rank}', [pbRecomController::class, 'index'])-
 Route::get('/pb/summary', [pbRecomController::class, 'ChartSummary'])->name('pb.chartForSummary')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/pb/summary-demo', [allRecomSummary::class, 'index'])->name('pb.demoForSummary')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/pb/rank-wise-summary', [pbRecomController::class, 'ChartRankSummary'])->name('pb.ChartRankSummary')->middleware([TokenVerificationMiddleware::class]);
+
+//Dynamic Summary
+Route::get('/Summary-Dynamic', [PbPbContrller::class, 'SummaryDynamic'])->middleware([TokenVerificationMiddleware::class]);
+Route::post('/summery-dynamic-get', [PbPbContrller::class, 'SummaryDynamicPost'])->middleware([TokenVerificationMiddleware::class]);
+Route::post('/summery-dynamic-all', [PbPbContrller::class, 'AllSummaryDynamic'])->middleware([TokenVerificationMiddleware::class]);
+
 Route::get('items/{id}/update-decision', [PbItemController::class, 'updateDecision'])->middleware([TokenVerificationMiddleware::class]);
 
 //PB report route
@@ -150,6 +159,14 @@ Route::post('/pb-upload-excel', [PbItemController::class, 'UploadExcel'])->name(
 Route::get('/pb-conduct-sheet-upload-ecxel', [ConductSheetController::class, 'index'])->name('UploadExcelPage')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/conduct-sheet-upload-excel', [ConductSheetController::class, 'UploadExcel'])->name('store')->middleware([TokenVerificationMiddleware::class]);
 
+//Coduct sheet
+Route::get('/conduct-sheet',[ConductSheetController::class, 'conductSheet'])->name('conductSheet.all')->middleware([TokenVerificationMiddleware::class]);
+Route::get('/conduct-sheet-delete/{id}',[ConductSheetController::class, 'destroy'])->name('conductSheet.destroy')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/conduct-sheet-by-id', [ConductSheetController::class, 'showById'])->name('conductSheet.id')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/conduct-sheet-create',[ConductSheetController::class, 'create'])->name('conductSheet.create')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/conduct-sheet-update',[ConductSheetController::class, 'update'])->name('conductSheet.update')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/conduct-sheet-by-person',[ConductSheetController::class, 'personByConductsheet'])->name('conductSheet.byPerson')->middleware([TokenVerificationMiddleware::class]);
+
 //All Bdno
 Route::get('/pb-bdno', [PbItemController::class, 'PbBdno'])->name('bdno.show')->middleware([TokenVerificationMiddleware::class]);
 
@@ -160,7 +177,17 @@ Route::get('/basewise/pb-base/{trade}/{sheetNo}', [pbBaseWiseController::class, 
 //Booklet Download
 Route::get('/booklets', [PdfController::class, 'index'])->middleware([TokenVerificationMiddleware::class]);
 
+
 Route::post('/booklets-download', [PdfController::class, 'BookleteDownload'])->name('booklets.download')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/recommendation-booklets-download', [PdfController::class, 'RecomBookleteDownload'])->name('recomBooklets.download')->middleware([TokenVerificationMiddleware::class]);
+// Image URL for MS Word
+Route::get('/image-url-generator', [ExportController::class, 'urlGenerator'])
+    ->middleware([TokenVerificationMiddleware::class]);
+
+Route::get('/image-url-download', [ExportController::class, 'urlDownload'])
+    ->name('imageUrl.download') // ✅ fixed name
+    ->middleware([TokenVerificationMiddleware::class]);
+
 
 Route::get('/instraction', [InstractionController::class, 'index'])->middleware([TokenVerificationMiddleware::class]);
 Route::post('/instraction/update', [InstractionController::class, 'update'])->name('instraction.update')->middleware([TokenVerificationMiddleware::class]);

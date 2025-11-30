@@ -1,28 +1,34 @@
 @extends('layout.app-pb')
 @section('content')
-    <div class="container-fluid p-0">
+    <div class="container-fluid p-0 mt-4">
         @if (session('status'))
             <div class="alert alert-success" role="alert">
                 {{ session('status') }}
             </div>
         @endif
-
-        <p class="ex1"></p>
-        <p class="ex1"></p>
-        <div align="center" class="col-lg-12" style="background:#33a8ff;">
-            <h3 align="center" class="trade_header"><b>
-                    @php
-                        if ($sheetNo == 1) {
-                            echo 'SWO - MWO';
-                        } elseif ($sheetNo == 2) {
-                            echo 'WO - SWO';
-                        } else {
-                            echo 'Sgt - WO';
-                        }
-                    @endphp
-                    : {{ $trade }}</b></h3>
+        @php
+                if ($sheetNo == 1) {
+                    $booklateRank = 'SWO';
+                } elseif ($sheetNo == 2) {
+                    $booklateRank = 'WO';
+                } else {
+                    $booklateRank = 'Sgt';
+                }
+            @endphp
+        <div class="col-lg-12 text-center text-decoration-underline fw-bolder fs-3 mb-4">
+            @php
+                if ($sheetNo == 1) {
+                    echo 'SWO - MWO';
+                } elseif ($sheetNo == 2) {
+                    echo 'WO - SWO';
+                } else {
+                    echo 'Sgt - WO';
+                }
+            @endphp
+            : {{ $trade }}
         </div>
         <div class="row">
+            {{-- Previous promotion board summary --}}
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-primary text-white">
                     <!-- previouse promotion board -->
@@ -33,10 +39,10 @@
                                     $year = date('Y') - 1;
                                     echo $year;
                                 @endphp</u></b></td>
-                                <td align="center" colspan="4"><b><u>VAC-@php
-                                    $year = date('Y') - 1;
-                                    echo $year;
-                                @endphp</u></b></td>
+                                <td align="center" colspan="{{ $sheetNo == 1 ? 4 : 5 }}">
+                                    <b><u>VAC-{{ date('Y') - 1 }}</u></b>
+                                </td>
+
                                 <td align="center"><b><u>Score</u></b></td>
                                 <td align="center" rowspan="2"
                                     style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
@@ -44,11 +50,22 @@
                                 </td>
                             </tr>
                             @foreach ($previousPb as $prePb)
+                                @php
+                                    $preExist = $prePb->exist;
+                                        if(strpos($preExist,'-')===0){
+                                            $preExistResult = ltrim($preExist, '-')." Surp";
+                                        }else{
+                                            $preExistResult = $preExist;
+                                        }
+                                @endphp
                                 <tr>
                                     <td align="center"><b>Estb</b></td>
                                     <td align="center"><b>Str</b></td>
                                     <td align="center"><b>Exist</b></td>
                                     <td align="center"><b>Retd</b></td>
+                                    <td align="center" style="display: {{ $sheetNo == 1 ? 'none' : '' }};" class="">
+                                        <b>p</b>
+                                    </td>
                                     <td align="center"><b>Vac</b></td>
                                     <td align="center"><b>Promo</b></td>
                                     <td align="center"><b>{{ $prePb->score_max }}</b></td>
@@ -56,8 +73,11 @@
                                 <tr>
                                     <td align="center"><b>{{ $prePb->estb }}</b></td>
                                     <td align="center"><b>{{ $prePb->str }}</b></td>
-                                    <td align="center"><b>{{ $prePb->exist }}</b></td>
+                                    <td align="center"><b>{{ $preExistResult }}</b></td>
                                     <td align="center"><b>{{ $prePb->retd }}</b></td>
+                                    <td align="center" style="display: {{ $sheetNo == 1 ? 'none' : '' }};">
+                                        <b>{{ $prePb->promoted_pre_pb }}</b>
+                                    </td>
                                     <td align="center"><b>{{ $prePb->ttl }}</b></td>
                                     <td align="center"><b>{{ $prePb->promotion }}</b></td>
                                     <td align="center"><b>{{ $prePb->score_min }}</b></td>
@@ -75,7 +95,7 @@
                     </div>
                 </div>
             </div>
-
+            {{-- Next 2yrs expected Vacency --}}
             <div class="col-xl-3 col-md-6">
                 <div class="card text-white" style="background-color: #28a745 !important;">
                     <div class="container-md" style="padding:.71rem">
@@ -94,7 +114,6 @@
                                     <b>Action</b>
                                 </td>
                             </tr>
-
                             <td align="center" style="vertical-align: top;">
                                 <b>
                                     @foreach ($totalEntry as $singleEntry)
@@ -109,7 +128,6 @@
                                     @endforeach
                                 </b>
                             </td>
-
                             <td align="center" style="vertical-align: middle;">
                                 <b>
                                     {{-- @dd($rank) --}}
@@ -156,6 +174,7 @@
                                         {{ $recom->pers_recom }}<br>
                                     @endforeach
                             </td>
+                            {{-- @dd($vacNextYear) --}}
                             <td align="center"
                                 style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -168,6 +187,7 @@
                     </div>
                 </div>
             </div>
+            {{-- Score wise promotion --}}
             <div class="col-xl-3 col-md-6">
                 <div class="card" style="background-color: #28a745 !important;">
                     <div class="container-md" style="padding:.5rem">
@@ -210,17 +230,18 @@
                     </div>
                 </div>
             </div>
+            <!-- current promotion board -->
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-primary ">
-                    <!-- current promotion board -->
                     <div class="container-md" style="padding:.5rem">
-
                         <table class="table-bordered text-white border-white" style="width:100%">
                             <tr>
-                                <td align="center" colspan="2"><b><u>PB-@php
-                                    $year = date('Y');
-                                    echo $year;
-                                @endphp</u></b></td>
+                                <td align="center" colspan="2">
+                                    <b><u>PB-@php
+                                        $year = date('Y');
+                                        echo $year;
+                                    @endphp</u></b>
+                                </td>
                                 <td align="center"
                                     colspan="@if ($currentPb->rank == 'MWO') {{ '3' }} @else {{ '4' }} @endif">
                                     <b><u>VAC-@php
@@ -240,90 +261,91 @@
                                 <td align="center"><b>Exist</b></td>
                                 <td align="center"><b>Retd</b></td>
                                 <td align="center"
-                                    style="display:@foreach ($rank as $rk) @if ($rk->rank == 'SWO') {{ 'none' }} @endif @endforeach">
-                                    <b></b> CD
+                                    style="display:@if ($sgtSheet == '1') {{ 'none' }} @endif"><b>CD</b>
                                 </td>
                                 <td align="center"><b>Vac</b></td>
                                 <td align="center"><b>Recom</b></td>
                                 <td align="center"><b>Left</b></td>
-
                             </tr>
+                            @php
+                                $currentExist = $currentPb->exist;
+                                    if(strpos($currentExist,'-')===0){
+                                        $currentExistResult = ltrim($currentExist, '-')." Surp";
+                                    }else{
+                                        $currentExistResult = $currentExist;
+                                    }
+                            @endphp
+                            <tr>
+                                <td align="center"><b>{{ $currentPb->estb }}</b></td>
+                                <td align="center"><b>{{ $currentPb->str }}</b></td>
+                                <td align="center"><b>{{ $currentExistResult }}</b></td>
+                                <td align="center">
+                                    <b>
+                                        {{-- @dd($sgtSheet) --}}
+                                        @if ($sgtSheet == '1')
+                                            {{ $currentPb->retd }}
+                                        @elseif($sgtSheet == '2')
+                                            {{ $currentPb->retd - $lastEntrySwo }}
+                                        @elseif($sgtSheet == '3')
+                                            {{ $currentPb->retd - $lastEntryWo }}
+                                        @endif
+                                    </b>
+                                </td>
+                                {{-- @dd() --}}
+                                <td align="center"
+                                    style="display: @if ($sgtSheet == '1') {{ 'none' }} @endif">
+                                    <b>
+                                        @if ($sgtSheet == '2')
+                                            {{ $recomMwo }}
+                                        @elseif($sgtSheet == '3')
+                                            {{ $recomSwo }}
+                                        @endif
 
-                            @if ($currentPb)
-                                <tr>
-                                    <td align="center"><b>{{ $currentPb->estb }}</b></td>
-                                    <td align="center"><b>{{ $currentPb->str }}</b></td>
-                                    <td align="center"><b>{{ $currentPb->exist }}</b></td>
-                                    <td align="center"><b>
-                                            @foreach ($rank as $rk)
-                                                @if ($rk->rank == 'SWO')
-                                                    {{ $currentPb->retd }}
-                                                @elseif($rk->rank == 'WO')
-                                                    {{ $currentPb->retd - $lastEntrySwo }}
-                                                @elseif($rk->rank == 'Sgt')
-                                                    {{ $currentPb->retd - $lastEntryWo }}
-                                                @endif
-                                            @endforeach
-                                        </b></td>
-                                    <td align="center"
-                                        style="display: @foreach ($rank as $rk) @if ($rk->rank == 'SWO') {{ 'none' }} @endif @endforeach">
-                                        <b>
-                                            @foreach ($rank as $rk)
-                                                @if ($rk->rank == 'WO')
-                                                    {{ $recomMwo }}
-                                                @elseif($rk->rank == 'Sgt')
-                                                    {{ $recomSwo }}
-                                                @endif
-                                            @endforeach
+                                    </b>
+                                </td>
+                                <td align="center">
+                                    <b>
+                                        @php
+                                            $vac = 0;
+                                        @endphp
+                                        @php
+                                            if ($sgtSheet == '1') {
+                                                $vac = $currentPb->ttl;
+                                                echo $vac;
+                                            } elseif ($sgtSheet == '2') {
+                                                $exist = $currentPb->exist;
+                                                $retd = $currentPb->retd - $lastEntrySwo;
+                                                $vac = $currentPb->exist + $retd + $recomMwo;
+                                                echo $vac;
+                                            } elseif ($sgtSheet == '3') {
+                                                $exist = $currentPb->exist;
+                                                $retd = $currentPb->retd - $lastEntryWo;
+                                                $vac = $exist + $retd + $recomSwo;
+                                                echo $vac;
+                                            }
+                                        @endphp
+                                    </b>
+                                </td>
+                                <td align="center" id="total-recom">
+                                    <span><b class="blinking fs-5" id="checkId1">{{ $recompers }}</b></span>
+                                </td>
+                                <td align="center">
+                                    <span class="blinking fs-5">
+                                        <b id="minCheck1">
+                                            {{ $vac - $recompers }}
                                         </b>
-                                    </td>
-                                    <td align="center"><b>
-                                            @foreach ($rank as $rk)
-                                                @php
-                                                    if ($rk->rank == 'SWO') {
-                                                        $vac = $currentPb->ttl;
-                                                        echo $vac;
-                                                    } elseif ($rk->rank == 'WO') {
-                                                        $exist = $currentPb->exist;
-                                                        $retd = $currentPb->retd - $lastEntrySwo;
-                                                        $vac = $currentPb->exist + $retd + $recomMwo;
-                                                        echo $vac;
-                                                    } elseif ($rk->rank == 'Sgt') {
-                                                        $exist = $currentPb->exist;
-                                                        $retd = $currentPb->retd - $lastEntryWo;
-                                                        $vac = $exist + $retd + $recomSwo;
-                                                        echo $vac;
-                                                    }
-                                                @endphp
-                                                {{-- @dd($vac) --}}
-                                            @endforeach
-                                        </b></td>
-                                    <td align="center" id="total-recom">
-                                        <h5><span><b class="blinking" id="checkId1">{{ $recompers }}</b></h5></span>
-                                    </td>
-                                    <td align="center">
-                                        <h5><span class="blinking">
-                                                <b id="minCheck1">
-                                                    {{ $vac - $recompers }}
-                                                </b>
-                                        </h5></span>
-                                    </td>
-                                    <td align="center"
-                                        style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
-                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#currentPb{{ $currentPb->id }}">
-                                            Edit
-                                        </button>
-                                        @include('pb.current_pb')
-                                    </td>
-                                </tr>
-                            @else
-                                Property not found or variable is null
-                            @endif
-
-
+                                    </span>
+                                </td>
+                                <td align="center"
+                                    style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#currentPb{{ $currentPb->id }}">
+                                        Edit
+                                    </button>
+                                    @include('pb.current_pb')
+                                </td>
+                            </tr>
                         </table>
-
                     </div>
                 </div>
             </div>
@@ -333,18 +355,20 @@
             <div class="card bg-primary ">
                 <!-- previouse promotion board -->
                 <div class="container-md" style="padding:.5rem">
-
                     <table class="table-bordered text-white border-white" style="width:100%">
                         <tr>
                             <td align="center" colspan="2"><b><u>PB-@php
                                 $year = date('Y');
                                 echo $year;
                             @endphp</u></b></td>
-                            <td align="center" colspan="3"><b><u>VAC-@php
-                                $year = date('Y');
-                                echo $year;
-                            @endphp</u></b></td>
-                            <td align="center"colspan="2"><b><u>Decision</u></b></td>
+                            <td align="center"
+                                colspan="@if ($sgtSheet == '1') {{ '3' }} @else {{ '4' }} @endif">
+                                <b><u>VAC-@php
+                                    $year = date('Y');
+                                    echo $year;
+                                @endphp</u></b>
+                            </td>
+                            <td align="center" colspan="2"><b><u>Decision</u></b></td>
                         </tr>
                         <tr>
                             <td align="center"><b>Estb</b></td>
@@ -352,84 +376,72 @@
                             <td align="center"><b>Exist</b></td>
                             <td align="center"><b>Retd</b></td>
                             <td align="center"
-                                style="display:@foreach ($rank as $rk) @if ($rk->rank == 'SWO') {{ 'none' }} @endif @endforeach">
-                                <b></b> CD
+                                style="display:@if ($sgtSheet == '1') {{ 'none' }} @endif">
+                                <b>CD</b>
                             </td>
                             <td align="center"><b>Vac</b></td>
                             <td align="center"><b>Recom</b></td>
                             <td align="center"><b>Left</b></td>
                         </tr>
+                        <tr>
+                            <td align="center"><b>{{ $currentPb->estb }}</b></td>
+                            <td align="center"><b>{{ $currentPb->str }}</b></td>
+                            <td align="center"><b>{{ $currentPb->exist }}</b></td>
+                            <td align="center">
+                                <b>
+                                    @if ($sgtSheet == '1')
+                                        {{ $currentPb->retd }}
+                                    @elseif($sgtSheet == '2')
+                                        {{ $currentPb->retd - $lastEntrySwo }}
+                                    @elseif($sgtSheet == '3')
+                                        {{ $currentPb->retd - $lastEntryWo }}
+                                    @endif
 
-                        @if ($currentPb)
-                            <tr>
-                                <td align="center"><b>{{ $currentPb->estb }}</b></td>
-                                <td align="center"><b>{{ $currentPb->str }}</b></td>
-                                <td align="center"><b>{{ $currentPb->exist }}</b></td>
-                                <td align="center"><b>
-                                        @foreach ($rank as $rk)
-                                            @if ($rk->rank == 'SWO')
-                                                {{ $currentPb->retd }}
-                                            @elseif($rk->rank == 'WO')
-                                                {{ $currentPb->retd - $lastEntrySwo }}
-                                            @elseif($rk->rank == 'Sgt')
-                                                {{ $currentPb->retd - $lastEntryWo }}
-                                            @endif
-                                        @endforeach
-                                    </b></td>
-                                <td align="center"
-                                    style="display: @foreach ($rank as $rk) @if ($rk->rank == 'SWO') {{ 'none' }} @endif @endforeach">
-                                    <b>
-                                        @foreach ($rank as $rk)
-                                            @if ($rk->rank == 'WO')
-                                                {{ $recomMwo }}
-                                            @elseif($rk->rank == 'Sgt')
-                                                {{ $recomSwo }}
-                                            @endif
-                                        @endforeach
+                                </b>
+                            </td>
+                            <td align="center"
+                                style="display: @if ($sgtSheet == '1') {{ 'none' }} @endif">
+                                <b>
+                                    @if ($sgtSheet == '2')
+                                        {{ $recomMwo }}
+                                    @elseif($sgtSheet == '3')
+                                        {{ $recomSwo }}
+                                    @endif
+                                </b>
+                            </td>
+                            <td align="center">
+                                <b>
+                                    @php
+                                        if ($sgtSheet == '1') {
+                                            $vac = $currentPb->ttl ?? 0;
+                                        } elseif ($sgtSheet == '2') {
+                                            $exist = $currentPb->exist ?? 0;
+                                            $retd = ($currentPb->retd ?? 0) - ($lastEntrySwo ?? 0);
+                                            $vac = $exist + $retd + ($recomMwo ?? 0);
+                                        } elseif ($sgtSheet == '3') {
+                                            $exist = $currentPb->exist ?? 0;
+                                            $retd = ($currentPb->retd ?? 0) - ($lastEntryWo ?? 0);
+                                            $vac = $exist + $retd + ($recomSwo ?? 0);
+                                        }
+                                    @endphp
+                                    {{-- Now output $vac here --}}
+                                    <p>{{ $vac }}</p>
+                                </b>
+                            </td>
+                            <td align="center" id="total-recom">
+                                <b class="blinking fs-5" id="checkId">
+                                    {{ $recompers }}
+                                </b>
+                            </td>
+                            <td align="center">
+                                <span class="blinking fs-5">
+                                    <b id="minCheck">
+                                        {{ $vac - $recompers }}
                                     </b>
-                                </td>
-                                <td align="center"><b>
-                                        @foreach ($rank as $rk)
-                                            @php
-                                                $vac = 0;
-
-                                                if ($rk->rank == 'SWO') {
-                                                    $vac = $currentPb->ttl ?? 0;
-                                                } elseif ($rk->rank == 'WO') {
-                                                    $exist = $currentPb->exist ?? 0;
-                                                    $retd = ($currentPb->retd ?? 0) - ($lastEntrySwo ?? 0);
-                                                    $vac = $exist + $retd + ($recomMwo ?? 0);
-                                                } elseif ($rk->rank == 'Sgt') {
-                                                    $exist = $currentPb->exist ?? 0;
-                                                    $retd = ($currentPb->retd ?? 0) - ($lastEntryWo ?? 0);
-                                                    $vac = $exist + $retd + ($recomSwo ?? 0);
-                                                }
-                                            @endphp
-
-                                            {{-- Now output $vac here --}}
-                                            <p>{{ $vac }}</p>
-                                        @endforeach
-
-                                    </b></td>
-                                <td align="center" id="total-recom">
-                                    <h5><span><b class="blinking" id="checkId">{{ $recompers }}</b></h5></span>
-
-                                </td>
-                                <td align="center">
-                                    <h5><span class="blinking">
-                                            <b id="minCheck">
-                                                {{ $vac - $recompers }}
-                                            </b>
-                                    </h5></span>
-                                </td>
-                            </tr>
-                        @else
-                            Property not found or variable is null
-                        @endif
-
-
+                                </span>
+                            </td>
+                        </tr>
                     </table>
-
                 </div>
             </div>
         </div>
@@ -447,319 +459,213 @@
                 <div class='col-md-3 text-right'></div>
             </div>
         </div>
+        <table id="tableData" class="table table-striped table-bordered table-responsive-lg table-hover"
+            style="width:100%">
+            <thead>
+                <tr align="center" style="background:#33a8ff;">
+                    <th rowspan="2" style="vertical-align: middle; width: 2% !important;">SL No</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 5% !important;">Photo</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 4% !important;">BD No</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Rank</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 15% !important;">Name & Basic Trade</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Entry No</th>
+                    {{-- <th style="vertical-align: middle; width: 5% !important;">PAR (Avg)</th> --}}
+                    <th colspan="2" style="vertical-align: middle; width: 9% !important;">POINTS</th>
+                    {{-- <th style="vertical-align: middle; width: 5% !important;">Marks(TTB, TTA, ST) (Avg)</th> --}}
+                    <th rowspan="2" style="vertical-align: middle; width: 5% !important;">Total Score</th>
+                    <th colspan="2" style="vertical-align: middle; width: 5% !important;">Entry Sr</th>
+                    {{-- <th style="vertical-align: middle; width: 3% !important;">Entry Sr</th> --}}
+                    {{-- <th style="vertical-align: middle; width: 3% !important;">Comd Sr</th> --}}
+                    <th rowspan="2" style="vertical-align: middle; width: 10% !important;">Conduct Sheet<br>(Last
+                        3yrs)</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Weight (lbs)</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 4% !important;">Base/ Unit</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 5% !important;">Recom</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 15% !important;">Remarks</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 10% !important;">Remarks By PB</th>
+                    <th rowspan="2"
+                        style="vertical-align: middle; width: 2% !important; display:@php if($user->userName == 'pbuser'){ echo 'none;'; } @endphp">
+                        Decision</th>
+                </tr>
+                <tr align="center" style="background:#33a8ff;">
+                    <th>Avg PAR</th>
+                    <th style="font-size: 10px">Mks of career courses Bas-40% Adv-40% ST-20%</th>
+                    <th>ES</th>
+                    <th>CS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $index => $item)
+                    @php
+                        $entry_count = $entryCounts[$item->entry_no] ?? 0;
+                    @endphp
 
-        @if ($dataCount > 0)
-            <table id="tableData" class="table table-striped table-bordered table-responsive-lg table-hover"
-                style="width:100%">
-                <thead>
-                    <tr align="center" style="background:#33a8ff;">
-                        <th style="vertical-align: middle; width: 2% !important;">SL No</th>
-                        <th style="vertical-align: middle; width: 5% !important;">Image</th>
-                        <th style="vertical-align: middle; width: 4% !important;">BD No</th>
-                        <th style="vertical-align: middle; width: 15% !important;">Rank & Name</th>
-
-                        <th style="vertical-align: middle; width: 3% !important;">Entry No</th>
-
-                        <th style="vertical-align: middle; width: 5% !important;">PAR (Avg)</th>
-                        <th style="vertical-align: middle; width: 5% !important;">Marks(TTB, TTA, ST) (Avg)</th>
-                        <th style="vertical-align: middle; width: 5% !important;">Total Score</th>
-                        <th style="vertical-align: middle; width: 3% !important;">Entry Sr</th>
-                        <th style="vertical-align: middle; width: 3% !important;">Comd Sr</th>
-                        <th style="vertical-align: middle; width: 5% !important;">Conduct Sheet</th>
-                        <th style="vertical-align: middle; width: 3% !important;">Weight (lbs)</th>
-                        <th style="vertical-align: middle; width: 4% !important;">Base/ Unit</th>
-                        <th style="vertical-align: middle; width: 5% !important;">Recom</th>
-                        <th style="vertical-align: middle; width: 15% !important;">Remarks</th>
-                        <th style="vertical-align: middle; width: 10% !important;">Remarks By PB</th>
-                        <th style="vertical-align: middle; width: 2% !important; display:@php if($user->userName == 'pbuser'){ echo 'none;'; } @endphp">
-                            Decision</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($data as $item)
-                        <tr id="tr{{ $item->id }}"
-                            class= "{{ $item->decision == 'true' ? 'tr-row-bg-select' : ($item->decision == 'false' ? 'tr-row-bg-stanby' : 'inherit') }}">
-                            <td class="text-center">{{ $i++ }}</td>
-                            <td align='center'><img src='{{ asset('promotionBoard/image') }}/{{ $item->bdno }}.gif'
+                    <tr id="tr{{ $item->id }}"
+                        class= "{{ $item->decision == 'true' ? 'tr-row-bg-select' : ($item->decision == 'false' ? 'tr-row-bg-stanby' : 'inherit') }}">
+                        <td class="text-center">{{ $index += 1 }}</td>
+                        <td align='center'>
+                            @php
+                                $imagePath = public_path("promotionBoard/image/{$item->bdno}.gif");
+                            @endphp
+                            @if (file_exists($imagePath))
+                                <img src='{{ asset('promotionBoard/image') }}/{{ $item->bdno }}.gif'
                                     style='height: 90px; width: 80px; border:3px solid #B2B8B7; border-radius: 3px;'
-                                    alt='Photo N/A' class="zoom"></td>
-                            <td align='center' style="vertical-align: middle"><a
-                                    href='{{ asset('promotionBoard/bioData') }}/{{ $item->bdno }}.pdf' target='_blank'
-                                    style="text-decoration: none"><b>{{ $item->bdno }}</b></a></td>
-                            <td align='left' style="vertical-align: middle">{{ $item->rank }}
-                                {{ $item->name }}
-                            </td>
-                            <td class="text-center" style="vertical-align: middle">{{ $item->entry_no }}</td>
-                            <td class="text-center" style="vertical-align: middle"><b>{{ $item->avg_par }}</b></td>
-                            <td class="text-center" style="vertical-align: middle"><b>{{ $item->career_marks }}</b>
-                            </td>
-                            <td class="text-center" style="vertical-align: middle"><b>{{ $item->ttl_score }}</b></td>
-                            <td class="text-center" style="vertical-align: middle"><b>{{ $item->es }}</b></td>
-                            <td class="text-center" style="vertical-align: middle"><b>{{ $item->cs }}</b></td>
+                                    alt='Photo N/A' class="zoom">
+                            @else
+                                <img src='{{ asset('icon/avater.jpg') }}'
+                                    style='height: 90px; width: 80px; border:3px solid #B2B8B7; border-radius: 3px;'
+                                    alt='Photo N/A' class="zoom">
+                            @endif
 
-                            <td class="text-center">
-                                <a style="height: 35px;" class="text-danger mt-2 text-decoration-none"
-                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ $item->id }}">
-                                    {{ $item->conduct_sheet }}
+                        </td>
+                        <td align='center' style="vertical-align: middle">
+                            @php
+                                $filePath = public_path("promotionBoard/bioData/{$item->bdno}.pdf");
+                            @endphp
+
+                            @if (file_exists($filePath))
+                                <a href="{{ asset('promotionBoard/bioData/' . $item->bdno . '.pdf') }}" target="_blank"
+                                    style="text-decoration: none">
+                                    <b>{{ $item->bdno }}</b>
                                 </a>
+                            @else
+                                <b class="text-danger">{{ $item->bdno }}</b>
+                            @endif
+                        </td>
 
-                                <!-- Salient points -->
-                                <div class="modal fad" id="staticBackdrop{{ $item->id }}" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" style="max-width: 1400px !important;">
-                                        <div class="modal-content" style="background-color: #06c5f0;">
-                                            <div class="modal-header">
-                                                <h3 class="modal-title" id="myModalLabel" style="width:100%;">Conduct
-                                                    Sheet</h3>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="container-fluid">
-                                                    <div class="row">
-                                                        <div class="col-3 bg-dark text-white pt-4 p-3">
-                                                            <h4>BD/{{ $item->bdno }}</h4>
-                                                            <h4>{{ $item->rank }} {{ $item->name }}</h4>
-                                                            <h4>{{ $item->trade }}</h4>
-                                                            <img src='{{ asset('promotionBoard/image') }}/{{ $item->bdno }}.gif'
-                                                                style='border:3px solid #B2B8B7; border-radius: 3px;'
-                                                                alt='Photo N/A' class="w-100">
-
-                                                        </div>
-                                                        <div class="col-9 bg-white pt-4">
-                                                            <div class="container-fluid">
-                                                                <img src="{{ asset('promotionBoard/conduct_sheet/' . $item->bdno . '.png') }}"
-                                                                    style="width:100% ; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </td>
-
-                            <td class="text-center">{{ $item->weight }}</td>
-                            <td class="text-center">{{ $item->base_unit }}</td>
-                            <td class="text-center" style="vertical-align: middle">
-                                @if ($item->decision == 'true')
-                                    Yes
-                                @else
-                                    NO
-                                @endif
-                            </td>
-                            <td class="text-center" style="vertical-align: middle; text-align:left;">
-                                <b>{!! $item->other_rmks !!}</b>
-                            </td>
-                            <td align='left' style="vertical-align: middle; text-align:left;">
-                                <b>{!! $item->rmks !!}<br>{{ $item->rmks_1 }}</b>
-                            </td>
-                            <td class="text-center"
-                                style="vertical-align: middle; display:@php if($user->userName == 'pbuser'){ echo 'none;'; } @endphp">
-                                {{-- <td class="text-center" style="vertical-align: middle; " > --}}
-                                @if ($item->decision == 'true')
-                                    <img src="{{ asset('icon/ok.png') }}" style="border-radius: 7px;">
-                                @elseif ($item->decision == 'false')
-                                    <img src="{{ asset('icon/not.png') }}" style="border-radius: 7px;">
-                                @else
-                                    <label class='container1'>
-                                        <input type="checkbox" data-column_name="decision" {{-- <!-- Data attribute for column name --> --}}
-                                            data-id="{{ $item->id }}" {{-- <!-- Data attribute for item ID --> --}}
-                                            {{ $item->decision ? 'checked' : '' }}>
-                                        <!-- Blade syntax to conditionally add 'checked' attribute -->
-                                        <span class="checkmark"></span>
-                                        <!-- This is likely the styling for the checkbox -->
-                                    </label>
-                                @endif
-                                <br>
-                                <button style="height: 35px;" type="button" class="btn btn-success mt-2"
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal{{ $item->id }}">
-                                    <img style="width: 14px;" src='{{ asset('icon/edit.png') }}'>
-                                </button>
-                                <button
-                                    style="height: 35px; display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp"
-                                    type="button" class="btn btn-primary mt-2 editBtn" data-id="{{ $item->id }}"
-                                    data-image="promotionBoard/image/{{ $item->bdno }}.gif">
-                                    <img style="width: 14px;" src='{{ asset('icon/edit.png') }}'>
-                                </button>
-
-                                <!-- Recom Edit -->
-                                <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content" style="background-color: #06c5f0;">
-                                            <div class="modal-header">
-                                                <h3 class="modal-title" id="myModalLabel" style="width:100%;">Remarks
-                                                    Edit</h3>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="container-fluid">
-                                                    @php
-
-                                                        $id = $item->id;
-                                                    @endphp
-                                                    <form method="POST" action="{{ route('pb.update', $item->id) }}">
-                                                        @csrf
-                                                        <h4 style="text-align: left;">Remarks By Board:</h4>
-                                                        <div class="form-check" style="text-align:left; font-size: 18px;">
-                                                            @php
-                                                                $rmks = $item->rmks;
-                                                                $rmk = explode(',', $rmks);
-                                                            @endphp
-                                                            <input style="height:15px; width:15px; vertical-align: middle;"
-                                                                class="form-check-input" type="checkbox" name="rmks[]"
-                                                                value="Not Cleared By PB" id="flexCheckDefault"
-                                                                @if (in_array('Not Cleared By PB', $rmk)) {
-                                                                    {{ 'Checked' }}
-                                                                } @endif>
-
-                                                            <label class="form-check-label" for="flexCheckDefault">
-                                                                Not Cleared By PB.
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check" style="text-align:left; font-size: 18px;">
-                                                            @php
-                                                                $rmks = $item->rmks;
-                                                                $rmk = explode(',', $rmks);
-                                                            @endphp
-                                                            <input style="height:15px; width:15px; vertical-align: middle;"
-                                                                class="form-check-input" type="checkbox" name="rmks[]"
-                                                                value="No Trade Vacancy" id="flexCheckDefault"
-                                                                @if (in_array('No Trade Vacancy', $rmk)) {
-                                                                    {{ 'Checked' }}
-                                                                } @endif>
-
-                                                            <label class="form-check-label" for="flexCheckDefault">
-                                                                No Trade Vacancy.
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check" style="text-align:left; font-size: 18px;">
-                                                            <input style="height:15px; width:15px; vertical-align: middle;"
-                                                                class="form-check-input" type="checkbox" name="rmks[]"
-                                                                value="Low Score" id="flexCheckDefault"
-                                                                @if (in_array('Low Score', $rmk)) {
-                                                                    {{ 'Checked' }}
-                                                                } @endif>
-                                                            <label class="form-check-label" for="flexCheckDefault">
-                                                                Low Score.
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check" style="text-align:left; font-size: 18px;">
-                                                            <input style="height:15px; width:15px; vertical-align: middle;"
-                                                                class="form-check-input" type="checkbox" name="rmks[]"
-                                                                value="Low Medical Cat." id="flexCheckDefault"
-                                                                @if (in_array('Low Medical Cat.', $rmk)) {
-                                                                    {{ 'Checked' }}
-                                                                } @endif>
-                                                            <label class="form-check-label" for="flexCheckDefault">
-                                                                Low Medical Cat..
-                                                            </label>
-                                                        </div>
-
-                                                        <div class="form-check" style="text-align:left; font-size: 18px;">
-                                                            <input style="height:15px; width:15px; vertical-align: middle;"
-                                                                class="form-check-input" type="checkbox" name="rmks[]"
-                                                                value="Deferred For 1 Year" id="flexCheckDefault"
-                                                                @if (in_array('Deferred For 1 Year', $rmk)) {
-                                                                    {{ 'Checked' }}
-                                                                } @endif>
-                                                            <label class="form-check-label" for="flexCheckDefault">
-                                                                Deferred For 1 Year.
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check" style="text-align:left; font-size: 18px;">
-                                                            <input style="height:15px; width:15px; vertical-align: middle;"
-                                                                class="form-check-input" type="checkbox" name="rmks[]"
-                                                                value="No Further Promotion" id="flexCheckDefault"
-                                                                @if (in_array('No Further Promotion', $rmk)) {
-                                                                    {{ 'Checked' }}
-                                                                } @endif>
-                                                            <label class="form-check-label" for="flexCheckDefault">
-                                                                No Further Promotion.
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check" style="text-align:left; font-size: 18px;">
-                                                            <input style="height:15px; width:15px; vertical-align: middle;"
-                                                                class="form-check-input" type="checkbox" name="rmks[]"
-                                                                value="Decision Pending" id="flexCheckDefault"
-                                                                @if (in_array('Decision Pending', $rmk)) {
-                                                                    {{ 'Checked' }}
-                                                                } @endif>
-                                                            <label class="form-check-label" for="flexCheckDefault">
-                                                                Decision Pending.
-                                                            </label>
-                                                        </div>
+                        <td align='left' style="vertical-align: middle">{{ $item->rank }}</td>
+                        <td align='left' style="vertical-align: middle">{{ $item->name }} <br>
+                            <span class="text-primary">{{ $item->basic_trade ?? '' }}</span>
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">{{ $item->entry_no }}</td>
+                        <td class="text-center" style="vertical-align: middle">
+                            @php
+                                $filePath = public_path("promotionBoard/acr-forms/{$item->bdno}.pdf");
+                            @endphp
+                            @if (file_exists($filePath))
+                                <a href="{{ asset('promotionBoard/acr-forms/' . $item->bdno . '.pdf') }}" target="_blank"
+                                    style="text-decoration: none; color:rgb(255, 162, 0);" title="Advers ACR/ Setisfactory ACR">
+                                    <b>
+                                        {{ number_format($item->avg_par, 2) }}
+                                    </b>
+                                </a>
+                            @else
+                                <b>
+                                    {{ number_format($item->avg_par, 2) }}
+                                </b>
+                            @endif
 
 
-                                                        <hr>
-                                                        <div class="form-group" style="text-align:left; font-size: 18px;">
-                                                            <label class="" for="flexCheckDefault">OtherRemarks:
-                                                            </label>
-                                                            <textarea name="rmks_1" class="form-control" id="validationTextarea" placeholder="Remarks">{{ $item->rmks_1 }}</textarea>
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            <b>{{ number_format($item->career_marks, 2) }}</b>
+                        </td>
+                        <td class="text-center" style="vertical-align: middle">
+                            <b>{{ number_format($item->ttl_score, 2) }}</b></td>
+                        <td class="text-center" style="vertical-align: middle; line-height: 1;"><b><span
+                                    class="text-decoration-underline">{{ $item->es }}</span><br><span
+                                    class="text-success">{{ $entry_count }}</span></b></td>
+                        <td class="text-center" style="vertical-align: middle; line-height: 1;"><b><span
+                                    class="text-decoration-underline">{{ $item->cs }}</span><br><span
+                                    class="text-success">{{ $totalPersons }}</span></b></td>
 
-                                                        </div>
-                                                        <hr>
-                                                        <h4 style="text-align: left;">Please Select Your Decision:
-                                                        </h4>
-                                                        <div class="form-check" style="text-align:left; font-size: 18px;">
+                        <td class="text-center">
+                            @if ($item->conduct_sheet)
+                                <a style="height: 35px;" class="text-danger mt-2 text-decoration-none conductSheetBtn btn"
+                                data-bs-toggle="modal" data-id="{{ $item->id }}" data-bdno="{{ $item->bdno }}"
+                                data-rank="{{ $item->rank }}" data-name="{{ $item->name }}"
+                                data-trade="{{ $item->trade }}">
+                                    {!! $item->conduct_sheet !!}
+                                </a>
+                            @endif
 
-                                                            <input style="height:15px; width:15px; vertical-align: middle;"
-                                                                type="radio" class="form-check-input" id="final"
-                                                                name="decision" value="true"
-                                                                @if ($item->decision == 'true') {{ 'checked' }} @endif>
-                                                            <label class="form-check-label"
-                                                                for="final">Recommended</label><br>
-                                                            <input style="height:15px; width:15px;" type="radio"
-                                                                class="form-check-input" id="pending" name="decision"
-                                                                value="false"
-                                                                @if ($item->decision == 'false') {{ 'checked' }} @endif>
-                                                            <label class="form-check-label" for="pending">Not
-                                                                Recommended</label><br>
-                                                            <input style="height:15px; width:15px;" type="radio"
-                                                                class="form-check-input" id="no_decision" name="decision"
-                                                                value=""
-                                                                @if ($item->decision == ' ') {{ 'checked' }} @endif>
-                                                            <label class="form-check-label" for="no_decision">Clear
-                                                                Decision</label>
-                                                        </div>
-                                                        <input type="hidden" name="trade"
-                                                            value="{{ $item->trade }}">
-                                                        <input type="hidden" name="sheetNo"
-                                                            value="{{ $item->sheetNo }}">
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-danger"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-success"
-                                                                name="update_data">Save</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /.modal -->
+                        </td>
+                        <td class="text-center">
+                            @if ($item->weight < 0)
+                                <span class="text-danger">{{ $item->weight * -1 }}</span>
+                            @elseif ($item->weight > 0)
+                                <span class="text-danger fw-bold">+{{ $item->weight }}</span>
+                            @else
+                                &plusmn;
+                                {{ $item->weight }}
+                            @endif
+                        </td>
+                        <td class="text-center">{{ $item->base_unit }}</td>
+                        <td class="text-center tr-row-yes-or-no-select{{ $item->id }}"
+                            style="vertical-align: middle">
+                            @if ($item->decision == 'true')
+                                Yes
+                            @else
+                                NO
+                            @endif
+                        </td>
+                        <td style="vertical-align: middle; text-align:left;"><b>{!! $item->other_rmks !!}</b></td>
+                        <td align='left' style="vertical-align: middle; text-align:left;">
+                            <b>{!! $item->rmks !!}<br>{{ $item->rmks_1 }}</b>
+                        </td>
+                        <td class="text-center"
+                            style="vertical-align: middle; display:@php if($user->userName == 'pbuser'){ echo 'none;'; } @endphp">
+                            {{-- <td class="text-center" style="vertical-align: middle; " > --}}
+                            @if ($item->decision == 'true')
+                                <img src="{{ asset('icon/ok.png') }}" style="border-radius: 7px;">
+                            @elseif ($item->decision == 'false')
+                                <img src="{{ asset('icon/not.png') }}" style="border-radius: 7px;">
+                            @else
+                                <label class='container1'>
+                                    <input type="checkbox" data-column_name="decision" {{-- <!-- Data attribute for column name --> --}}
+                                        data-id="{{ $item->id }}" {{-- <!-- Data attribute for item ID --> --}}
+                                        {{ $item->decision ? 'checked' : '' }}>
+                                    <!-- Blade syntax to conditionally add 'checked' attribute -->
+                                    <span class="checkmark"></span>
+                                    <!-- This is likely the styling for the checkbox -->
+                                </label>
+                            @endif
+                            <br>
+                            <button style="height: 35px;" type="button" class="btn btn-success mt-2"
+                                data-bs-toggle="modal" data-bs-target="#exampleModal{{ $item->id }}">
+                                <img style="width: 14px;" src='{{ asset('icon/edit.png') }}'>
+                            </button>
+                            <button
+                                style="height: 35px; display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp"
+                                type="button" class="btn btn-primary mt-2 editBtn" data-id="{{ $item->id }}"
+                                data-image="promotionBoard/image/{{ $item->bdno }}.gif">
+                                <img style="width: 14px;" src='{{ asset('icon/edit.png') }}'>
+                            </button>
+                            @include('pb.pb-recom-edit')
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <div class="row sticky-bottom">
+            <div class="col-4 d-flex gap-2">
+                <form action="{{ route('booklets.download') }}" method="post" enctype="multipart/form-data"
+                    target="_blank">
+                    @csrf
+                    <input type="hidden" name="trade" value="{{ $trade }}">
+                    <input type="hidden" name="sheet_no" value="{{ $sheetNo }}">
+                    <button type="submit" class="btn btn-secondary"><img src="{{ asset('icon/download.svg') }}" alt="refresh" style="width: 20px; margin-right: 10px;">Booklet Download</button>
+                </form>
+                <form action="{{ route('recomBooklets.download') }}" method="post" enctype="multipart/form-data"
+                    target="_blank">
+                    @csrf
+                    <input type="hidden" name="trade" value="{{ $trade }}">
+                    <input type="hidden" name="sheet_no" value="{{ $sheetNo }}">
+                    <button type="submit" class="btn btn-success"><img src="{{ asset('icon/download.svg') }}" alt="refresh" style="width: 20px; margin-right: 10px;">Recom Download</button>
+                </form>
+            </div>
+            <div class="col-4 text-center">
+                <a href=""><button type="submit" class="btn btn-primary"><img
+                            src="{{ asset('icon/refresh.svg') }}" alt="refresh"
+                            style="width: 20px; margin-right: 10px;">Page Refresh</button></a>
+            </div>
+            <div class="col-4"></div>
+        </div>
 
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <p class="text-center sticky-bottom">
-                <a href="">
-                    <button type="submit" class="btn btn-primary btn-lg" style="width:200px">Confirm</button>
-                </a>
-            </p>
     </div>
     @include('pb.pb-person-edit')
+    @include('pb.conduct-sheet-modal')
 @endsection
-
-
 @push('other_script')
     <script>
         $('.editBtn').on('click', async function() {
@@ -768,43 +674,53 @@
             console.log(image)
             await FillUpUpdateForm(id, image)
             $("#persEdit").modal('show');
-
-
+        })
+        $('.conductSheetBtn').on('click', async function() {
+            let id = $(this).data('id');
+            let bdno = $(this).data('bdno');
+            let rank = $(this).data('rank');
+            let name = $(this).data('name');
+            let trade = $(this).data('trade');
+            await FillUpConductSheetForm(id, bdno, rank, name, trade)
+            $("#staticBackdropConductSheet").modal('show');
         })
     </script>
     <script>
         $(document).ready(function() {
-            // Attach change event handler to checkboxes
             $('input[type="checkbox"]').change(function() {
-                // Get the column name and ID from data attributes
-                var column_name = $(this).data('column_name');
                 var id = $(this).data('id');
-
-                // Determine the new value of the decision based on checkbox state
+                var column_name = $(this).data('column_name');
                 var decision = $(this).is(':checked');
-                // console.log(decision);
-                if (decision == true) {
-                    $("#tr" + id).addClass('tr-row-bg-select');
+
+                // Update row background
+                var $row = $("#tr" + id);
+                $row.removeClass('tr-row-bg-select tr-row-bg-stanby'); // remove both first
+                if (decision) {
+                    $row.addClass('tr-row-bg-select');
+                    $(".tr-row-yes-or-no-select" + id).html("Yes");
+                } else {
+                    $row.addClass('tr-row-bg-stanby');
+                    $(".tr-row-yes-or-no-select" + id).html("No");
                 }
-                if (decision == false) {
-                    $("#tr" + id).addClass('tr-row-bg-stanby');
-                }
+
                 // Send AJAX request to update decision status
                 $.ajax({
-                    type: 'get',
+                    type: 'GET',
                     url: '/items/' + id + '/update-decision',
                     data: {
-                        'decision': decision // Example decision value
+                        decision: decision,
+                        column_name: column_name
                     },
                     success: function(response) {
                         flasher.success(response.success);
                     },
-                    error: function(response) {
-                        flasher.error(response.error);
+                    error: function(xhr) {
+                        flasher.error(xhr.responseJSON?.error || "Something went wrong");
                     }
                 });
             });
         });
+
 
         $(function() {
             var test = localStorage.input === 'true' ? true : false;
@@ -846,18 +762,14 @@
                         document.getElementById("minCheck1").style.color = 'white';
                         document.getElementById("minCheck").style.color = 'white';
                     }
-
                     // Log the updated sum to the console
                     // console.log('Updated sum:', sum);
                     // console.log('Updated min:', min);
-
                     document.getElementById("checkId1").innerHTML = sum;
                     document.getElementById("minCheck1").innerHTML = min;
                     document.getElementById("checkId").innerHTML = sum;
                     document.getElementById("minCheck").innerHTML = min;
                     // document.getElementById("rowColor").innerHTML= isChecked.style.backgroundColor='red';
-
-
                     // Optionally update the DOM element with the sum
                     // document.getElementById("sumId").innerHTML = sum;
                 } else {
@@ -871,8 +783,6 @@
                     // Add the isUnChecked value to the sum
                     sum -= isUnChecked;
                     min += isUnChecked;
-
-
                     // Log the updated sum to the console
                     // console.log('Updated sum:', sum);
                     // console.log('Updated min:', min);
@@ -902,7 +812,7 @@
             function populateDropdown() {
                 // Get unique values from the Position column (index 2)
                 var uniquePositions = [];
-                table.column(4).data().each(function(value, index) {
+                table.column(5).data().each(function(value, index) {
                     if (uniquePositions.indexOf(value) === -1) {
                         uniquePositions.push(value); // Add unique values
 
@@ -923,11 +833,11 @@
             $('#positionFilter').on('change', function() {
                 var selectedValue = $(this).val();
                 if (selectedValue === "") {
-                    table.column(4).search('').draw(); // Reset filter for "All Entry"
+                    table.column(5).search('').draw(); // Reset filter for "All Entry"
                     table.order([0, 'asc']).draw(); // Sort column index 1 in ascending order
                 } else {
-                    table.column(4).search(selectedValue).draw(); // Filter by selected value
-                    table.order([8, 'asc']).draw(); // Sort column index 8 in ascending order
+                    table.column(5).search(selectedValue).draw(); // Filter by selected value
+                    table.order([9, 'asc']).draw(); // Sort column index 8 in ascending order
                 }
             });
 
@@ -954,6 +864,3 @@
         })
     </script>
 @endpush
-@else
-No Data found
-@endif

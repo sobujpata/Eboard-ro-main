@@ -13,54 +13,44 @@ class PbPreviouseVacController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-    //    dd('policies');
-        $pbPreviouseVacs = DB::table('previouse_pb')
-                ->get();
-
-
-                $trades = trade::get();
-                $ranks = rank::get();
-                // dd($trades);
-        $count=1;
-        return view('admin.pbPreviouseVac', compact('pbPreviouseVacs', 'count', 'trades', 'ranks'));
+        $query = $request->input('search');
+        $previouse_pb = DB::table('previouse_pb');
+        if ($query) {
+            $previouse_pb->orWhere('trade', 'like', "%{$query}%");
+        }
+        $results = $previouse_pb->paginate(10);
+        $trades = trade::get();
+        $ranks = rank::get();
+         return view('admin.pbPreviouseVac', compact('results',  'trades', 'ranks'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function store(Request $request)
     {
+        DB::table('previouse_pb')->insert([
+            'trade' => $request->trade,
+            'rank' => $request->rank,
+            'estb' => $request->estb,
+            'str' => $request->str,
+            'exist' => $request->exist,
+            'retd' => $request->retd,
+            'promoted_pre_pb' => $request->promoted_pre_pb,
+            'ttl' => $request->ttl,
+            'promotion' => $request->promotion,
+            'score_max' => $request->score_max,
+            'score_min' => $request->score_min,
+            'sheetNo' => $request->sheetNo,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
-        $trade = $request->trade;
-        $rank = $request->rank;
-        $estb = $request->estb;
-        $str = $request->str;
-        $exist = $request->exist;
-        $retd = $request->retd;
-        $promoted_pre_pb = $request->promoted_pre_pb;
-        $ttl = $request->ttl;
-        $sheetNo = $request->sheetNo;
-        // dd($str);
-
-        DB::insert('insert into previouse_pb (trade, rank, estb, str, exist, retd, promoted_pre_pb, ttl, sheetNo)
-                    values(?,?,?,?,?,?,?,?,?)', [$trade, $rank, $estb, $str, $exist, $retd,$promoted_pre_pb,$ttl, $sheetNo]);
-
-        return redirect()->back()->with("success","Data inserted successfully.");
+        return redirect()->back()->with('success', 'Data inserted successfully.');
     }
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Request $request, $id)
     {
         // dd($request);
@@ -70,27 +60,28 @@ class PbPreviouseVacController extends Controller
         $str = $request->str;
         $exist = $request->exist;
         $retd = $request->retd;
-        $promotion = $request->promotion;
         $ttl = $request->ttl;
+        $promoted_pre_pb = $request->promoted_pre_pb;
+        $promotion = $request->promotion;
         $sheetNo = $request->sheetNo;
         $score_max = $request->score_max;
         $score_min = $request->score_min;
 
-
-       DB::table('previouse_pb')->where('id', $id)->update([
-        'trade'=>$trade,
-        'rank'=>$rank,
-        'estb'=>$estb,
-        'str'=>$str,
-        'exist'=>$exist,
-        'retd'=>$retd,
-        'promotion'=>$promotion,
-        'ttl'=>$ttl,
-        'score_max'=>$score_max,
-        'score_min'=>$score_min,
-        'sheetNo'=>$sheetNo
-        ] );
-        return redirect()->back()->with("status","Data update successfully.");
+        DB::table('previouse_pb')->where('id', $id)->update([
+            'trade' => $trade,
+            'rank' => $rank,
+            'estb' => $estb,
+            'str' => $str,
+            'exist' => $exist,
+            'retd' => $retd,
+            'ttl' => $ttl,
+            'promoted_pre_pb' => $promoted_pre_pb,
+            'promotion' => $promotion,
+            'score_max' => $score_max,
+            'score_min' => $score_min,
+            'sheetNo' => $sheetNo
+        ]);
+        return redirect()->back()->with("success", "Data update successfully.");
     }
 
     /**
@@ -98,7 +89,7 @@ class PbPreviouseVacController extends Controller
      */
     public function destroy(string $id)
     {
-       $deleteData = DB::table('previouse_pb')->where('id', $id)->delete();
-       return redirect()->back()->with('delete', 'Delete data successfully.');
+        $deleteData = DB::table('previouse_pb')->where('id', $id)->delete();
+        return redirect()->back()->with('warning', 'Delete data successfully.');
     }
 }
