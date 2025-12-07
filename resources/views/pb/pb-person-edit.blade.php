@@ -66,6 +66,20 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
+                                    <label for="doe">Date of Enrolment</label>
+                                    <input type="date" name="doe" id="doe" class="form-control"
+                                        value="">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="promotion_dt">Date of Present rk</label>
+                                    <input type="date" name="promotion_dt" id="promotion_dt" class="form-control"
+                                        value="">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
                                     <label for="avg_par">PAR (AVG)</label>
                                     <input type="text" name="avg_par" id="avg_par" class="form-control"
                                         value="">
@@ -78,17 +92,7 @@
                                         value="">
                                 </div>
                             </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="ttl_score">Total Score</label>
-                                    <input type="text" name="ttl_score" id="ttl_score" class="form-control"
-                                        value="">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="es">Entry Sr</label>
                                     <input type="text" name="es" id="es" class="form-control"
@@ -101,7 +105,7 @@
                                     <input type="text" name="cs" id="cs" class="form-control"
                                         value="">
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="conduct_sheet">Conduct Sheet</label>
@@ -109,10 +113,7 @@
                                         value="">
                                 </div>
                             </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="weight">Weight (Lbp)</label>
                                     <input type="text" name="weight" id="weight" class="form-control"
@@ -202,11 +203,12 @@
             document.getElementById('basic_trade').value =res.data.basic_trade;
             document.getElementById('trade').value =res.data.trade;
             document.getElementById('entry_no').value =res.data.entry_no;
+            document.getElementById('doe').value =res.data.doe;
+            document.getElementById('promotion_dt').value =res.data.promotion_dt;
             document.getElementById('avg_par').value =res.data.avg_par;
             document.getElementById('career_marks').value =res.data.career_marks;
-            document.getElementById('ttl_score').value =res.data.ttl_score;
-            document.getElementById('es').value =res.data.es;
-            document.getElementById('cs').value =res.data.cs;
+            // document.getElementById('es').value =res.data.es;
+            // document.getElementById('cs').value =res.data.cs;
             document.getElementById('conduct_sheet').value =res.data.conduct_sheet;
             document.getElementById('weight').value =res.data.weight;
             document.getElementById('base_unit').value =res.data.base_unit;

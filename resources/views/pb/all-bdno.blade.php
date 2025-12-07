@@ -8,14 +8,14 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
-                                Total BD NO : {{ $totalBdNos }}
+                                Total BD No : {{ $totalBdNos }}
                             </div>
                             <div class="col-md-4">
                                 <h3 class="text-center text-decoration-underline">Promotion Board - @php
                                     $year = date('Y');
                                     echo $year;
-                                @endphp</h3>
-
+                                    @endphp
+                                </h3>
                             </div>
 
                             <div class="col-md-4">

@@ -82,7 +82,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="avg_par">PAR (AVG)</label>
+                                    <label for="avg_par">PAR (Avg)</label>
                                     <input type="text" name="avg_par" id="" class="form-control" value="">
                                 </div>
                             </div>
@@ -115,7 +115,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="conduct_sheet">condunct_sheet</label>
+                                    <label for="conduct_sheet">Conduct Sheet</label>
                                     <input type="text" name="conduct_sheet" id="" class="form-control" value="">
                                 </div>
                             </div>
@@ -127,7 +127,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="base_unit">Base Unit</label>
+                                    <label for="base_unit">Base/Unit</label>
                                     <input type="text" name="base_unit" id="" class="form-control" value="">
                                 </div>
                             </div>
@@ -159,7 +159,7 @@
                             </div>
                             <div class="col-md-10">
                                 <div class="form-group">
-                                    <label for="rmks_by_ro">Remarks By Ro/D Pers</label>
+                                    <label for="rmks_by_ro">Remarks By RO/D Pers</label>
                                     <textarea name="rmks_by_ro" id="summernote" cols="" rows="3" class="form-control"></textarea>
                                 </div>
                             </div>

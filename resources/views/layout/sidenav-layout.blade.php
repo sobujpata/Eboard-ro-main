@@ -85,22 +85,22 @@
 
         <a href="{{ url('/admin/policies') }}" class="side-bar-item">
             <i class="bi bi-bag"></i>
-            <span class="side-bar-item-caption">Plicies</span>
+            <span class="side-bar-item-caption">Policies</span>
         </a>
 
         <a href="{{ url('/admin/pb/vac') }}" class="side-bar-item">
             <i class="bi bi-currency-dollar"></i>
-            <span class="side-bar-item-caption">PB VAC-{{ substr(date('Y'), -2) }}</span>
+            <span class="side-bar-item-caption">PB Vac-{{ substr(date('Y'), -2) }}</span>
         </a>
 
         <a href="{{ url('/admin/pb/PreviouseVac') }}" class="side-bar-item">
             <i class="bi bi-receipt"></i>
-            <span class="side-bar-item-caption">PB VAC-{{ substr(date('Y') - 1, -2) }}</span>
+            <span class="side-bar-item-caption">PB Vac-{{ substr(date('Y') - 1, -2) }}</span>
         </a>
 
         <a href="{{ url('/admin/pb/PbNextVac') }}" class="side-bar-item">
             <i class="bi bi-file-earmark-bar-graph"></i>
-            <span class="side-bar-item-caption">PB VAC-{{ substr(date('Y') + 1, -2) }} &
+            <span class="side-bar-item-caption">PB Vac-{{ substr(date('Y') + 1, -2) }} &
                 {{ substr(date('Y') + 2, -2) }}</span>
         </a>
         <a href="{{ url('/vac-on-retd') }}" class="side-bar-item">

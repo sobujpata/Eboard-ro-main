@@ -20,17 +20,13 @@
                 </tr>
                 <tr>
                     <td>
-                        <h6 style="font-weight: 800">Airmen & MODC (Air) PB-25</h6>
+                        @php
+                            $year = substr(date('Y'), -2);
+                        @endphp
+                        <h6 style="font-weight: 800">Airmen & MODC (Air) PB-{{ $year }}</h6>
                     </td>
                 </tr>
             </table>
-            {{-- <div style="margin-top: -12px;margin-bottom: -12px; float: left;">
-
-            </div>
-            <div>
-
-            </div> --}}
-
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -57,8 +53,11 @@
                                             <a class="dropdown-item" href="{{url($child->url)}}">{!! $child->title !!}</a>
                                             <ul class="submenu dropdown-menu bg-info">
                                                 @foreach ($child->children as $subchild)
-                                                    <li><a class="dropdown-item nav-link"
-                                                            href="{{ url($subchild->url) }}">{{ $subchild->title }}</a>
+                                                    <li>
+                                                        <a class="dropdown-item nav-link"
+                                                            href="{{ url($subchild->url) }}">
+                                                            {!! $subchild->title !!}
+                                                        </a>
                                                     </li>
                                                     <div class="dropdown-divider"></div>
                                                 @endforeach
@@ -75,6 +74,19 @@
                         @endif
                     </li>
                 @endforeach
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        document.querySelectorAll("a.nav-link, a.dropdown-item").forEach(link => {
+                            if (link.href.includes('/Export/')) {
+                                link.addEventListener("click", function (e) {
+                                    e.preventDefault();
+                                    window.open(this.href, "_blank");
+                                });
+                            }
+                        });
+                    });
+
+                </script>
 
                 <li class="nav-item dropdown"
                     style="display:@php if($user->userName !== 'pbedit'){ echo 'none;'; } @endphp">
@@ -97,13 +109,13 @@
                         {{-- <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/pb-conduct-sheet') }}">Contduct Sheet Upload</a></li> --}}
                         <div class="dropdown-divider"></div>
-                        <li><a class="dropdown-item nav-link" href="{{ url('/pb-bdno') }}">All BD NO</a></li>
+                        <li><a class="dropdown-item nav-link" href="{{ url('/pb-bdno') }}">All BD No</a></li>
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/booklets') }}">Booklets</a></li>
                         <div class="dropdown-divider"></div>
                         <li><a class="dropdown-item nav-link" href="{{ url('/image-url-generator') }}">Image URL Generator</a></li>
                         <div class="dropdown-divider"></div>
-                        <li><a class="dropdown-item nav-link" href="{{ url('/instraction') }}">Instraction</a></li>
+                        <li><a class="dropdown-item nav-link" href="{{ url('/instraction') }}">Instruction</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"

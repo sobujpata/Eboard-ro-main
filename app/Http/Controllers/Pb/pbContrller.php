@@ -29,6 +29,9 @@ class PbContrller extends Controller
         }
         $trade = $request->trade;
         $bases = Base::get();
+        $trades = Trade::all();
+        $ranks = Rank::all();
+
         $sheetNo = $request->sheetNo;
         if (in_array($sheetNo, [3, 4, 5, 6])) {
             $sgtSheet = 3;
@@ -37,32 +40,64 @@ class PbContrller extends Controller
         } else {
             $sgtSheet = 2;
         }
+         $persons = pbPersList::from('pbperslists as us1')
+            ->selectRaw("
+            us1.*,
+            RANK() OVER (
+                PARTITION BY us1.entry_no
+                ORDER BY (us1.avg_par + us1.career_marks) DESC, us1.bdno ASC
+            ) AS rank2,
+            (
+                SELECT COUNT(*)
+                FROM pbperslists us2
+                WHERE
+                    us2.trade = ?
+                    AND us2.sheetNo = ?
+                    AND (
+                        (us2.avg_par + us2.career_marks) > (us1.avg_par + us1.career_marks)
+                        OR (
+                            (us2.avg_par + us2.career_marks) = (us1.avg_par + us1.career_marks) AND us2.bdno < us1.bdno)
+                    )
+            ) + 1 AS rank1
+        ", [$trade, $sheetNo])  // ← bindings here
+            ->where('us1.trade', $trade)
+            ->where('us1.sheetNo', $sheetNo)
+            ->orderBy('us1.entry_no')
+            ->orderBy('us1.bdno')
+            ->get();
+        // dd($persons);
+        $totalPersons = $persons->count();
+        // Count per entry_no
+        $entryCounts = $persons->groupBy('entry_no')->map->count();
+
         $data = pbperslist::where('trade', $trade)
             ->where('sheetNo', $sheetNo)
             ->orderBy('bdno', 'asc')->get();
-        $trades = Trade::all();
-        $ranks = Rank::all();
+
         $rank = pbperslist::select('rank')
             ->where('trade', $trade)
             ->where('sheetNo', $sheetNo)
             ->distinct()->first();
-
+        // dd($rank->rank);
         $currentPb = DB::table('pb_current_estb_str_vac')
             ->where('trade', $trade)
             ->where('sheetno', $sgtSheet)
             ->limit(1)
             ->first();
-        // dd($sgtSheet);
         $previousPb = DB::table('previouse_pb')
             ->where('trade', $trade)
             ->where('sheetNo', $sgtSheet)
             ->get();
-        // dd($previousPb);
         $vacNextYear = DB::table('vac_create_next_yrs')
             ->where('trade', $trade)
             ->where('sheetNo', $sgtSheet)
             ->first();
-        $totalEntry = pbperslist::SELECT('entry_no', DB::raw('count(*) as pers_count'))
+        $totalEntry = pbperslist::selectRaw('
+                entry_no,
+                COUNT(*) as pers_count,
+                MIN(doe) as sample_doe,
+                MIN(rank) as sample_rank
+            ')
             ->where('trade', $trade)
             ->where('sheetno', $sheetNo)
             ->groupBy('entry_no')
@@ -117,7 +152,9 @@ class PbContrller extends Controller
             ->count();
         $entryCounts = $data->groupBy('entry_no')->map->count();
         $totalPersons = $data->count();
+
         return view('pb.pb', compact(
+            'persons',
             'data',
             'entryCounts',
             'totalPersons',
@@ -165,11 +202,14 @@ class PbContrller extends Controller
         $basic_trade = $request->basic_trade;
         $name = $request->name;
         $entry_no = $request->entry_no;
+        $doe = $request->doe;
+        // dd($doe);
+        $promotion_dt = $request->promotion_dt;
         $avg_par = $request->avg_par;
         $career_marks = $request->career_marks;
-        $ttl_score = $request->ttl_score;
-        $es = $request->es;
-        $cs = $request->cs;
+        // $ttl_score = $request->ttl_score;
+        // $es = $request->es;
+        // $cs = $request->cs;
         $conduct_sheet = $request->conduct_sheet;
         $weight = $request->weight;
         $base_unit = $request->base_unit;
@@ -202,11 +242,13 @@ class PbContrller extends Controller
             'trade' => $trade,
             'basic_trade' => $basic_trade,
             'entry_no' => $entry_no,
+            'doe' => $doe,
+            'promotion_dt' => $promotion_dt,
             'avg_par' => $avg_par,
             'career_marks' => $career_marks,
-            'ttl_score' => $ttl_score,
-            'es' => $es,
-            'cs' => $cs,
+            // 'ttl_score' => $ttl_score,
+            // 'es' => $es,
+            // 'cs' => $cs,
             'conduct_sheet' => $conduct_sheet,
             'weight' => $weight,
             'base_unit' => $base_unit,
@@ -275,7 +317,7 @@ class PbContrller extends Controller
             ->orderBy('pbPersLists.trade')
             ->get();
 
-            return view('pb.summary.summary', compact('data', 'user'));
+        return view('pb.summary.summary', compact('data', 'user'));
     }
 
     public function SummaryDynamicPost(Request $request)
@@ -324,26 +366,62 @@ class PbContrller extends Controller
         $persons = $allRanked->where('decision', 'true')->values();
 
         // 4) Total persons
-        $totalPersons = $allRanked->count();
-
-
-
-        $totalEntry = pbperslist::SELECT('entry_no', DB::raw('count(*) as pers_count'))
-            ->where('trade', $trade)
-            ->where('sheetno', $rank)
-            ->groupBy('entry_no')
-            ->get();
-
-        return response()->json($persons);
+        $sheetCounts = $allRanked->groupBy('sheetNo')->map->count();
+        $data = [
+            'persons' => $persons,
+            'entryCounts' => $entryCounts,
+            'sheetCounts' => $sheetCounts
+        ];
+        return response()->json($data);
     }
 
     public function AllSummaryDynamic(Request $request)
     {
         $trade = $request->trade;
 
-        $data = pbperslist::where('trade', $trade)
-            ->where('decision', 'true')
+        $subQuery = pbPersList::from('pbperslists as us1')
+            ->selectRaw("
+                us1.*,
+                -- rank2: grouped by entry_no, ordered by us1.avg_par + us1.career_marks
+                RANK() OVER (
+                    PARTITION BY us1.entry_no
+                    ORDER BY (us1.avg_par + us1.career_marks) DESC, us1.bdno ASC
+                ) AS rank2,
+                -- rank1: grouped by sheetNo, ordered by us1.avg_par + us1.career_marks
+                (
+                    SELECT COUNT(*)
+                    FROM pbperslists us2
+                    WHERE
+                        us2.trade = ?
+                        AND us2.sheetNo = us1.sheetNo
+                        AND (
+                            (us2.avg_par + us2.career_marks) > (us1.avg_par + us1.career_marks)
+                            OR (
+                                (us2.avg_par + us2.career_marks) = (us1.avg_par + us1.career_marks)
+                                AND us2.bdno < us1.bdno
+                            )
+                        )
+                ) + 1 AS rank1
+            ", [$trade])
+            ->where('us1.trade', $trade);
+
+        // 1) Get all ranked records
+        $allRanked = DB::query()
+            ->fromSub($subQuery, 'ranked_full')
             ->get();
+
+        // 2) Count per sheetNo and entry_no for reference
+        $sheetCounts = $allRanked->groupBy('sheetNo')->map->count();
+        $entryCounts = $allRanked->groupBy('entry_no')->map->count();
+
+        // 3) Filter final results (decision = 'true')
+        $persons = $allRanked->where('decision', 'true')->values();
+
+        $data = [
+            'persons' => $persons,
+            'sheetCounts' => $sheetCounts,
+            'entryCounts' => $entryCounts
+        ];
 
         return response()->json($data);
     }

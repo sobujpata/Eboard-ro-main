@@ -110,10 +110,7 @@ class PdfController extends Controller
         //date function
         function formatDate($rawDate)
         {
-            // Convert to DateTime
-            // $date = new DateTime($dateString);
             $formattedDate = Carbon::parse($rawDate)->format('d.m.y');
-            // Format as DD.MM.YY
             return $formattedDate;
         }
         $vac_on_retd = RetdVac::where('trade', $trade)
@@ -252,15 +249,15 @@ class PdfController extends Controller
                     <th rowspan="2">Svc Length</th>
                     <th colspan="2">POINTS</th>
                     <th rowspan="2">Total Score</th>
-                    <th colspan="2">Sr posn as per merit</th>
-                    <th colspan="3">Entries in conduct sheet (Last 03 yrs)</th>
+                    <th colspan="2" style="font-size:11px;">Sr posn as per merit</th>
+                    <th colspan="3" style="font-size:11px;">Entries in conduct sheet (Last 03 yrs)</th>
                     <th rowspan="2">Over/ Under Wt (Lbs)</th>
                     <th rowspan="2">Unit</th>
                     <th rowspan="2">Remarks</th>
                 </tr>
                 <tr style="background-color:#f2f2f2;">
                     <th>Avg PAR</th>
-                    <th>Mks of career courses Bas-40% Adv-40% ST-20%</th>
+                    <th style="font-size:10px;">Mks of career courses Bas-40% Adv-40% ST-20%</th>
                     <th>ES</th>
                     <th>CS</th>
                     <th>Red</th>
@@ -587,15 +584,15 @@ class PdfController extends Controller
                     <th rowspan="2">Svc Length</th>
                     <th colspan="2">POINTS</th>
                     <th rowspan="2">Total Score</th>
-                    <th colspan="2">Sr posn as per merit</th>
-                    <th colspan="3">Entries in conduct sheet (Last 03 yrs)</th>
+                    <th colspan="2" style="font-size:11px;">Sr posn as per merit</th>
+                    <th colspan="3" style="font-size:11px;">Entries in conduct sheet (Last 03 yrs)</th>
                     <th rowspan="2">Over/ Under Wt (Lbs)</th>
                     <th rowspan="2">Unit</th>
                     <th rowspan="2">Remarks</th>
                 </tr>
                 <tr style="background-color:#f2f2f2;">
                     <th>Avg PAR</th>
-                    <th>Mks of career courses Bas-40% Adv-40% ST-20%</th>
+                    <th style="font-size:10px;">Mks of career courses Bas-40% Adv-40% ST-20%</th>
                     <th>ES</th>
                     <th>CS</th>
                     <th>Red</th>

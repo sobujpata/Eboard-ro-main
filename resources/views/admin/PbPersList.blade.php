@@ -174,7 +174,7 @@
                     <!-- /.modal -->
                 </div>
                 <div class="col-sm-4 text-center text-decoration-underline">
-                    <h3>ALL PB PERSONS</h3>
+                    <h3>ALL PB PERSONNEL</h3>
                 </div>
                 <div class="col-sm-4">
                     <form action="{{ route('PersList.index') }}" method="get">

@@ -22,7 +22,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                    <h2 class="bolder text-decoration-underline">Multi Image Upload by Drag and Dop.</h2>
+                    <h2 class="bolder text-decoration-underline">Multi Image Upload by Drag and Drop.</h2>
                     <h5 class="text-danger"><strong>Note : Image name will be BD No and extention .gif</strong></h5>
 
                 </div>

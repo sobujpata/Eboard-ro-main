@@ -1,4 +1,5 @@
 @extends('layout.app-pb')
+@section('title',$trade.'-'.$rank->rank)
 @section('content')
     <div class="container-fluid p-0 mt-4">
         @if (session('status'))
@@ -7,14 +8,14 @@
             </div>
         @endif
         @php
-                if ($sheetNo == 1) {
-                    $booklateRank = 'SWO';
-                } elseif ($sheetNo == 2) {
-                    $booklateRank = 'WO';
-                } else {
-                    $booklateRank = 'Sgt';
-                }
-            @endphp
+            if ($sheetNo == 1) {
+                $booklateRank = 'SWO';
+            } elseif ($sheetNo == 2) {
+                $booklateRank = 'WO';
+            } else {
+                $booklateRank = 'Sgt';
+            }
+        @endphp
         <div class="col-lg-12 text-center text-decoration-underline fw-bolder fs-3 mb-4">
             @php
                 if ($sheetNo == 1) {
@@ -40,7 +41,7 @@
                                     echo $year;
                                 @endphp</u></b></td>
                                 <td align="center" colspan="{{ $sheetNo == 1 ? 4 : 5 }}">
-                                    <b><u>VAC-{{ date('Y') - 1 }}</u></b>
+                                    <b><u>Vac-{{ date('Y') - 1 }}</u></b>
                                 </td>
 
                                 <td align="center"><b><u>Score</u></b></td>
@@ -64,7 +65,7 @@
                                     <td align="center"><b>Exist</b></td>
                                     <td align="center"><b>Retd</b></td>
                                     <td align="center" style="display: {{ $sheetNo == 1 ? 'none' : '' }};" class="">
-                                        <b>p</b>
+                                        <b>P</b>
                                     </td>
                                     <td align="center"><b>Vac</b></td>
                                     <td align="center"><b>Promo</b></td>
@@ -105,7 +106,7 @@
                                 <td align="center"><b>Pers</b></td>
                                 <td align="center"><b>Retd</b></td>
                                 <td align="center" style="vertical-align: top; background-color:#007bff!important;">
-                                    <b>VAC</b>
+                                    <b>Vac</b>
                                 </td>
                                 <td align="center"><b>Entry</b></td>
                                 <td align="center"><b>Recom</b></td>
@@ -130,27 +131,8 @@
                             </td>
                             <td align="center" style="vertical-align: middle;">
                                 <b>
-                                    {{-- @dd($rank) --}}
                                     @foreach ($totalEntry as $singleEntry)
-                                        @if ($sheetNo == 1)
-                                            @if ($trade == 'Cy Asst')
-                                                {{ $singleEntry->entry_no + 2020 }}<br>
-                                            @elseif($trade == 'Edn Instr')
-                                                {{ $singleEntry->entry_no + 2015 }}<br>
-                                            @else
-                                                {{ $singleEntry->entry_no + 2003 }}<br>
-                                            @endif
-                                        @elseif($sheetNo == 2)
-                                            @if ($trade == 'Cy Asst')
-                                                {{ $singleEntry->entry_no + 2024 }}<br>
-                                            @elseif($trade == 'Edn Instr')
-                                                {{ $singleEntry->entry_no + 2014 }}<br>
-                                            @else
-                                                {{ $singleEntry->entry_no + 2001 }}<br>
-                                            @endif
-                                        @else
-                                            {{ $singleEntry->entry_no + 1999 }}<br>
-                                        @endif
+                                        {{ retairedYear($singleEntry->sample_doe, $singleEntry->sample_rank) }}<br>
                                     @endforeach
                                 </b>
                             </td>
@@ -244,7 +226,7 @@
                                 </td>
                                 <td align="center"
                                     colspan="@if ($currentPb->rank == 'MWO') {{ '3' }} @else {{ '4' }} @endif">
-                                    <b><u>VAC-@php
+                                    <b><u>Vac-@php
                                         $year = date('Y');
                                         echo $year;
                                     @endphp</u></b>
@@ -399,8 +381,7 @@
 
                                 </b>
                             </td>
-                            <td align="center"
-                                style="display: @if ($sgtSheet == '1') {{ 'none' }} @endif">
+                            <td align="center" style="display: @if ($sgtSheet == '1') {{ 'none' }} @endif">
                                 <b>
                                     @if ($sgtSheet == '2')
                                         {{ $recomMwo }}
@@ -424,8 +405,7 @@
                                             $vac = $exist + $retd + ($recomSwo ?? 0);
                                         }
                                     @endphp
-                                    {{-- Now output $vac here --}}
-                                    <p>{{ $vac }}</p>
+                                    {{ $vac }}
                                 </b>
                             </td>
                             <td align="center" id="total-recom">
@@ -469,14 +449,12 @@
                     <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Rank</th>
                     <th rowspan="2" style="vertical-align: middle; width: 15% !important;">Name & Basic Trade</th>
                     <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Entry No</th>
-                    {{-- <th style="vertical-align: middle; width: 5% !important;">PAR (Avg)</th> --}}
+                    <th rowspan="2" style="vertical-align: middle; width: 5% !important;">DOE & DOR within yr 26</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 5% !important; font-size: 13px;">Date of present rk & Svc Length</th>
                     <th colspan="2" style="vertical-align: middle; width: 9% !important;">POINTS</th>
-                    {{-- <th style="vertical-align: middle; width: 5% !important;">Marks(TTB, TTA, ST) (Avg)</th> --}}
                     <th rowspan="2" style="vertical-align: middle; width: 5% !important;">Total Score</th>
-                    <th colspan="2" style="vertical-align: middle; width: 5% !important;">Entry Sr</th>
-                    {{-- <th style="vertical-align: middle; width: 3% !important;">Entry Sr</th> --}}
-                    {{-- <th style="vertical-align: middle; width: 3% !important;">Comd Sr</th> --}}
-                    <th rowspan="2" style="vertical-align: middle; width: 10% !important;">Conduct Sheet<br>(Last
+                    <th colspan="2" style="vertical-align: middle; width: 5% !important; font-size: 10px;">Sr posn as per merit</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 7% !important;">Conduct Sheet<br>(Last
                         3yrs)</th>
                     <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Weight (lbs)</th>
                     <th rowspan="2" style="vertical-align: middle; width: 4% !important;">Base/ Unit</th>
@@ -495,11 +473,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $index => $item)
+                @foreach ($persons as $index => $item)
                     @php
                         $entry_count = $entryCounts[$item->entry_no] ?? 0;
-                    @endphp
+                        $avg_acr = number_format($item->avg_par, 2);
+                        $resutls = number_format($item->career_marks, 2);
+                        $total_scrore = str_pad($avg_acr + $resutls, 2, 0, STR_PAD_RIGHT);
 
+                    @endphp
                     <tr id="tr{{ $item->id }}"
                         class= "{{ $item->decision == 'true' ? 'tr-row-bg-select' : ($item->decision == 'false' ? 'tr-row-bg-stanby' : 'inherit') }}">
                         <td class="text-center">{{ $index += 1 }}</td>
@@ -516,13 +497,11 @@
                                     style='height: 90px; width: 80px; border:3px solid #B2B8B7; border-radius: 3px;'
                                     alt='Photo N/A' class="zoom">
                             @endif
-
                         </td>
                         <td align='center' style="vertical-align: middle">
                             @php
                                 $filePath = public_path("promotionBoard/bioData/{$item->bdno}.pdf");
                             @endphp
-
                             @if (file_exists($filePath))
                                 <a href="{{ asset('promotionBoard/bioData/' . $item->bdno . '.pdf') }}" target="_blank"
                                     style="text-decoration: none">
@@ -532,41 +511,40 @@
                                 <b class="text-danger">{{ $item->bdno }}</b>
                             @endif
                         </td>
-
                         <td align='left' style="vertical-align: middle">{{ $item->rank }}</td>
                         <td align='left' style="vertical-align: middle">{{ $item->name }} <br>
                             <span class="text-primary">{{ $item->basic_trade ?? '' }}</span>
                         </td>
                         <td class="text-center" style="vertical-align: middle">{{ $item->entry_no }}</td>
+                        <td class="text-center" style="vertical-align: middle; line-height: 1;"><span class="text-decoration-underline">{{formatDateCustom($item->doe)}}</span><br>{{ retairedDate($item->doe,$item->rank) }}</td>
+                        <td class="text-center" style="vertical-align: middle; line-height: 1;"><span class="text-decoration-underline">{{ formatDateCustom($item->promotion_dt) }}<br></span>{{ serviceLength($item->doe) }}</td>
                         <td class="text-center" style="vertical-align: middle">
                             @php
                                 $filePath = public_path("promotionBoard/acr-forms/{$item->bdno}.pdf");
                             @endphp
                             @if (file_exists($filePath))
                                 <a href="{{ asset('promotionBoard/acr-forms/' . $item->bdno . '.pdf') }}" target="_blank"
-                                    style="text-decoration: none; color:rgb(255, 162, 0);" title="Advers ACR/ Setisfactory ACR">
+                                    style="text-decoration: none; color:rgb(255, 0, 0);" title="Advers ACR/ Setisfactory ACR">
                                     <b>
-                                        {{ number_format($item->avg_par, 2) }}
+                                        {{ $avg_acr }}
                                     </b>
                                 </a>
                             @else
                                 <b>
-                                    {{ number_format($item->avg_par, 2) }}
+                                    {{ $avg_acr }}
                                 </b>
                             @endif
-
-
                         </td>
                         <td class="text-center" style="vertical-align: middle">
-                            <b>{{ number_format($item->career_marks, 2) }}</b>
+                            <b>{{ $resutls }}</b>
                         </td>
                         <td class="text-center" style="vertical-align: middle">
-                            <b>{{ number_format($item->ttl_score, 2) }}</b></td>
+                            <b>{{ $total_scrore }}</b></td>
                         <td class="text-center" style="vertical-align: middle; line-height: 1;"><b><span
-                                    class="text-decoration-underline">{{ $item->es }}</span><br><span
+                                    class="text-decoration-underline">{{ $item->rank2 }}</span><br><span
                                     class="text-success">{{ $entry_count }}</span></b></td>
                         <td class="text-center" style="vertical-align: middle; line-height: 1;"><b><span
-                                    class="text-decoration-underline">{{ $item->cs }}</span><br><span
+                                    class="text-decoration-underline">{{ $item->rank1 }}</span><br><span
                                     class="text-success">{{ $totalPersons }}</span></b></td>
 
                         <td class="text-center">
@@ -577,6 +555,8 @@
                                 data-trade="{{ $item->trade }}">
                                     {!! $item->conduct_sheet !!}
                                 </a>
+                                @else
+                                N/A
                             @endif
 
                         </td>
@@ -837,7 +817,7 @@
                     table.order([0, 'asc']).draw(); // Sort column index 1 in ascending order
                 } else {
                     table.column(5).search(selectedValue).draw(); // Filter by selected value
-                    table.order([9, 'asc']).draw(); // Sort column index 8 in ascending order
+                    table.order([11, 'asc']).draw(); // Sort column index 8 in ascending order
                 }
             });
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Promotion Board - {{ date('y') }}</title>
+    <title>PB - {{ date('y') }}-@yield('title')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('logo/ro.png') }}" />
     <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/fontawesome.css') }}" rel="stylesheet" />

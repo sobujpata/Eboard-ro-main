@@ -1,5 +1,5 @@
 @extends('layout.app-pb')
-
+@section('title','Promotion Policy')
 @section('content')
 <div class="container">
 

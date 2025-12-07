@@ -24,19 +24,32 @@ class PoliciesController extends Controller
      */
     public function create(Request $request)
     {
-        $name = $request->name;
-        $subject = $request->subject;
-        $published_on = $request->published_on;
-        $policy_for = $request->policy_for;
-        $fileName = $request->policyFile;
+        $request->validate([
+            'name' => 'required',
+            'subject' => 'required',
+            'published_on' => 'required|date',
+            'policy_for' => 'required',
+            'policyFile' => 'required|file|mimes:pdf,doc,docx|max:9048',
+        ]);
+        $file = $request->file('policyFile');
+
+        // Generate unique file name
+        $fileName = time() . '_' . $file->getClientOriginalName();
+
+        // Move file to /policies folder
+        $file->move(public_path('policies'), $fileName);
         // dd($fileName);
-        // $file = $request->file('policyName');
-        // $file->move('policies/');
+        Policy::create([
+            'name'          => $request->name,
+            'subject'       => $request->subject,
+            'published_on'  => $request->published_on,
+            'policy_for'    => $request->policy_for,
+            'file'          => 'policies/'.$fileName, // store unique filename
+        ]);
 
-        $policyData = DB::insert('insert into policies (name, subject, published_on, policy_for, filename) values(?,?,?,?,?)', [$name, $subject, $published_on, $policy_for, $fileName]);
-
-        return redirect()->back()->with("success", "Data inserted successfully.");
+        return back()->with("success", "Data inserted successfully.");
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -84,9 +97,6 @@ class PoliciesController extends Controller
             $policyFile->move(public_path('policies'), $file_name);
             $file_url = "policies/{$file_name}";
         }
-
-        // dd($file_url); // Remove this in production
-
         $policy->update([
             'name' => $request->name,
             'subject' => $request->subject,

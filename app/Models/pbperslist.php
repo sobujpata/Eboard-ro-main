@@ -15,6 +15,8 @@ class pbperslist extends Model
         "trade",
         "basic_trade",
         "entry_no",
+        "doe",
+        "promotion_dt",
         "avg_par",
         "career_marks",
         "ttl_score",

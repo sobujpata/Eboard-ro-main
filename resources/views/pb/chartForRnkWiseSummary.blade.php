@@ -1,5 +1,5 @@
 @extends('layout.app-pb')
-
+@section('title','Recom rank wise charts')
 @section('content')
     <div class="container">
         @if (session('status'))
