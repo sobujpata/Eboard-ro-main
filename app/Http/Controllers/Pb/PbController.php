@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class PbContrller extends Controller
+class PbController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -74,10 +74,14 @@ class PbContrller extends Controller
             ->where('sheetNo', $sheetNo)
             ->orderBy('bdno', 'asc')->get();
 
-        $rank = pbperslist::select('rank')
-            ->where('trade', $trade)
-            ->where('sheetNo', $sheetNo)
-            ->distinct()->first();
+        if (in_array($sheetNo, [3, 4, 5, 6])) {
+        $rank = 'Sgt';
+        } elseif ($sheetNo == 1) {
+            $rank = 'SWO';
+        } else {
+            $rank = 'WO';
+        }
+
         // dd($rank->rank);
         $currentPb = DB::table('pb_current_estb_str_vac')
             ->where('trade', $trade)
@@ -96,7 +100,7 @@ class PbContrller extends Controller
                 entry_no,
                 COUNT(*) as pers_count,
                 MIN(doe) as sample_doe,
-                MIN(rank) as sample_rank
+                MIN(`rank`) as sample_rank
             ')
             ->where('trade', $trade)
             ->where('sheetno', $sheetNo)
@@ -138,7 +142,7 @@ class PbContrller extends Controller
             ->count();
         $lastEntryWo = pbperslist::where('trade', $trade)
             ->where('rank', 'WO')
-            ->where('entry_no', '26')
+            ->where('entry_no', '25')
             ->where('decision', 'true')
             ->count();
         // dd($lastEntryWo);

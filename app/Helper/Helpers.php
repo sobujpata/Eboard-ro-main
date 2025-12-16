@@ -31,7 +31,7 @@ if (!function_exists('retairedDate')) {
             $yearsToAdd = 31;
         } elseif ($rank == 'WO') {
             $yearsToAdd = 29;
-        } elseif ($rank == 'SGT') {
+        } elseif ($rank == 'SGT' || $rank == "Sgt") {
             $yearsToAdd = 27;
         } else {
             $yearsToAdd = 20;
@@ -95,5 +95,17 @@ if (!function_exists('formatDateCustom')) {
     {
         $formattedDate = Carbon::parse($rawDate)->format('d.m.y');
         return $formattedDate;
+    }
+}
+
+
+if (!function_exists('calculateTotalFromPercentage')) {
+    function calculateTotalFromPercentage(float $value, float $percentage): float
+    {
+        if ($percentage <= 0 || $percentage > 100) {
+            return 0;
+        }
+
+        return round($value / ($percentage / 100), 2);
     }
 }

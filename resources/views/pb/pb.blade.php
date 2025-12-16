@@ -1,5 +1,5 @@
 @extends('layout.app-pb')
-@section('title',$trade.'-'.$rank->rank)
+@section('title',$trade.'-'.$rank)
 @section('content')
     <div class="container-fluid p-0 mt-4">
         @if (session('status'))
@@ -263,7 +263,8 @@
                                 <td align="center"><b>{{ $currentExistResult }}</b></td>
                                 <td align="center">
                                     <b>
-                                        {{-- @dd($sgtSheet) --}}
+                                        {{-- @dd($currentPb->retd) --}}
+                                        {{-- {{ $curren_pb_retd = number_format($currentPb->retd) }} --}}
                                         @if ($sgtSheet == '1')
                                             {{ $currentPb->retd }}
                                         @elseif($sgtSheet == '2')
@@ -467,7 +468,13 @@
                 </tr>
                 <tr align="center" style="background:#33a8ff;">
                     <th>Avg PAR</th>
-                    <th style="font-size: 10px">Mks of career courses Bas-40% Adv-40% ST-20%</th>
+                    <th style="font-size: 10px">
+                        @if ($trade=='Cy Asst' || $trade=='Edn Instr')
+                            Mks of career courses Bas-40%/100%
+                        @else
+                            Mks of career courses Bas-40% Adv-40% ST-20%
+                        @endif
+                        </th>
                     <th>ES</th>
                     <th>CS</th>
                 </tr>
@@ -479,6 +486,7 @@
                         $avg_acr = number_format($item->avg_par, 2);
                         $resutls = number_format($item->career_marks, 2);
                         $total_scrore = str_pad($avg_acr + $resutls, 2, 0, STR_PAD_RIGHT);
+
 
                     @endphp
                     <tr id="tr{{ $item->id }}"
@@ -535,11 +543,25 @@
                                 </b>
                             @endif
                         </td>
-                        <td class="text-center" style="vertical-align: middle">
-                            <b>{{ $resutls }}</b>
+                        <td class="text-center" style="vertical-align: middle; line-height: 1;">
+                            <b>
+                                {{ $resutls }}
+                                @if ($trade=='Cy Asst' || $trade=='Edn Instr')
+                                /<br>
+                                {{ number_format(calculateTotalFromPercentage($item->career_marks, 40),2) }}
+                                @endif
+
+                            </b>
                         </td>
-                        <td class="text-center" style="vertical-align: middle">
-                            <b>{{ $total_scrore }}</b></td>
+                        <td class="text-center" style="vertical-align: middle; line-height: 1;">
+                            <b>
+                                {{ $total_scrore }}
+                                @if ($trade=='Cy Asst' || $trade=='Edn Instr')
+                                <br>
+                                /{{ number_format($avg_acr + calculateTotalFromPercentage($item->career_marks, 40),2) }}
+                                @endif
+                            </b>
+                        </td>
                         <td class="text-center" style="vertical-align: middle; line-height: 1;"><b><span
                                     class="text-decoration-underline">{{ $item->rank2 }}</span><br><span
                                     class="text-success">{{ $entry_count }}</span></b></td>

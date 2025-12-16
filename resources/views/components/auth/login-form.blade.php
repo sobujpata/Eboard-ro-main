@@ -14,11 +14,11 @@
                     <h3 class="text-center">PROMOTION BOARD RO</h3>
                     <h4 class="text-center">PLEASE SIGN IN</h4>
                     <br/>
-                    <input id="email" placeholder="User Email" class="form-control" type="email"/>
+                    <input id="email" placeholder="Email Address" class="form-control" type="email"/>
                     <br/>
-                    <input id="password" placeholder="User Password" class="form-control" type="password"/>
+                    <input id="password" placeholder="Password" class="form-control" type="password"/>
                     <br/>
-                    <button onclick="SubmitLogin()" class="btn w-100 bg-gradient-primary">Next</button>
+                    <button onclick="SubmitLogin()" class="btn w-100 bg-gradient-primary">Login</button>
                     <hr/>
 
                 </div>

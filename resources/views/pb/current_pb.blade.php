@@ -43,7 +43,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label class="form-lavel">Estb</label>
-                                <input type="text" name="estb" class="form-control" placeholder="Enter estb"
+                                <input type="number" name="estb" class="form-control" placeholder="Enter estb"
                                     value="{{ $currentPb->estb }}">
                             </div>
                         </div>
@@ -51,21 +51,21 @@
 
                             <div class="form-group">
                                 <label class="form-lavel">Str</label>
-                                <input type="text" name="str" class="form-control" placeholder="Enter str"
+                                <input type="number" name="str" class="form-control" placeholder="Enter str"
                                     value="{{ $currentPb->str }}">
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label class="form-lavel">Exist</label>
-                                <input type="text" name="exist" class="form-control" placeholder="Enter exist"
+                                <input type="number" name="exist" class="form-control" placeholder="Enter exist"
                                     value="{{ $currentPb->exist }}">
                             </div>
                         </div>
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label class="form-lavel">Retd</label>
-                                <input type="text" name="retd" class="form-control" placeholder="Enter retd"
+                                <input type="number" name="retd" class="form-control" placeholder="Enter retd"
                                     value="{{ $currentPb->retd }}">
                             </div>
                         </div>
@@ -74,14 +74,14 @@
                         @endif">
                             <div class="form-group">
                                 <label class="form-lavel">Exp vac on promotion</label>
-                                <input type="text" name="promoted_pre_pb" class="form-control" placeholder="Enter Exp vac on promotion"
+                                <input type="number" name="promoted_pre_pb" class="form-control" placeholder="Enter Exp vac on promotion"
                                     value="{{ $currentPb->promoted_pre_pb }}">
                             </div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <div class="form-group">
                                 <label class="form-lavel">Total Vac</label>
-                                <input type="text" name="ttl" class="form-control" placeholder="Enter total"
+                                <input type="number" name="ttl" class="form-control" placeholder="Enter total"
                                 value="{{ $currentPb->ttl }}">
                             </div>
                         </div>

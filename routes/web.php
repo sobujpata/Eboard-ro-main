@@ -2,21 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
-use App\Http\Controllers\Pb\pbContrller;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\Pb\PbController;
 use App\Http\Controllers\Pb\HomeController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\RetdvacController;
 use App\Http\Controllers\Pb\allRecomSummary;
 use App\Http\Controllers\Pb\ExportController;
 use App\Http\Controllers\Pb\PbItemController;
 use App\Http\Controllers\Pb\StanByController;
-use App\Http\Controllers\Admin\MenuController;
-// use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Pb\pbRecomController;
+use App\Http\Controllers\InstractionController;
+use App\Http\Controllers\ConductSheetController;
 use App\Http\Controllers\Pb\SelectionController;
 use App\Http\Controllers\pb\pbBaseWiseController;
 use App\Http\Controllers\Admin\PersListController;
@@ -30,11 +26,7 @@ use App\Http\Controllers\Admin\PbVacencyController;
 use App\Http\Middleware\TokenVerificationMiddleware;
 use App\Http\Controllers\Evaluation\EbPersController;
 use App\Http\Controllers\Admin\PbPreviouseVacController;
-use App\Http\Controllers\ConductSheetController;
 use App\Http\Controllers\Evaluation\HomeController as EvaluationHomeController;
-use App\Http\Controllers\InstractionController;
-use App\Http\Controllers\Pb\PbContrller as PbPbContrller;
-use App\Http\Controllers\RetdvacController;
 
 // Web API Routes
 Route::post('/user-registration', [UserController::class, 'UserRegistration']);
@@ -103,11 +95,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 Route::get('/pb/pb-home', [HomeController::class, 'pbHomePage'])->middleware([TokenVerificationMiddleware::class]);
 Route::get('/pb/pb-policy', [HomeController::class, 'policy'])->name('pb.home')->middleware([TokenVerificationMiddleware::class]);
-Route::get('/pb/{trade}/{sheetNo}', [pbContrller::class, 'pbListShow'])->name('pb.index')->middleware([TokenVerificationMiddleware::class]);
-Route::post('/pb/{id}', [pbContrller::class, 'updatermks'])->name('pb.update')->middleware([TokenVerificationMiddleware::class]);
-Route::post('/pb-pers-by-id', [pbContrller::class, 'pbPersById'])->name('pb.byId')->middleware([TokenVerificationMiddleware::class]);
+Route::get('/pb/{trade}/{sheetNo}', [PbController::class, 'pbListShow'])->name('pb.index')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/pb/{id}', [PbController::class, 'updatermks'])->name('pb.update')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/pb-pers-by-id', [PbController::class, 'pbPersById'])->name('pb.byId')->middleware([TokenVerificationMiddleware::class]);
 
-Route::post('/pb-pers-edit', [pbContrller::class, 'edit'])->name('pb.edit')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/pb-pers-edit', [PbController::class, 'edit'])->name('pb.edit')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/pb/recomList', [pbRecomController::class, 'index'])->name('pb.recommend')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/pb/recomList/{trade}/{rank}', [pbRecomController::class, 'index'])->name('recomPromotion.index')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/pb/summary', [pbRecomController::class, 'ChartSummary'])->name('pb.chartForSummary')->middleware([TokenVerificationMiddleware::class]);
@@ -115,9 +107,9 @@ Route::get('/pb/summary-demo', [allRecomSummary::class, 'index'])->name('pb.demo
 Route::get('/pb/rank-wise-summary', [pbRecomController::class, 'ChartRankSummary'])->name('pb.ChartRankSummary')->middleware([TokenVerificationMiddleware::class]);
 
 //Dynamic Summary
-Route::get('/Summary-Dynamic', [PbPbContrller::class, 'SummaryDynamic'])->middleware([TokenVerificationMiddleware::class]);
-Route::post('/summery-dynamic-get', [PbPbContrller::class, 'SummaryDynamicPost'])->middleware([TokenVerificationMiddleware::class]);
-Route::post('/summery-dynamic-all', [PbPbContrller::class, 'AllSummaryDynamic'])->middleware([TokenVerificationMiddleware::class]);
+Route::get('/Summary-Dynamic', [PbController::class, 'SummaryDynamic'])->middleware([TokenVerificationMiddleware::class]);
+Route::post('/summery-dynamic-get', [PbController::class, 'SummaryDynamicPost'])->middleware([TokenVerificationMiddleware::class]);
+Route::post('/summery-dynamic-all', [PbController::class, 'AllSummaryDynamic'])->middleware([TokenVerificationMiddleware::class]);
 
 Route::get('items/{id}/update-decision', [PbItemController::class, 'updateDecision'])->middleware([TokenVerificationMiddleware::class]);
 
