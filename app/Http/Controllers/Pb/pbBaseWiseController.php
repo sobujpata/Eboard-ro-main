@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 
-class pbBaseWiseController extends Controller
+class PbBaseWiseController extends Controller
 {
     public function index(Request $request)
     {

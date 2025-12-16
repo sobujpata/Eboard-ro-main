@@ -10,11 +10,11 @@ use App\Http\Controllers\Pb\allRecomSummary;
 use App\Http\Controllers\Pb\ExportController;
 use App\Http\Controllers\Pb\PbItemController;
 use App\Http\Controllers\Pb\StanByController;
-use App\Http\Controllers\Pb\pbRecomController;
+use App\Http\Controllers\Pb\PbRecomController;
 use App\Http\Controllers\InstractionController;
 use App\Http\Controllers\ConductSheetController;
 use App\Http\Controllers\Pb\SelectionController;
-use App\Http\Controllers\pb\pbBaseWiseController;
+use App\Http\Controllers\pb\PbBaseWiseController;
 use App\Http\Controllers\Admin\PersListController;
 use App\Http\Controllers\Admin\PoliciesController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -28,30 +28,13 @@ use App\Http\Controllers\Evaluation\EbPersController;
 use App\Http\Controllers\Admin\PbPreviouseVacController;
 use App\Http\Controllers\Evaluation\HomeController as EvaluationHomeController;
 
-// Web API Routes
-Route::post('/user-registration', [UserController::class, 'UserRegistration']);
-Route::post('/user-login', [UserController::class, 'UserLogin']);
-Route::post('/send-otp', [UserController::class, 'SendOTPCode']);
-Route::post('/verify-otp', [UserController::class, 'VerifyOTP']);
-Route::post('/reset-password', [UserController::class, 'ResetPassword'])->middleware([TokenVerificationMiddleware::class]);
-Route::get('/user-profile', [UserController::class, 'UserProfile'])->middleware([TokenVerificationMiddleware::class]);
-Route::post('/user-update', [UserController::class, 'UpdateProfile'])->middleware([TokenVerificationMiddleware::class]);
-
-
 // User Logout
-Route::get('/logout', [UserController::class, 'UserLogout']);
-
-// Page Routes
-// Route::get('/',[HomeController::class,'HomePage']);
+Route::get('/logout', [UserController::class, 'UserLogout']); // Page Routes
 Route::get('/', [UserController::class, 'LoginPage']);
-Route::get('/userRegistration', [UserController::class, 'RegistrationPage']);
-Route::get('/sendOtp', [UserController::class, 'SendOtpPage']);
-Route::get('/verifyOtp', [UserController::class, 'VerifyOTPPage']);
-Route::get('/resetPassword', [UserController::class, 'ResetPasswordPage'])->middleware([TokenVerificationMiddleware::class]);
-Route::get('/userProfile', [UserController::class, 'ProfilePage'])->middleware([TokenVerificationMiddleware::class]);
+// Web API Routes
+Route::post('/user-login', [UserController::class, 'UserLogin']);
 
 //admin Route
-
 Route::get('/dashboard', [DashboardController::class, 'DashboardPage'])->middleware([TokenVerificationMiddleware::class]);
 Route::get('/summary', [DashboardController::class, 'Summary'])->middleware([TokenVerificationMiddleware::class]);
 Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home')->middleware([TokenVerificationMiddleware::class]);
@@ -100,11 +83,11 @@ Route::post('/pb/{id}', [PbController::class, 'updatermks'])->name('pb.update')-
 Route::post('/pb-pers-by-id', [PbController::class, 'pbPersById'])->name('pb.byId')->middleware([TokenVerificationMiddleware::class]);
 
 Route::post('/pb-pers-edit', [PbController::class, 'edit'])->name('pb.edit')->middleware([TokenVerificationMiddleware::class]);
-Route::get('/pb/recomList', [pbRecomController::class, 'index'])->name('pb.recommend')->middleware([TokenVerificationMiddleware::class]);
-Route::get('/pb/recomList/{trade}/{rank}', [pbRecomController::class, 'index'])->name('recomPromotion.index')->middleware([TokenVerificationMiddleware::class]);
-Route::get('/pb/summary', [pbRecomController::class, 'ChartSummary'])->name('pb.chartForSummary')->middleware([TokenVerificationMiddleware::class]);
-Route::get('/pb/summary-demo', [allRecomSummary::class, 'index'])->name('pb.demoForSummary')->middleware([TokenVerificationMiddleware::class]);
-Route::get('/pb/rank-wise-summary', [pbRecomController::class, 'ChartRankSummary'])->name('pb.ChartRankSummary')->middleware([TokenVerificationMiddleware::class]);
+Route::get('/pb/recomList', [PbRecomController::class, 'index'])->name('pb.recommend')->middleware([TokenVerificationMiddleware::class]);
+Route::get('/pb/recomList/{trade}/{rank}', [PbRecomController::class, 'index'])->name('recomPromotion.index')->middleware([TokenVerificationMiddleware::class]);
+Route::get('/pb/summary', [PbRecomController::class, 'ChartSummary'])->name('pb.chartForSummary')->middleware([TokenVerificationMiddleware::class]);
+
+Route::get('/pb/rank-wise-summary', [PbRecomController::class, 'ChartRankSummary'])->name('pb.ChartRankSummary')->middleware([TokenVerificationMiddleware::class]);
 
 //Dynamic Summary
 Route::get('/Summary-Dynamic', [PbController::class, 'SummaryDynamic'])->middleware([TokenVerificationMiddleware::class]);
@@ -152,19 +135,19 @@ Route::get('/pb-conduct-sheet-upload-ecxel', [ConductSheetController::class, 'in
 Route::post('/conduct-sheet-upload-excel', [ConductSheetController::class, 'UploadExcel'])->name('store')->middleware([TokenVerificationMiddleware::class]);
 
 //Coduct sheet
-Route::get('/conduct-sheet',[ConductSheetController::class, 'conductSheet'])->name('conductSheet.all')->middleware([TokenVerificationMiddleware::class]);
-Route::get('/conduct-sheet-delete/{id}',[ConductSheetController::class, 'destroy'])->name('conductSheet.destroy')->middleware([TokenVerificationMiddleware::class]);
+Route::get('/conduct-sheet', [ConductSheetController::class, 'conductSheet'])->name('conductSheet.all')->middleware([TokenVerificationMiddleware::class]);
+Route::get('/conduct-sheet-delete/{id}', [ConductSheetController::class, 'destroy'])->name('conductSheet.destroy')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/conduct-sheet-by-id', [ConductSheetController::class, 'showById'])->name('conductSheet.id')->middleware([TokenVerificationMiddleware::class]);
-Route::post('/conduct-sheet-create',[ConductSheetController::class, 'create'])->name('conductSheet.create')->middleware([TokenVerificationMiddleware::class]);
-Route::post('/conduct-sheet-update',[ConductSheetController::class, 'update'])->name('conductSheet.update')->middleware([TokenVerificationMiddleware::class]);
-Route::post('/conduct-sheet-by-person',[ConductSheetController::class, 'personByConductsheet'])->name('conductSheet.byPerson')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/conduct-sheet-create', [ConductSheetController::class, 'create'])->name('conductSheet.create')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/conduct-sheet-update', [ConductSheetController::class, 'update'])->name('conductSheet.update')->middleware([TokenVerificationMiddleware::class]);
+Route::post('/conduct-sheet-by-person', [ConductSheetController::class, 'personByConductsheet'])->name('conductSheet.byPerson')->middleware([TokenVerificationMiddleware::class]);
 
 //All Bdno
 Route::get('/pb-bdno', [PbItemController::class, 'PbBdno'])->name('bdno.show')->middleware([TokenVerificationMiddleware::class]);
 
 // Pb Base wise Route
-Route::get('/pb-home-base', [pbBaseWiseController::class, 'index'])->name('pb.baseWise')->middleware([TokenVerificationMiddleware::class]);
-Route::get('/basewise/pb-base/{trade}/{sheetNo}', [pbBaseWiseController::class, 'PbPers'])->name('pb.baseWise')->middleware([TokenVerificationMiddleware::class]);
+Route::get('/pb-home-base', [PbBaseWiseController::class, 'index'])->name('pb.baseWise')->middleware([TokenVerificationMiddleware::class]);
+Route::get('/basewise/pb-base/{trade}/{sheetNo}', [PbBaseWiseController::class, 'PbPers'])->name('pb.baseWise')->middleware([TokenVerificationMiddleware::class]);
 
 //Booklet Download
 Route::get('/booklets', [PdfController::class, 'index'])->middleware([TokenVerificationMiddleware::class]);
