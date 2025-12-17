@@ -104,7 +104,7 @@
                                 <th>User Name</th>
                                 <th>Email Address</th>
                                 <th>Password</th>
-                                 <th>Project for</th>
+                                <th>Project for</th>
                                 <th>User Type</th>
                                 <th>Action</th>
                             </tr>
@@ -125,78 +125,18 @@
                                     <td class="text-left">
                                         <button type="button" class="btn btn-primary mb-0" data-bs-toggle="modal"
                                             data-bs-target="#editModel{{ $user->id }}">
-                                            <i class="fa-solid fa-edit"></i>
+                                            Edit
                                         </button>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="editModel{{ $user->id }}" tabindex="-1"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit User</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body" style="padding: 10px 30px 10px 30px;">
-                                                        <form method="POST"
-                                                            action="{{ url('/admin/user/edit', $user->id) }}">
-                                                            @csrf
-                                                            <div class="form-group">
-                                                                <input type="hidden" name="id"
-                                                                    value="{{ $user->id }}">
-                                                                <label class="form-lavel text-left">User Name</label>
-                                                                <input type="text" name="name" class="form-control"
-                                                                    placeholder="Enter user name"
-                                                                    value="{{ $user->userName }}">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="form-lavel">email</label>
-                                                                <input type="eamil" name="email" class="form-control"
-                                                                    placeholder="Enter Email Address"
-                                                                    value="{{ $user->email }}">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="form-lavel">password</label>
-                                                                <input type="password" name="password"
-                                                                    class="form-control" placeholder="Enter password"
-                                                                    value="{{ $user->password }}">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="form-lavel">User Type</label>
-                                                                <select name="type" id="" class="form-select"
-                                                                    aria-label="Default select example">
-                                                                    <option value="" desable>Selected One</option>
-                                                                    <option value="1"
-                                                                        @if ($user->type == '1') {{ 'selected' }} @endif>
-                                                                        Super Admin</option>
-                                                                    <option value="0"
-                                                                        @if ($user->type == '2') {{ 'selected' }} @endif>
-                                                                        PB Admin/User</option>
-                                                                    <option value="2"
-                                                                        @if ($user->type == '6') {{ 'selected' }} @endif>
-                                                                        Evaluation Board</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="form-lavel">Profile</label>
-                                                                <input type="file" name="profile" class="form-control"
-                                                                    placeholder="Enter File"
-                                                                    value="{{ $user->profile }}">
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Close</button>
-                                                                <button type="submit" name=""
-                                                                    class="btn btn-primary">Save</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
+                                        @include('admin.edit-user')
+                                        {{-- confirm('Are you sure to delete this user?'); --}}
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a href="{{ Route('user.delete', $user->id) }}" class="btn btn-danger mb-0"><i
-                                                class="fa-solid fa-trash"></i></a>
+                                        <form action="{{ route('user.delete', $user->id) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure to delete this user?')"
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger mb-0">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach

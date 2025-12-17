@@ -429,15 +429,32 @@
         <div class="page-header mt-2 mb-2">
             <div class='row'>
                 <div class='col-md-3 text-right'></div>
-                <div class='col-md-3 text-right'><b>
-                        <h4 id="rcorners1" class="text-end">Please Select Entry No ></h4>
-                    </b></div>
-                <div class='col-md-3'>
-                    <select id="positionFilter" class="form-control" name="entry_no">
-                        <option value="" selected='selected' id="allShow">All Entry</option>
-                    </select>
+                <div class='col-md-5 text-right'>
+                    <div class="row">
+                        <div class="col-5">
+                            <b>
+                                <h4 id="rcorners1" class="text-end">Please Select Entry No ></h4>
+                            </b>
+                        </div>
+                        <div class="col-7">
+                            <select id="positionFilter" class="form-control" name="entry_no">
+                                <option value="" selected='selected' id="allShow">All Entry</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
-                <div class='col-md-3 text-right'></div>
+                <div class='col-md-4 text-right'>
+                    <div class="row">
+                        <div class="col-3">
+                            <label class="text-bold fs-4 text-right">Min Score ></label>
+                        </div>
+                        <div class="col-9">
+                            <input type="number" id="minScore" placeholder="Enter min score" class="form-control">
+                        </div>
+                    </div>
+                    <input type="number" class="d-none" id="maxScore" readonly>
+                </div>
             </div>
         </div>
         <table id="tableData" class="table table-striped table-bordered table-responsive-lg table-hover"
@@ -489,8 +506,7 @@
 
 
                     @endphp
-                    <tr id="tr{{ $item->id }}"
-                        class= "{{ $item->decision == 'true' ? 'tr-row-bg-select' : ($item->decision == 'false' ? 'tr-row-bg-stanby' : 'inherit') }}">
+                    <tr id="tr{{ $item->id }}" data-id="{{ $item->id }}" class= "{{ $item->decision == 'true' ? 'tr-row-bg-select' : ($item->decision == 'false' ? 'tr-row-bg-stanby' : 'inherit') }}">
                         <td class="text-center">{{ $index += 1 }}</td>
                         <td align='center'>
                             @php
@@ -667,6 +683,23 @@
     </div>
     @include('pb.pb-person-edit')
     @include('pb.conduct-sheet-modal')
+    @if (session('selected_id'))
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const selectedId = "{{ session('selected_id') }}";
+            const row = document.querySelector(`tr[data-id="${selectedId}"]`);
+
+            if (row) {
+                // row.classList.add('table-success');
+
+                row.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+        });
+        </script>
+    @endif
 @endsection
 @push('other_script')
     <script>
@@ -796,54 +829,105 @@
             });
         });
 
-        $(document).ready(function() {
-            // Initialize DataTable
-            let table = new DataTable('#tableData', {
-                info: true,
-                ordering: true,
-                paging: false,
-                layout: {
-                    // topStart: 'pageLength',
-                    // topEnd: 'search',
-                    topStart: 'info',
-                    // bottomEnd: 'paging'
-                }
-            });
+        $(document).ready(function () {
 
-            // Function to populate dropdown with unique options from a column
-            function populateDropdown() {
-                // Get unique values from the Position column (index 2)
-                var uniquePositions = [];
-                table.column(5).data().each(function(value, index) {
-                    if (uniquePositions.indexOf(value) === -1) {
-                        uniquePositions.push(value); // Add unique values
+    // Initialize DataTable
+    let table = new DataTable('#tableData', {
+        info: true,
+        ordering: true,
+        paging: false,
+        layout: {
+            topStart: 'info'
+        }
+    });
 
-                    }
-                });
+    // ======================================================
+    // Position Dropdown Filter (Column Index: 5)
+    // ======================================================
 
-                // Populate the dropdown with unique values
-                var dropdown = $('#positionFilter');
-                uniquePositions.forEach(function(position) {
-                    dropdown.append('<option value="' + position + '">' + position + '</option>');
-                });
+    function populateDropdown() {
+
+        let uniquePositions = [];
+
+        table.column(5).data().each(function (value) {
+            if (uniquePositions.indexOf(value) === -1) {
+                uniquePositions.push(value);
             }
-
-            // Call the populateDropdown function after DataTable initialization
-            populateDropdown();
-
-            // Apply dropdown filter on Position column (index 4)
-            $('#positionFilter').on('change', function() {
-                var selectedValue = $(this).val();
-                if (selectedValue === "") {
-                    table.column(5).search('').draw(); // Reset filter for "All Entry"
-                    table.order([0, 'asc']).draw(); // Sort column index 1 in ascending order
-                } else {
-                    table.column(5).search(selectedValue).draw(); // Filter by selected value
-                    table.order([11, 'asc']).draw(); // Sort column index 8 in ascending order
-                }
-            });
-
         });
+
+        let dropdown = $('#positionFilter');
+        dropdown.find('option:not(:first)').remove();
+
+        uniquePositions.forEach(function (position) {
+            dropdown.append(`<option value="${position}">${position}</option>`);
+        });
+    }
+
+    populateDropdown();
+
+    $('#positionFilter').on('change', function () {
+
+        let selectedValue = $(this).val();
+
+        if (selectedValue === "") {
+            table.column(5).search('').draw();
+            table.order([0, 'asc']).draw();
+        } else {
+            table.column(5).search(selectedValue).draw();
+            table.order([11, 'asc']).draw();
+        }
+    });
+
+    // ======================================================
+    // Total Score Range Filter (Column Index: 10)
+    // ======================================================
+
+    $.fn.dataTable.ext.search.push(function (settings, data) {
+
+        if (settings.nTable.id !== 'tableData') {
+            return true;
+        }
+
+        let min = parseFloat($('#minScore').val());
+        let max = parseFloat($('#maxScore').val());
+
+        min = isNaN(min) ? 0 : min;
+        max = isNaN(max) ? Infinity : max;
+
+        let totalScore = parseFloat(data[10]) || 0;
+
+        return totalScore >= min && totalScore <= max;
+    });
+
+    function setMaxScore() {
+
+        let scores = table
+            .column(10, { search: 'applied' })
+            .data()
+            .toArray()
+            .map(Number)
+            .filter(n => !isNaN(n));
+
+        if (scores.length) {
+            $('#maxScore').val(Math.max(...scores));
+        }
+    }
+
+    // Initial max score
+    setMaxScore();
+
+    // Update max score after any table redraw
+    table.on('draw', function () {
+        setMaxScore();
+    });
+
+    // Trigger range filtering
+    $('#minScore').on('keyup change', function () {
+        table.draw();
+    });
+
+});
+
 
         $(document).ready(function() {
             window.addEventListener('scroll', function() {

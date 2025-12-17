@@ -288,7 +288,7 @@ class PbController extends Controller
         pbperslist::where('id', $id)
             ->update(['rmks' => $rmk, 'decision' => $decision, 'rmks_1' => $rmks_1]);
 
-        return redirect()->back()->with("success", "Data update successfully.");
+        return redirect()->back()->with("success", "Data update successfully.")->with('selected_id', $id);;
     }
 
     public function SummaryDynamic(Request $request)

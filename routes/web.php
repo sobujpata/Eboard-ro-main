@@ -41,7 +41,7 @@ Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.hom
 Route::get('/admin/users', [userListController::class, 'index'])->name('user.index')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/admin/user/store', [userListController::class, 'store'])->name('user.store')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/admin/user/edit/{id}', [userListController::class, 'edit'])->name('user.edit')->middleware([TokenVerificationMiddleware::class]);
-Route::get('/admin/user/delete/{id}', [userListController::class, 'destroy'])->name('user.delete')->middleware([TokenVerificationMiddleware::class]);
+Route::delete('/admin/user/delete/{id}', [userListController::class, 'destroy'])->name('user.delete')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/admin/users-download', [userListController::class, 'exportUsers'])->name('user.export')->middleware([TokenVerificationMiddleware::class]);
 Route::get('/admin/policies', [PoliciesController::class, 'index'])->name('policy.index')->middleware([TokenVerificationMiddleware::class]);
 Route::post('/admin/create', [PoliciesController::class, 'create'])->name('policy.create')->middleware([TokenVerificationMiddleware::class]);

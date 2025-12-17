@@ -88,7 +88,7 @@
                                 No Further Promotion.
                             </label>
                         </div>
-                        <div class="form-check" style="text-align:left; font-size: 18px;">
+                        {{-- <div class="form-check" style="text-align:left; font-size: 18px;">
                             <input style="height:15px; width:15px; vertical-align: middle;" class="form-check-input"
                                 type="checkbox" name="rmks[]" value="Decision Pending" id="flexCheckDefault"
                                 @if (in_array('Decision Pending', $rmk)) {
@@ -97,7 +97,7 @@
                             <label class="form-check-label" for="flexCheckDefault">
                                 Decision Pending.
                             </label>
-                        </div>
+                        </div> --}}
                         <hr>
                         <div class="form-group" style="text-align:left; font-size: 18px;">
                             <label class="" for="flexCheckDefault">OtherRemarks:
@@ -115,8 +115,7 @@
                             <input style="height:15px; width:15px;" type="radio" class="form-check-input"
                                 id="pending" name="decision" value="false"
                                 @if ($item->decision == 'false') {{ 'checked' }} @endif>
-                            <label class="form-check-label" for="pending">Not
-                                Recommended</label><br>
+                            <label class="form-check-label" for="pending">Decision Pending</label><br>
                             <input style="height:15px; width:15px;" type="radio" class="form-check-input"
                                 id="no_decision" name="decision" value=""
                                 @if ($item->decision == ' ') {{ 'checked' }} @endif>

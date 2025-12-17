@@ -17,6 +17,7 @@ class UserListController extends Controller
     }
 
     function store(Request $request){
+        // dd($request->all());
         try {
             User::create([
                 'firstName' => $request->input('firstName'),
@@ -31,6 +32,38 @@ class UserListController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'User Created Failed.');
 
+        }
+    }
+
+    public function edit(Request $request, $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $user->firstName = $request->input('firstName');
+            $user->lastName = $request->input('lastName');
+            $user->userName = $request->input('userName');
+            $user->email = $request->input('email');
+            $user->type = $request->input('type');
+            if ($request->filled('password')) {
+                $user->password = $request->input('password');
+            }
+            $user->save();
+
+            return redirect()->back()->with('success', 'User Updated Successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'User Update Failed.');
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+
+            return redirect()->back()->with('success', 'User Deleted Successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'User Deletion Failed.');
         }
     }
     public function exportUsers()
