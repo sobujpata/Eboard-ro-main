@@ -36,8 +36,8 @@
                         <label class="form-lavel">Project For</label>
                         <select name="lastName" id="" class="form-control form-select">
                             <option value="" disabled selected>Select One</option>
-                            <option value="pb">Promotion board</option>
-                            <option value="eb">Evaluation board</option>
+                            <option value="pb" @if ($user->lastName == 'pb') {{ 'selected' }} @endif>Promotion board</option>
+                            <option value="eb" @if ($user->lastName == 'eb') {{ 'selected' }} @endif>Evaluation board</option>
                         </select>
                     </div>
                     <div class="form-group">

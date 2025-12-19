@@ -298,10 +298,10 @@ class PbController extends Controller
         $sub = DB::table('pbPersLists')
             ->select(
                 'trade',
-                DB::raw("SUM(CASE WHEN rank = 'SWO' THEN 1 ELSE 0 END) AS SWO"),
-                DB::raw("SUM(CASE WHEN rank = 'WO' THEN 1 ELSE 0 END) AS WO"),
-                DB::raw("SUM(CASE WHEN rank = 'SGT' THEN 1 ELSE 0 END) AS Sgt"),
-                DB::raw("SUM(CASE WHEN rank IN ('SWO','WO','SGT') THEN 1 ELSE 0 END) AS Total")
+                DB::raw("SUM(CASE WHEN `rank` = 'SWO' THEN 1 ELSE 0 END) AS SWO"),
+                DB::raw("SUM(CASE WHEN `rank` = 'WO' THEN 1 ELSE 0 END) AS WO"),
+                DB::raw("SUM(CASE WHEN `rank` = 'SGT' THEN 1 ELSE 0 END) AS Sgt"),
+                DB::raw("SUM(CASE WHEN `rank` IN ('SWO','WO','SGT') THEN 1 ELSE 0 END) AS Total")
             )
             ->where('decision', 'true')
             ->groupBy('trade');

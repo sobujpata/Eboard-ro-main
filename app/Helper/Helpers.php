@@ -109,3 +109,14 @@ if (!function_exists('calculateTotalFromPercentage')) {
         return round($value / ($percentage / 100), 2);
     }
 }
+if (!function_exists('convertToFullPercentage')) {
+    function convertToFullPercentage(float $value, float $currentPercent): float
+    {
+        if ($currentPercent <= 0) {
+            throw new InvalidArgumentException('Percentage must be greater than 0');
+        }
+
+        return ($value * 100) / $currentPercent;
+    }
+
+}

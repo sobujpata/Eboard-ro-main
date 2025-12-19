@@ -1,5 +1,5 @@
 @extends('layout.app-pb')
-@section('title',$trade.'-'.$rank)
+@section('title', $trade . '-' . $rank)
 @section('content')
     <div class="container-fluid p-0 mt-4">
         @if (session('status'))
@@ -53,11 +53,11 @@
                             @foreach ($previousPb as $prePb)
                                 @php
                                     $preExist = $prePb->exist;
-                                        if(strpos($preExist,'-')===0){
-                                            $preExistResult = ltrim($preExist, '-')." Surp";
-                                        }else{
-                                            $preExistResult = $preExist;
-                                        }
+                                    if (strpos($preExist, '-') === 0) {
+                                        $preExistResult = ltrim($preExist, '-') . ' Surp';
+                                    } else {
+                                        $preExistResult = $preExist;
+                                    }
                                 @endphp
                                 <tr>
                                     <td align="center"><b>Estb</b></td>
@@ -251,11 +251,11 @@
                             </tr>
                             @php
                                 $currentExist = $currentPb->exist;
-                                    if(strpos($currentExist,'-')===0){
-                                        $currentExistResult = ltrim($currentExist, '-')." Surp";
-                                    }else{
-                                        $currentExistResult = $currentExist;
-                                    }
+                                if (strpos($currentExist, '-') === 0) {
+                                    $currentExistResult = ltrim($currentExist, '-') . ' Surp';
+                                } else {
+                                    $currentExistResult = $currentExist;
+                                }
                             @endphp
                             <tr>
                                 <td align="center"><b>{{ $currentPb->estb }}</b></td>
@@ -382,7 +382,8 @@
 
                                 </b>
                             </td>
-                            <td align="center" style="display: @if ($sgtSheet == '1') {{ 'none' }} @endif">
+                            <td align="center"
+                                style="display: @if ($sgtSheet == '1') {{ 'none' }} @endif">
                                 <b>
                                     @if ($sgtSheet == '2')
                                         {{ $recomMwo }}
@@ -468,10 +469,12 @@
                     <th rowspan="2" style="vertical-align: middle; width: 15% !important;">Name & Basic Trade</th>
                     <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Entry No</th>
                     <th rowspan="2" style="vertical-align: middle; width: 5% !important;">DOE & DOR within yr 26</th>
-                    <th rowspan="2" style="vertical-align: middle; width: 5% !important; font-size: 13px;">Date of present rk & Svc Length</th>
+                    <th rowspan="2" style="vertical-align: middle; width: 5% !important; font-size: 13px;">Date of
+                        present rk & Svc Length</th>
                     <th colspan="2" style="vertical-align: middle; width: 9% !important;">POINTS</th>
                     <th rowspan="2" style="vertical-align: middle; width: 5% !important;">Total Score</th>
-                    <th colspan="2" style="vertical-align: middle; width: 5% !important; font-size: 10px;">Sr posn as per merit</th>
+                    <th colspan="2" style="vertical-align: middle; width: 5% !important; font-size: 10px;">Sr posn as
+                        per merit</th>
                     <th rowspan="2" style="vertical-align: middle; width: 7% !important;">Conduct Sheet<br>(Last
                         3yrs)</th>
                     <th rowspan="2" style="vertical-align: middle; width: 3% !important;">Weight (lbs)</th>
@@ -486,12 +489,12 @@
                 <tr align="center" style="background:#33a8ff;">
                     <th>Avg PAR</th>
                     <th style="font-size: 10px">
-                        @if ($trade=='Cy Asst' || $trade=='Edn Instr')
+                        @if ($trade == 'Cy Asst' || $trade == 'Edn Instr')
                             Mks of career courses Bas-40%/100%
                         @else
                             Mks of career courses Bas-40% Adv-40% ST-20%
                         @endif
-                        </th>
+                    </th>
                     <th>ES</th>
                     <th>CS</th>
                 </tr>
@@ -504,9 +507,9 @@
                         $resutls = number_format($item->career_marks, 2);
                         $total_scrore = str_pad($avg_acr + $resutls, 2, 0, STR_PAD_RIGHT);
 
-
                     @endphp
-                    <tr id="tr{{ $item->id }}" data-id="{{ $item->id }}" class= "{{ $item->decision == 'true' ? 'tr-row-bg-select' : ($item->decision == 'false' ? 'tr-row-bg-stanby' : 'inherit') }}">
+                    <tr id="tr{{ $item->id }}" data-id="{{ $item->id }}"
+                        class= "{{ $item->decision == 'true' ? 'tr-row-bg-select' : ($item->decision == 'false' ? 'tr-row-bg-stanby' : 'inherit') }}">
                         <td class="text-center">{{ $index += 1 }}</td>
                         <td align='center'>
                             @php
@@ -537,18 +540,23 @@
                         </td>
                         <td align='left' style="vertical-align: middle">{{ $item->rank }}</td>
                         <td align='left' style="vertical-align: middle">{{ $item->name }} <br>
-                            <span class="text-primary">{{ $item->basic_trade ?? '' }}</span>
+                            <span class="text-primary d-none">{{ $item->basic_trade ?? '' }}</span>
                         </td>
                         <td class="text-center" style="vertical-align: middle">{{ $item->entry_no }}</td>
-                        <td class="text-center" style="vertical-align: middle; line-height: 1;"><span class="text-decoration-underline">{{formatDateCustom($item->doe)}}</span><br>{{ retairedDate($item->doe,$item->rank) }}</td>
-                        <td class="text-center" style="vertical-align: middle; line-height: 1;"><span class="text-decoration-underline">{{ formatDateCustom($item->promotion_dt) }}<br></span>{{ serviceLength($item->doe) }}</td>
+                        <td class="text-center" style="vertical-align: middle; line-height: 1;"><span
+                                class="text-decoration-underline">{{ formatDateCustom($item->doe) }}</span><br>{{ retairedDate($item->doe, $item->rank) }}
+                        </td>
+                        <td class="text-center" style="vertical-align: middle; line-height: 1;"><span
+                                class="text-decoration-underline">{{ formatDateCustom($item->promotion_dt) }}<br></span>{{ serviceLength($item->doe) }}
+                        </td>
                         <td class="text-center" style="vertical-align: middle">
                             @php
                                 $filePath = public_path("promotionBoard/acr-forms/{$item->bdno}.pdf");
                             @endphp
                             @if (file_exists($filePath))
                                 <a href="{{ asset('promotionBoard/acr-forms/' . $item->bdno . '.pdf') }}" target="_blank"
-                                    style="text-decoration: none; color:rgb(255, 0, 0);" title="Advers ACR/ Setisfactory ACR">
+                                    style="text-decoration: none; color:rgb(255, 0, 0);"
+                                    title="Advers ACR/ Setisfactory ACR">
                                     <b>
                                         {{ $avg_acr }}
                                     </b>
@@ -562,9 +570,19 @@
                         <td class="text-center" style="vertical-align: middle; line-height: 1;">
                             <b>
                                 {{ $resutls }}
-                                @if ($trade=='Cy Asst' || $trade=='Edn Instr')
-                                /<br>
-                                {{ number_format(calculateTotalFromPercentage($item->career_marks, 40),2) }}
+                                @if ($trade == 'Cy Asst' || $trade == 'Edn Instr')
+                                    /<br>
+                                    {{ number_format(calculateTotalFromPercentage($item->career_marks, 40), 2) }}
+                                @endif
+                                @php
+                                    $careerMarks = number_format(convertToFullPercentage($item->career_marks, 80), 2);
+                                @endphp
+                                {{-- @if ()
+
+                                @endif --}}
+                                @if ($rank== 'SWO' && ($trade ==  'FE' || $trade == 'LM' || $trade == 'AG' || $trade == 'Air Std'))
+                                    /<br>
+                                    {{ $careerMarks }}
                                 @endif
 
                             </b>
@@ -572,9 +590,13 @@
                         <td class="text-center" style="vertical-align: middle; line-height: 1;">
                             <b>
                                 {{ $total_scrore }}
-                                @if ($trade=='Cy Asst' || $trade=='Edn Instr')
-                                <br>
-                                /{{ number_format($avg_acr + calculateTotalFromPercentage($item->career_marks, 40),2) }}
+                                @if ($trade == 'Cy Asst' || $trade == 'Edn Instr')
+                                    <br>
+                                    /{{ number_format($avg_acr + calculateTotalFromPercentage($item->career_marks, 40), 2) }}
+                                @endif
+                                @if ($rank== 'SWO' && ($trade ==  'FE' || $trade == 'LM' || $trade == 'AG' || $trade == 'Air Std'))
+                                    <br>
+                                    /{{ number_format($avg_acr + $careerMarks, 2) }}
                                 @endif
                             </b>
                         </td>
@@ -588,12 +610,12 @@
                         <td class="text-center">
                             @if ($item->conduct_sheet)
                                 <a style="height: 35px;" class="text-danger mt-2 text-decoration-none conductSheetBtn btn"
-                                data-bs-toggle="modal" data-id="{{ $item->id }}" data-bdno="{{ $item->bdno }}"
-                                data-rank="{{ $item->rank }}" data-name="{{ $item->name }}"
-                                data-trade="{{ $item->trade }}">
+                                    data-bs-toggle="modal" data-id="{{ $item->id }}"
+                                    data-bdno="{{ $item->bdno }}" data-rank="{{ $item->rank }}"
+                                    data-name="{{ $item->name }}" data-trade="{{ $item->trade }}">
                                     {!! $item->conduct_sheet !!}
                                 </a>
-                                @else
+                            @else
                                 N/A
                             @endif
 
@@ -662,14 +684,16 @@
                     @csrf
                     <input type="hidden" name="trade" value="{{ $trade }}">
                     <input type="hidden" name="sheet_no" value="{{ $sheetNo }}">
-                    <button type="submit" class="btn btn-secondary"><img src="{{ asset('icon/download.svg') }}" alt="refresh" style="width: 20px; margin-right: 10px;">Booklet Download</button>
+                    <button type="submit" class="btn btn-secondary"><img src="{{ asset('icon/download.svg') }}"
+                            alt="refresh" style="width: 20px; margin-right: 10px;">Booklet Download</button>
                 </form>
                 <form action="{{ route('recomBooklets.download') }}" method="post" enctype="multipart/form-data"
                     target="_blank">
                     @csrf
                     <input type="hidden" name="trade" value="{{ $trade }}">
                     <input type="hidden" name="sheet_no" value="{{ $sheetNo }}">
-                    <button type="submit" class="btn btn-success"><img src="{{ asset('icon/download.svg') }}" alt="refresh" style="width: 20px; margin-right: 10px;">Recom Download</button>
+                    <button type="submit" class="btn btn-success"><img src="{{ asset('icon/download.svg') }}"
+                            alt="refresh" style="width: 20px; margin-right: 10px;">Recom Download</button>
                 </form>
             </div>
             <div class="col-4 text-center">
@@ -685,19 +709,19 @@
     @include('pb.conduct-sheet-modal')
     @if (session('selected_id'))
         <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const selectedId = "{{ session('selected_id') }}";
-            const row = document.querySelector(`tr[data-id="${selectedId}"]`);
+            document.addEventListener('DOMContentLoaded', function() {
+                const selectedId = "{{ session('selected_id') }}";
+                const row = document.querySelector(`tr[data-id="${selectedId}"]`);
 
-            if (row) {
-                // row.classList.add('table-success');
+                if (row) {
+                    // row.classList.add('table-success');
 
-                row.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-            }
-        });
+                    row.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            });
         </script>
     @endif
 @endsection
@@ -829,104 +853,106 @@
             });
         });
 
-        $(document).ready(function () {
+        $(document).ready(function() {
 
-    // Initialize DataTable
-    let table = new DataTable('#tableData', {
-        info: true,
-        ordering: true,
-        paging: false,
-        layout: {
-            topStart: 'info'
-        }
-    });
+            // Initialize DataTable
+            let table = new DataTable('#tableData', {
+                info: true,
+                ordering: true,
+                paging: false,
+                layout: {
+                    topStart: 'info'
+                }
+            });
 
-    // ======================================================
-    // Position Dropdown Filter (Column Index: 5)
-    // ======================================================
+            // ======================================================
+            // Position Dropdown Filter (Column Index: 5)
+            // ======================================================
 
-    function populateDropdown() {
+            function populateDropdown() {
 
-        let uniquePositions = [];
+                let uniquePositions = [];
 
-        table.column(5).data().each(function (value) {
-            if (uniquePositions.indexOf(value) === -1) {
-                uniquePositions.push(value);
+                table.column(5).data().each(function(value) {
+                    if (uniquePositions.indexOf(value) === -1) {
+                        uniquePositions.push(value);
+                    }
+                });
+
+                let dropdown = $('#positionFilter');
+                dropdown.find('option:not(:first)').remove();
+
+                uniquePositions.forEach(function(position) {
+                    dropdown.append(`<option value="${position}">${position}</option>`);
+                });
             }
+
+            populateDropdown();
+
+            $('#positionFilter').on('change', function() {
+
+                let selectedValue = $(this).val();
+
+                if (selectedValue === "") {
+                    table.column(5).search('').draw();
+                    table.order([0, 'asc']).draw();
+                } else {
+                    table.column(5).search(selectedValue).draw();
+                    table.order([11, 'asc']).draw();
+                }
+            });
+
+            // ======================================================
+            // Total Score Range Filter (Column Index: 10)
+            // ======================================================
+
+            $.fn.dataTable.ext.search.push(function(settings, data) {
+
+                if (settings.nTable.id !== 'tableData') {
+                    return true;
+                }
+
+                let min = parseFloat($('#minScore').val());
+                let max = parseFloat($('#maxScore').val());
+
+                min = isNaN(min) ? 0 : min;
+                max = isNaN(max) ? Infinity : max;
+
+                let totalScore = parseFloat(data[10]) || 0;
+
+                return totalScore >= min && totalScore <= max;
+            });
+
+            function setMaxScore() {
+
+                let scores = table
+                    .column(10, {
+                        search: 'applied'
+                    })
+                    .data()
+                    .toArray()
+                    .map(Number)
+                    .filter(n => !isNaN(n));
+
+                if (scores.length) {
+                    $('#maxScore').val(Math.max(...scores));
+                }
+            }
+
+            // Initial max score
+            setMaxScore();
+
+            // Update max score after any table redraw
+            table.on('draw', function() {
+                setMaxScore();
+            });
+
+            // Trigger range filtering
+            $('#minScore').on('keyup change', function() {
+                table.draw();
+            });
+
         });
-
-        let dropdown = $('#positionFilter');
-        dropdown.find('option:not(:first)').remove();
-
-        uniquePositions.forEach(function (position) {
-            dropdown.append(`<option value="${position}">${position}</option>`);
-        });
-    }
-
-    populateDropdown();
-
-    $('#positionFilter').on('change', function () {
-
-        let selectedValue = $(this).val();
-
-        if (selectedValue === "") {
-            table.column(5).search('').draw();
-            table.order([0, 'asc']).draw();
-        } else {
-            table.column(5).search(selectedValue).draw();
-            table.order([11, 'asc']).draw();
-        }
-    });
-
-    // ======================================================
-    // Total Score Range Filter (Column Index: 10)
-    // ======================================================
-
-    $.fn.dataTable.ext.search.push(function (settings, data) {
-
-        if (settings.nTable.id !== 'tableData') {
-            return true;
-        }
-
-        let min = parseFloat($('#minScore').val());
-        let max = parseFloat($('#maxScore').val());
-
-        min = isNaN(min) ? 0 : min;
-        max = isNaN(max) ? Infinity : max;
-
-        let totalScore = parseFloat(data[10]) || 0;
-
-        return totalScore >= min && totalScore <= max;
-    });
-
-    function setMaxScore() {
-
-        let scores = table
-            .column(10, { search: 'applied' })
-            .data()
-            .toArray()
-            .map(Number)
-            .filter(n => !isNaN(n));
-
-        if (scores.length) {
-            $('#maxScore').val(Math.max(...scores));
-        }
-    }
-
-    // Initial max score
-    setMaxScore();
-
-    // Update max score after any table redraw
-    table.on('draw', function () {
-        setMaxScore();
-    });
-
-    // Trigger range filtering
-    $('#minScore').on('keyup change', function () {
-        table.draw();
-    });
-
-});
 
 
         $(document).ready(function() {
