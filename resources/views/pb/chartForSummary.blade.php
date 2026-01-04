@@ -67,7 +67,7 @@
                 align: 'Center'
             },
             subtitle: {
-                text: 'PB-24',
+                text: 'PB-{{$pb_setting->year}}',
                 align: 'Center'
             },
             xAxis: {
@@ -133,7 +133,7 @@
                 align: 'Center'
             },
             subtitle: {
-                text: 'PB-24',
+                text: 'PB-{{$pb_setting->year}}',
                 align: 'Center'
             },
             xAxis: {
@@ -185,7 +185,7 @@
                 align: 'Center'
             },
             subtitle: {
-                text: 'PB-24',
+                text: 'PB-{{$pb_setting->year}}',
                 align: 'Center'
             },
             xAxis: {
@@ -237,7 +237,7 @@
                 align: 'Center'
             },
             subtitle: {
-                text: 'PB-24',
+                text: 'PB-{{$pb_setting->year}}',
                 align: 'Center'
             },
             xAxis: {

@@ -25,14 +25,26 @@ if (!function_exists('ordinal')) {
 }
 
 if (!function_exists('retairedDate')) {
-    function retairedDate($enrolDate, $rank)
+    function retairedDate($enrolDate, $rank, $trade)
     {
         if ($rank == 'SWO') {
-            $yearsToAdd = 31;
+             if($trade == 'GD' || $trade == 'Clk'){
+                $yearsToAdd = 32;
+            }else{
+                $yearsToAdd = 31;
+            }
         } elseif ($rank == 'WO') {
-            $yearsToAdd = 29;
+             if($trade == 'GD' || $trade == 'Clk'){
+                $yearsToAdd = 30;
+            }else{
+                $yearsToAdd = 29;
+            }
         } elseif ($rank == 'SGT' || $rank == "Sgt") {
-            $yearsToAdd = 27;
+            if($trade == 'GD' || $trade == 'Clk'){
+                $yearsToAdd = 28;
+            }else{
+                $yearsToAdd = 27;
+            }
         } else {
             $yearsToAdd = 20;
         }

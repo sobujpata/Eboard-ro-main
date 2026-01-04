@@ -1,6 +1,7 @@
 @extends('layout.app-pb')
 @section('title', $trade . '-' . $rank)
 @section('content')
+    {{-- @dd($pb_setting) --}}
     <div class="container-fluid p-0 mt-4">
         @if (session('status'))
             <div class="alert alert-success" role="alert">
@@ -36,12 +37,9 @@
                     <div class="container-md" style="padding:.5rem">
                         <table class="table-bordered bg-primary text-white border-white" style="width:100%">
                             <tr>
-                                <td align="center" colspan="2"><b><u>PB-@php
-                                    $year = date('Y') - 1;
-                                    echo $year;
-                                @endphp</u></b></td>
+                                <td align="center" colspan="2"><b><u>PB-{{ $pb_setting->year-1 }}</u></b></td>
                                 <td align="center" colspan="{{ $sheetNo == 1 ? 4 : 5 }}">
-                                    <b><u>Vac-{{ date('Y') - 1 }}</u></b>
+                                    <b><u>Vac-{{ $pb_setting->year-1 }}</u></b>
                                 </td>
 
                                 <td align="center"><b><u>Score</u></b></td>
@@ -139,8 +137,8 @@
                             <td align="center" style="vertical-align: top !important; background-color:#007bff!important;">
                                 <b>
                                     {{-- @dd($vacNextYear) --}}
-                                    {{ 'PB-' . substr(date('Y') + 1, -2) . ': ' . ($vacNextYear->next_yr ?? 'N/A') }}<br>
-                                    {{ 'PB-' . substr(date('Y') + 2, -2) . ': ' . ($vacNextYear->next_2yrs ?? 'N/A') }}
+                                    {{ 'PB-' . substr($pb_setting->year + 1, -2) . ': ' . ($vacNextYear->next_yr ?? 'N/A') }}<br>
+                                    {{ 'PB-' . substr($pb_setting->year + 2, -2) . ': ' . ($vacNextYear->next_2yrs ?? 'N/A') }}
                                 </b>
                             </td>
                             <td align="center" style="vertical-align: top;">
@@ -218,18 +216,9 @@
                     <div class="container-md" style="padding:.5rem">
                         <table class="table-bordered text-white border-white" style="width:100%">
                             <tr>
-                                <td align="center" colspan="2">
-                                    <b><u>PB-@php
-                                        $year = date('Y');
-                                        echo $year;
-                                    @endphp</u></b>
-                                </td>
-                                <td align="center"
-                                    colspan="@if ($currentPb->rank == 'MWO') {{ '3' }} @else {{ '4' }} @endif">
-                                    <b><u>Vac-@php
-                                        $year = date('Y');
-                                        echo $year;
-                                    @endphp</u></b>
+                                <td align="center" colspan="2"><b><u>PB-{{ $pb_setting->year }}</u></b></td>
+                                <td align="center" colspan="@if ($currentPb->rank == 'MWO') {{ '3' }} @else {{ '4' }} @endif">
+                                    <b><u>Vac-{{ $pb_setting->year }}</u></b>
                                 </td>
                                 <td align="center"colspan="2"><b><u>Decision</u></b></td>
                                 <td align="center" rowspan="2"
@@ -340,16 +329,10 @@
                 <div class="container-md" style="padding:.5rem">
                     <table class="table-bordered text-white border-white" style="width:100%">
                         <tr>
-                            <td align="center" colspan="2"><b><u>PB-@php
-                                $year = date('Y');
-                                echo $year;
-                            @endphp</u></b></td>
+                            <td align="center" colspan="2"><b><u>PB-{{$pb_setting->year}}</u></b></td>
                             <td align="center"
                                 colspan="@if ($sgtSheet == '1') {{ '3' }} @else {{ '4' }} @endif">
-                                <b><u>VAC-@php
-                                    $year = date('Y');
-                                    echo $year;
-                                @endphp</u></b>
+                                <b><u>VAC-{{ $pb_setting->year }}</u></b>
                             </td>
                             <td align="center" colspan="2"><b><u>Decision</u></b></td>
                         </tr>
@@ -544,7 +527,7 @@
                         </td>
                         <td class="text-center" style="vertical-align: middle">{{ $item->entry_no }}</td>
                         <td class="text-center" style="vertical-align: middle; line-height: 1;"><span
-                                class="text-decoration-underline">{{ formatDateCustom($item->doe) }}</span><br>{{ retairedDate($item->doe, $item->rank) }}
+                                class="text-decoration-underline">{{ formatDateCustom($item->doe) }}</span><br>{{ retairedDate($item->doe, $item->rank, $item->trade) }}
                         </td>
                         <td class="text-center" style="vertical-align: middle; line-height: 1;"><span
                                 class="text-decoration-underline">{{ formatDateCustom($item->promotion_dt) }}<br></span>{{ serviceLength($item->doe) }}

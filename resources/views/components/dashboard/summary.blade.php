@@ -1,6 +1,5 @@
 <div class="container-fluid">
     <div class="row">
-
         <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 animated fadeIn p-2">
             <div class="card card-plain h-100 bg-white">
                 <div class="p-3">
@@ -218,7 +217,7 @@
             align: 'Center'
         },
         subtitle: {
-            text: 'PB-24',
+            text: 'PB-{{$pb_setting->year}}',
             align: 'Center'
         },
         xAxis: {
@@ -290,7 +289,7 @@
             align: 'Center'
         },
         subtitle: {
-            text: 'PB-24',
+            text: 'PB-{{$pb_setting->year}}',
             align: 'Center'
         },
         xAxis: {
@@ -353,7 +352,7 @@
             align: 'Center'
         },
         subtitle: {
-            text: 'PB-24',
+            text: 'PB-{{$pb_setting->year}}',
             align: 'Center'
         },
         xAxis: {
@@ -418,7 +417,7 @@
             align: 'Center'
         },
         subtitle: {
-            text: 'PB-24',
+            text: 'PB-{{$pb_setting->year}}',
             align: 'Center'
         },
         xAxis: {
@@ -485,7 +484,7 @@
             text: 'Rank: MWO'
         },
         subtitle: {
-            text: 'Source: PB-24'
+            text: 'Source: PB-{{$pb_setting->year}}'
         },
         xAxis: {
             type: 'category',
@@ -574,7 +573,7 @@
             text: 'Rank: SWO'
         },
         subtitle: {
-            text: 'Source: PB-24'
+            text: 'Source: PB-{{$pb_setting->year}}'
         },
         xAxis: {
             type: 'category',
@@ -663,7 +662,7 @@
             text: 'Rank: WO'
         },
         subtitle: {
-            text: 'Source: PB-24'
+            text: 'Source: PB-{{$pb_setting->year}}'
         },
         xAxis: {
             type: 'category',

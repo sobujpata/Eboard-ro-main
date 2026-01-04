@@ -20,7 +20,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Add
-                                                PB-{{ substr(date('Y') - 1, -2) }}</h1>
+                                                PB-{{substr($pb_setting->year-1,-2)}}</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -132,7 +132,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4 text-center text-decoration-underline">
-                            <h3>PB-{{ substr(date('Y') - 1, -2) }}</h3>
+                            <h3>PB-{{ substr($pb_setting->year - 1, -2) }}</h3>
                         </div>
                         <div class="col-sm-4">
 

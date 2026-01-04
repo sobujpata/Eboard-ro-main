@@ -90,18 +90,18 @@
 
         <a href="{{ url('/admin/pb/vac') }}" class="side-bar-item">
             <i class="bi bi-currency-dollar"></i>
-            <span class="side-bar-item-caption">PB Vac-{{ substr(date('Y'), -2) }}</span>
+            <span class="side-bar-item-caption">PB Vac-{{$pb_setting->year}}</span>
         </a>
 
         <a href="{{ url('/admin/pb/PreviouseVac') }}" class="side-bar-item">
             <i class="bi bi-receipt"></i>
-            <span class="side-bar-item-caption">PB Vac-{{ substr(date('Y') - 1, -2) }}</span>
+            <span class="side-bar-item-caption">PB Vac-{{$pb_setting->year-1}}</span>
         </a>
 
         <a href="{{ url('/admin/pb/PbNextVac') }}" class="side-bar-item">
             <i class="bi bi-file-earmark-bar-graph"></i>
-            <span class="side-bar-item-caption">PB Vac-{{ substr(date('Y') + 1, -2) }} &
-                {{ substr(date('Y') + 2, -2) }}</span>
+            <span class="side-bar-item-caption">PB Vac-{{$pb_setting->year+1}} &
+                {{$pb_setting->year+2}}</span>
         </a>
         <a href="{{ url('/vac-on-retd') }}" class="side-bar-item">
             <i class="bi bi-file-earmark-bar-graph"></i>

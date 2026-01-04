@@ -20,10 +20,11 @@
                 </tr>
                 <tr>
                     <td>
-                        @php
+
+                        {{-- @php
                             $year = substr(date('Y'), -2);
-                        @endphp
-                        <h6 style="font-weight: 800">Airmen & MODC (Air) PB-{{ $year }}</h6>
+                        @endphp --}}
+                        <h6 style="font-weight: 800">Airmen & MODC (Air) PB-{{ substr($pb_setting->year, -2) }}</h6>
                     </td>
                 </tr>
             </table>

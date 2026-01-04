@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="col-sm-4 text-center text-decoration-underline">
-                        <h3>Vacencys For {{substr(date('Y') + 1, -2)}} & {{substr(date('Y') + 2, -2)}}</h3>
+                        <h3>Vacencys For {{substr($pb_setting->year + 1, -2)}} & {{substr($pb_setting->year + 2, -2)}}</h3>
                     </div>
                     <div class="col-sm-4"></div>
                 </div>
@@ -86,8 +86,8 @@
                             <th style="">S/No</th>
                             <th>Trade</th>
                             <th>Rank</th>
-                            <th>Vac-{{substr(date('Y') + 1, -2)}}</th>
-                            <th>Vac-{{substr(date('Y') + 2, -2)}}</th>
+                            <th>Vac-{{substr($pb_setting->year + 1, -2)}}</th>
+                            <th>Vac-{{substr($pb_setting->year + 2, -2)}}</th>
                             {{-- <th>score_min</th> --}}
                             <th>sheetNo</th>
                             <th style="">Action</th>
@@ -144,12 +144,12 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="form-lavel">Vac- {{substr(date('Y') + 1, -2)}}</label>
+                                                        <label class="form-lavel">Vac- {{substr($pb_setting->year + 1, -2)}}</label>
                                                         <input type="text" name="next_yr" class="form-control" placeholder="Enter next_yr" value="{{$PbNextVac->next_yr}}">
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="form-lavel">Vac- {{substr(date('Y') + 2, -2)}}</label>
+                                                        <label class="form-lavel">Vac- {{substr($pb_setting->year + 2, -2)}}</label>
                                                         <input type="text" name="next_2yrs" class="form-control" placeholder="Enter next_2yrs" value="{{$PbNextVac->next_2yrs}}">
                                                     </div>
                                                     {{-- <div class="form-group">

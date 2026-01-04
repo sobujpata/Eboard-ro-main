@@ -35,15 +35,18 @@ class PdfController extends Controller
         if ($sheet_no == 1) {
             $rank = "SWO To MWO";
             $forRank = "aval SWO";
+            $realRank = "SWO";
         } elseif ($sheet_no == 2) {
             $rank = "WO To SWO";
             $forRank = "WO (03 Entry)";
+            $realRank = "WO";
         } else {
             if ($trade == 'Cy Asst' || $trade == 'Edn Instr') {
                 return back()->with('error', 'Invalid sheet number for the selected trade.');
             } else {
                 $rank = "Sgt To WO";
                 $forRank = "Sgt (03 Entry)";
+                $realRank = "Sgt";
             }
         }
 
@@ -310,6 +313,20 @@ class PdfController extends Controller
             } else {
                 $color = 'white';
             }
+            if ($trade == 'Cy Asst' || $trade == 'Edn Instr'){
+                $careerMarks = number_format(calculateTotalFromPercentage($resutls, 40), 2);
+            }elseif($realRank== 'SWO' && ($trade ==  'FE' || $trade == 'LM' || $trade == 'AG' || $trade == 'Air Std')){
+                $careerMarks = number_format(convertToFullPercentage($resutls, 80), 2);
+            }
+            // dd($realRank);
+            if ($trade == 'Cy Asst' || $trade == 'Edn Instr'){
+                $fullPersent = number_format($avg_acr + calculateTotalFromPercentage($resutls, 40), 2);
+            }elseif($realRank== 'SWO' && ($trade ==  'FE' || $trade == 'LM' || $trade == 'AG' || $trade == 'Air Std')){
+                $careerMarks = number_format(convertToFullPercentage($resutls, 80), 2);
+                $fullPersent = number_format($avg_acr + $careerMarks, 2);
+
+            }
+
             // dd($color);
             $html .= '
             <tr style="background-color:' . $color . ';">
@@ -322,11 +339,11 @@ class PdfController extends Controller
                 <td>' . ($person->rank ?? '-') . '</td>
                 <td>' . ($person->name ?? '-') . '<br>' . '(' . ($person->basic_trade ?? '-') . ')' . '</td>
                 <td style="text-align:center;"><span style="text-decoration:underline;">' . formatDate(($person->doe)) . '</span><br>' . (ordinal($person->entry_no)) . '</td>
-                <td style="text-align:center;"><span style="text-decoration:underline;">' . formatDate(($person->promotion_dt)) . '</span><br>' . (retairedDate($person->doe, $person->rank)) . '</td>
+                <td style="text-align:center;"><span style="text-decoration:underline;">' . formatDate(($person->promotion_dt)) . '</span><br>' . (retairedDate($person->doe, $person->rank, $trade)) . '</td>
                 <td style="text-align:center;">' . (serviceLength($person->doe)) . '</td>
                 <td style="text-align:center;">' . ($avg_acr ?? '-') . '</td>
-                <td style="text-align:center;">' . ($resutls ?? '-') . '</td>
-                <td style="text-align:center;">' . ($total_scrore ?? '-') . '</td>
+                <td style="text-align:center;">' . ($resutls ?? '-') .'<br>'. ($careerMarks ?? ''). '</td>
+                <td style="text-align:center;">' . ($total_scrore ?? '-') .'<br>'.($fullPersent ?? ''). '</td>
                 <td style="text-align:center;"><span style="text-decoration:underline;">' . ($person->rank2 ?? '-') . '</span><br><span style="color:#38A69B;">' . $entry_count . '</span></td>
                 <td style="text-align:center;"><span style="text-decoration:underline;">' . ($person->rank1 ?? '-') . '</span><br><span style="color:green;">' . $totalPersons . '</span></td>
                 <td style="text-align:center;">' . ($red ?? '-') . '</td>
@@ -356,15 +373,18 @@ class PdfController extends Controller
         if ($sheet_no == 1) {
             $rank = "SWO To MWO";
             $forRank = "aval SWO";
+            $realRank = "SWO";
         } elseif ($sheet_no == 2) {
             $rank = "WO To SWO";
             $forRank = "WO (03 Entry)";
+            $realRank = "WO";
         } else {
             if ($trade == 'Cy Asst' || $trade == 'Edn Instr') {
                 return back()->with('error', 'Invalid sheet number for the selected trade.');
             } else {
                 $rank = "Sgt To WO";
                 $forRank = "Sgt (03 Entry)";
+                $realRank = "Sgt";
             }
         }
 
@@ -638,6 +658,23 @@ class PdfController extends Controller
                     $ltr_of_dis = "<span style='text-decoration:underline;'>" . str_pad($ltr_of_dis_count, 2, 0, STR_PAD_LEFT) . "</span><br>" . formatDate($conduct->date_of_punishment);
                 }
             }
+
+            if ($trade == 'Cy Asst' || $trade == 'Edn Instr'){
+                $careerMarks = number_format(calculateTotalFromPercentage($resutls, 40), 2);
+            }
+
+
+            if ($realRank== 'SWO' && ($trade ==  'FE' || $trade == 'LM' || $trade == 'AG' || $trade == 'Air Std')){
+                $careerMarks = number_format(convertToFullPercentage($resutls, 80), 2);
+            }
+
+            if ($trade == 'Cy Asst' || $trade == 'Edn Instr'){
+                $fullPersent = number_format($avg_acr + calculateTotalFromPercentage($resutls, 40), 2);
+            }elseif($realRank== 'SWO' && ($trade ==  'FE' || $trade == 'LM' || $trade == 'AG' || $trade == 'Air Std')){
+                $careerMarks = number_format(convertToFullPercentage($resutls, 80), 2);
+                $fullPersent = number_format($avg_acr + $careerMarks, 2);
+
+            }
             $html .= '
             <tr>
                 <td style="text-align:center;">' . ($index + 1) . '</td>
@@ -649,11 +686,11 @@ class PdfController extends Controller
                 <td>' . ($person->rank ?? '-') . '</td>
                 <td>' . ($person->name ?? '-') . '<br>' . '(' . ($person->basic_trade ?? '-') . ')' . '</td>
                 <td style="text-align:center;"><span style="text-decoration:underline;">' . formatDate(($person->doe)) . '</span><br>' . (ordinal($person->entry_no)) . '</td>
-                <td style="text-align:center;"><span style="text-decoration:underline;">' . formatDate(($person->promotion_dt)) . '</span><br>' . (retairedDate($person->doe, $person->rank)) . '</td>
+                <td style="text-align:center;"><span style="text-decoration:underline;">' . formatDate(($person->promotion_dt)) . '</span><br>' . (retairedDate($person->doe, $person->rank, $trade)) . '</td>
                 <td style="text-align:center;">' . (serviceLength($person->doe)) . '</td>
                 <td style="text-align:center;">' . ($avg_acr ?? '-') . '</td>
-                <td style="text-align:center;">' . ($resutls ?? '-') . '</td>
-                <td style="text-align:center;">' . ($total_scrore ?? '-') . '</td>
+                <td style="text-align:center;">' . ($resutls ?? '-') .'<br>'. ($careerMarks ?? ''). '</td>
+                <td style="text-align:center;">' . ($total_scrore ?? '-') .'<br>'.($fullPersent ?? ''). '</td>
                 <td style="text-align:center;"><span style="text-decoration:underline;">' . ($person->rank2 ?? '-') . '</span><br><span style="color:#38A69B;">' . $entry_count . '</span></td>
                 <td style="text-align:center;"><span style="text-decoration:underline;">' . ($person->rank1 ?? '-') . '</span><br><span style="color:green;">' . $totalPersons . '</span></td>
                 <td style="text-align:center;">' . ($red ?? '-') . '</td>

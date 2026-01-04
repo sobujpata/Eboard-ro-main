@@ -10,7 +10,7 @@
         <div class="row justify-content-center" style="margin-top: 10px;" class="col-md-12">
             <div class="card">
                 <div class="card-header text-center">
-                    <h3>MWO, SWO and WO Trade wise Recom</h3>
+                    <h3>MWO, SWO and WO Rank wise Recom</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -65,7 +65,7 @@
                 text: 'Rank: MWO'
             },
             subtitle: {
-                text: 'Source: PB-24'
+                text: 'Source: PB-{{$pb_setting->year}}'
             },
             xAxis: {
                 type: 'category',
@@ -154,7 +154,7 @@
                 text: 'Rank: SWO'
             },
             subtitle: {
-                text: 'Source: PB-24'
+                text: 'Source: PB-{{$pb_setting->year}}'
             },
             xAxis: {
                 type: 'category',
@@ -243,7 +243,7 @@
                 text: 'Rank: WO'
             },
             subtitle: {
-                text: 'Source: PB-24'
+                text: 'Source: PB-{{$pb_setting->year}}'
             },
             xAxis: {
                 type: 'category',

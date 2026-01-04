@@ -19,6 +19,9 @@
     <link href="{{ asset('summernote/summernote-lite.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('summernote/jquery-3.5.1.slim.min.js') }}"></script>
     <script src="{{ asset('summernote/summernote-lite.min.js') }}"></script>
+    {{-- Flasher --}}
+    <link href="{{ asset('css/flasher.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('js/flasher.min.js') }}"></script>
 </head>
 <body>
     <div id="loader" class="LoadingOverlay d-none">

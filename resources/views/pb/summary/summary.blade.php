@@ -11,7 +11,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header text-center text-decoration-underline">
-                        <h3>Summary : Promotion Board-{{ date('y') }}</h3>
+                        <h3>Summary : Promotion Board-{{ $pb_setting->year }}</h3>
                     </div>
                     <div class="card-body">
                         @php
