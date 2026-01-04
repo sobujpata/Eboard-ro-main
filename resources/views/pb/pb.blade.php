@@ -755,6 +755,7 @@
                     },
                     success: function(response) {
                         flasher.success(response.success);
+                        // window.location.href = window.location.href;
                     },
                     error: function(xhr) {
                         flasher.error(xhr.responseJSON?.error || "Something went wrong");
